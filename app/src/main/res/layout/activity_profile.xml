@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+
+    <include android:id="@+id/app_bar" layout="@layout/app_bar_custom"></include>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/app_bar"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/colorPrimary"
+            >
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:src="@drawable/round_profile_pic"
+            android:layout_centerInParent="true"
+            />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Jhon Newman"
+        android:textSize="23sp"
+        android:textColor="@color/colorPrimary"
+        android:layout_gravity="center_horizontal"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Miami Beach,Lorem"
+        android:textSize="15sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        />
+
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/color_profile_divider"
+        android:layout_marginTop="40dp"
+        ></View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="22dp"
+        >
+
+        <ImageView
+            android:layout_width="@dimen/call_icon_size"
+            android:layout_height="@dimen/call_icon_size"
+            android:src="@drawable/profile_phone"
+            android:layout_marginTop="5dp"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="20dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phone"
+                android:textSize="@dimen/phone_text_size"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#000000"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="+414-2356-21"
+                android:textSize="15sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/color_profile_divider"
+        ></View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="22dp"
+        >
+
+        <ImageView
+            android:layout_width="@dimen/call_icon_size"
+            android:layout_height="@dimen/call_icon_size"
+            android:src="@drawable/profile_phone"
+            android:layout_marginTop="5dp"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="20dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pay729 Number"
+                android:textSize="@dimen/phone_text_size"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#000000"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="+414-2356-21"
+                android:textSize="15sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/color_profile_divider"
+        ></View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="22dp"
+        >
+
+        <ImageView
+            android:layout_width="@dimen/call_icon_size"
+            android:layout_height="@dimen/call_icon_size"
+            android:src="@drawable/profile_email"
+            android:layout_marginTop="5dp"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="20dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email Address"
+                android:textSize="@dimen/phone_text_size"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#000000"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="jhonnewman@gmail.com"
+                android:textSize="15sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/color_profile_divider"
+        ></View>
+
+</LinearLayout>
