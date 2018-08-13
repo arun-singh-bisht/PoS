@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <include layout="@layout/app_bar_custom"></include>
+
+    <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
+        android:id="@+id/txt_packageType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Trial"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="20dp"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_horizontal"
+        >
+
+        <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
+            android:id="@+id/txt_packageRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Free / "
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            />
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:id="@+id/txt_packageDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="7 Days Trial"
+            android:textSize="11sp"
+            android:layout_gravity="center_vertical"
+            />
+    </LinearLayout>
+
+
+    <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+        android:id="@+id/txt_package_getway"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GETWAY"
+        android:textColor="#ffffff"
+        android:background="@drawable/round_bg_top_corner"
+        android:textSize="13sp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        />
+
+    <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Account Subscription Charge: $00.00"
+        android:textSize="14sp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal"
+        />
+    <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Processing Charge: $00.00"
+        android:textSize="14sp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="13dp"
+        android:layout_gravity="center_horizontal"
+        />
+    <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Call Bundles: Trial Package"
+        android:textSize="14sp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="13dp"
+        android:layout_gravity="center_horizontal"
+        />
+
+    <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+        android:id="@+id/btn_purchase"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="PURCHASE"
+        android:gravity="center"
+        android:textSize="@dimen/get_a_pay_text_size"
+        android:background="@drawable/round_bg_textview"
+        android:textColor="#ffffff"
+        android:padding="@dimen/sign_in_button_padding"
+        android:layout_marginTop="@dimen/margin_between_buttons_sign_in"
+        android:layout_margin="40dp"
+        />
+
+</LinearLayout>

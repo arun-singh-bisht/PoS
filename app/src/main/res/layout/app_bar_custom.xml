@@ -20,7 +20,7 @@
 
             />
 
-        <TextView
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
             android:id="@+id/txt_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

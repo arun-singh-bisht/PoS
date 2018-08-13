@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffff"
+    >
+
+    <include layout="@layout/app_bar_custom"></include>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        >
+
+
+
+        <!-- Apply Coupon-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            >
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebEditText
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_bg_border_highlight_left_cornors"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:textSize="14sp"
+                android:hint="Apply Coupon"
+                android:singleLine="true"
+                />
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_bg_right_corners"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textSize="14sp"
+                android:text="Apply"
+                android:textColor="#ffffff"
+                />
+
+
+
+        </LinearLayout>
+
+
+        <!--Package Name-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:layout_marginTop="30dp"
+            >
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Package Name"
+                android:textSize="14sp"
+                android:gravity="center_vertical"
+                android:textColor="@color/color_phone_number"
+                />
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Free"
+                android:textSize="16sp"
+                android:gravity="center_vertical"
+                android:layout_alignParentRight="true"
+                />
+
+        </RelativeLayout>
+
+
+        <!--Package Amount-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            >
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Package Amount + Number Charges"
+                android:textSize="14sp"
+                android:gravity="center_vertical"
+                android:textColor="@color/color_phone_number"
+                />
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$0.00"
+                android:textSize="16sp"
+                android:gravity="center_vertical"
+                android:layout_alignParentRight="true"
+                />
+
+        </RelativeLayout>
+
+
+        <!--Monthaly Charges-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            >
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Monthly Charges"
+                android:textSize="14sp"
+                android:gravity="center_vertical"
+                android:textColor="@color/color_phone_number"
+                />
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$0.00"
+                android:textSize="16sp"
+                android:gravity="center_vertical"
+                android:layout_alignParentRight="true"
+                />
+
+        </RelativeLayout>
+
+
+        <!--Total Amount-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            >
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Amount"
+                android:textSize="14sp"
+                android:gravity="center_vertical"
+                android:textColor="@color/color_phone_number"
+                />
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$0.00"
+                android:textSize="16sp"
+                android:gravity="center_vertical"
+                android:layout_alignParentRight="true"
+                />
+
+        </RelativeLayout>
+
+
+
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:id="@+id/btn_pay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="PAY NOW"
+            android:gravity="center"
+            android:textSize="@dimen/get_a_pay_text_size"
+            android:background="@drawable/round_bg_textview"
+            android:textColor="#ffffff"
+            android:padding="@dimen/sign_in_button_padding"
+            android:layout_marginTop="40dp"
+            />
+
+
+
+    </LinearLayout>
+
+
+
+
+
+
+</LinearLayout>

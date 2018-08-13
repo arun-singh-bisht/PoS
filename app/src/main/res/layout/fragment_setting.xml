@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffff"
+
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:paddingLeft="17dp"
+        android:paddingRight="17dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:orientation="vertical"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pay_729"
+            android:textColor="#ffffff"
+            android:layout_centerVertical="true"
+            />
+
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+44-254-257825"
+            android:textColor="#ffffff"
+            android:background="@drawable/round_bg_border_highlight_white"
+            android:padding="5dp"
+            android:layout_alignParentRight="true"
+            />
+
+        </RelativeLayout>
+
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/this_is"
+            android:textColor="@color/color_circul_border"
+            android:layout_marginTop="10dp"
+            android:textSize="11sp"
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingRight="17dp"
+        android:paddingLeft="17dp"
+        android:paddingBottom="50dp"
+        >
+
+
+        <!--Prefered Voice-->
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Preferred Voice"
+            android:layout_marginTop="22dp"
+            android:textColor="@color/color_phone_number"
+            />
+
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Man"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/round_bg_border_highlight"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:drawableRight="@drawable/dropdown"
+            android:textSize="13sp"
+            />
+
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:layout_marginTop="5dp"
+            android:text="Your current voice preference is 'Male'"
+            />
+
+
+        <!--Prefered Caller ID-->
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Preferred Caller ID"
+            android:layout_marginTop="22dp"
+            android:textColor="@color/color_phone_number"
+            />
+
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pay729 Number"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/round_bg_border_highlight"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:drawableRight="@drawable/dropdown"
+            android:textSize="13sp"
+            />
+
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:layout_marginTop="5dp"
+            android:text="Your current caller ID preference is 'My Pay729 Number'"
+            />
+
+
+        <!--Call me on this number-->
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Call me on this Number"
+            android:layout_marginTop="22dp"
+            android:textColor="@color/color_phone_number"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:weightSum="10"
+            >
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:layout_width="0dp"
+                android:layout_weight="6"
+                android:layout_height="wrap_content"
+                android:text="United Kingdom(+44)"
+                android:background="@drawable/round_bg_border_highlight"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:drawableRight="@drawable/dropdown"
+                android:textSize="13sp"
+                android:layout_marginRight="3dp"
+                />
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_marginLeft="3dp"
+                android:layout_height="wrap_content"
+                android:text="203024565"
+                android:background="@drawable/round_bg_border_highlight"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:textSize="13sp"
+                android:gravity="center"
+                />
+
+        </LinearLayout>
+
+
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:layout_marginTop="5dp"
+            android:text="This is the telephone number we will put your customer payment line calls through to you on."
+            />
+
+
+        <!--I will Call from this -->
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="When i need to call my customers, i will be calling from"
+            android:layout_marginTop="22dp"
+            android:textColor="@color/color_phone_number"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:weightSum="10"
+            >
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:layout_width="0dp"
+                android:layout_weight="6"
+                android:layout_height="wrap_content"
+                android:text="United Kingdom(+44)"
+                android:background="@drawable/round_bg_border_highlight"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:drawableRight="@drawable/dropdown"
+                android:textSize="13sp"
+                android:layout_marginRight="3dp"
+                />
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_marginLeft="3dp"
+                android:layout_height="wrap_content"
+                android:text="203024565"
+                android:background="@drawable/round_bg_border_highlight"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:textSize="13sp"
+                android:gravity="center"
+                />
+
+        </LinearLayout>
+
+
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:layout_marginTop="5dp"
+            android:text="This is the telephone number we will put your customer payment line calls through to you on."
+            />
+
+
+
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:id="@+id/btn_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SAVE"
+            android:gravity="center"
+            android:textSize="@dimen/get_a_pay_text_size"
+            android:background="@drawable/round_bg_textview"
+            android:textColor="#ffffff"
+            android:padding="@dimen/sign_in_button_padding"
+            android:layout_marginTop="35dp"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
+
+</ScrollView>

@@ -27,35 +27,34 @@
         android:paddingLeft="20dp"
         >
 
-    <TextView
+    <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="John Newman"
+        android:text="Jane Carter"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="#ffffff"
          />
 
-    <TextView
+    <com.posfone.promote.posfone.Utils.TitilliumWebTextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="San Francisco, CA"
+        android:text="Southampton,UK"
         android:textSize="12sp"
         android:textStyle="bold"
         android:textColor="#ffffff"
         />
 
-        <TextView
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="+417-258-2567"
+            android:text="+44-258-2567"
             android:textSize="13sp"
             android:textStyle="bold"
             android:layout_marginTop="10dp"
             android:textColor="#ffffff"
             />
-
 
     </LinearLayout>
 

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#ffffff">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    android:paddingTop="15dp"
+    android:paddingLeft="20dp"
+    android:paddingBottom="20dp"
+    android:paddingRight="20dp"
+    >
+
+    <TextView
+        android:id="@+id/txt_dialing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dialing"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:alpha="0.6"
+        />
+    <TextView
+        android:id="@+id/txt_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Arun Bisht"
+        android:textColor="#ffffff"
+        android:textSize="36sp"
+        android:layout_marginTop="5dp"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        >
+
+        <TextView
+            android:id="@+id/txt_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mobile 9887808872"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            />
+
+        <Chronometer
+            android:id="@+id/chronometer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:visibility="invisible"
+            android:layout_alignParentRight="true"
+            />
+
+
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
+        >
+
+
+        <ImageView
+            android:id="@+id/icon_speaker"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@mipmap/ic_volume_up"
+            android:tint="@color/color_search_bg_light"
+            android:layout_toLeftOf="@+id/icon_mic"
+            android:layout_marginRight="45dp"
+            />
+
+
+
+        <ImageView
+            android:id="@+id/icon_mic"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@mipmap/ic_mic_off"
+            android:tint="@color/color_search_bg_light"
+            android:layout_centerInParent="true"
+            />
+        <ImageView
+            android:id="@+id/icon_dialpad"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@mipmap/ic_dialpad"
+            android:tint="@color/color_search_bg_light"
+            android:layout_toRightOf="@+id/icon_mic"
+            android:layout_marginLeft="45dp"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>
+
+
+
+<ImageView
+    android:layout_width="220dp"
+    android:layout_height="220dp"
+    android:layout_centerHorizontal="true"
+    android:src="@drawable/human_dar_image"
+    android:tint="#e4e2e2"
+    android:layout_above="@+id/call_action_fab"
+    />
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/call_action_fab"
+        android:src="@drawable/ic_call_white_24dp"
+        app:backgroundTint="#c13d3d"
+        app:elevation="6dp"
+        app:fabSize="normal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:visibility="visible" />
+
+</RelativeLayout>

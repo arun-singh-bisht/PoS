@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:background="@color/colorPrimary"
+        android:padding="20dp"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:textSize="16sp"
+                android:text="+44-254-9876"
+                />
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:text="Transaction ID: 234"
+                android:textSize="12sp"
+                android:layout_marginTop="5dp"
+                />
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:text="21 July 2018 | 2:13 PM"
+                android:textSize="12sp"
+                android:layout_marginTop="5dp"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentRight="true"
+            >
+            <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:text="11.46 $"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                />
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:text="Approved"
+                android:textSize="10sp"
+                android:background="@drawable/round_bg_textview"
+                android:padding="5dp"
+                android:layout_marginTop="5dp"
+                />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginTop="-30dp"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardElevation="5dp"
+        >
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:orientation="vertical"
+           android:padding="15dp"
+           >
+
+           <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="+44-254-9876"
+               android:textColor="@color/color_phone_number"
+               android:textSize="15sp"
+               android:textStyle="bold"
+               />
+
+           <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="30dp"
+           >
+
+           <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Total sell Price"
+               android:textSize="13sp"
+               />
+
+           <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="11.22 $"
+               android:textColor="@color/color_phone_number"
+               android:textSize="13sp"
+               android:textStyle="bold"
+               android:layout_alignParentRight="true"
+               />
+       </RelativeLayout>
+
+           <RelativeLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="15dp"
+               >
+
+               <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="Transaction Charges"
+                   android:textSize="13sp"
+                   />
+
+               <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="11.22 $"
+                   android:textColor="@color/color_phone_number"
+                   android:textSize="13sp"
+                   android:textStyle="bold"
+                   android:layout_alignParentRight="true"
+                   />
+           </RelativeLayout>
+
+           <RelativeLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="15dp"
+               >
+
+               <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="Processing Charges"
+                   android:textSize="13sp"
+                   />
+
+               <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="11.22 $"
+                   android:textColor="@color/color_phone_number"
+                   android:textSize="13sp"
+                   android:textStyle="bold"
+                   android:layout_alignParentRight="true"
+                   />
+           </RelativeLayout>
+
+           <View
+               android:layout_width="match_parent"
+               android:layout_height="0.5dp"
+               android:layout_marginTop="10dp"
+               android:background="@color/color_profile_divider"
+               ></View>
+
+           <RelativeLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="10dp"
+               android:paddingLeft="20dp"
+               >
+
+               <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="Total"
+                   android:textSize="13sp"
+                   />
+
+               <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="11.22 $"
+                   android:textColor="@color/color_phone_number"
+                   android:textSize="13sp"
+                   android:textStyle="bold"
+                   android:layout_alignParentRight="true"
+                   />
+           </RelativeLayout>
+
+       </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+
+</LinearLayout>

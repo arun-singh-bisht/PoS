@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#ffffff"
     >
 
 
@@ -24,27 +25,27 @@
         </RelativeLayout>
 
         <ImageView
-            android:layout_width="140dp"
-            android:layout_height="140dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:src="@drawable/round_profile_pic"
             android:layout_centerInParent="true"
             />
 
     </RelativeLayout>
 
-    <TextView
+    <com.posfone.promote.posfone.Utils.TitilliumWebTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Jhon Newman"
-        android:textSize="23sp"
+        android:text="Jane Carter"
+        android:textSize="20sp"
         android:textColor="@color/colorPrimary"
         android:layout_gravity="center_horizontal"
         />
-    <TextView
+    <com.posfone.promote.posfone.Utils.TitilliumWebTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Miami Beach,Lorem"
-        android:textSize="15sp"
+        android:text="Southampton,UK"
+        android:textSize="14sp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"
         />
@@ -55,14 +56,14 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/color_profile_divider"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         ></View>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_margin="22dp"
+        style="@style/profile_layout_margin"
         >
 
         <ImageView
@@ -79,7 +80,7 @@
             android:layout_marginLeft="20dp"
             >
 
-            <TextView
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Phone"
@@ -88,11 +89,11 @@
                 android:textColor="#000000"
                 />
 
-            <TextView
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="+414-2356-21"
-                android:textSize="15sp"
+                android:text="+44-2356-21"
+                android:textSize="@dimen/phone_number_text_size"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dp"
                 />
@@ -112,7 +113,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_margin="22dp"
+        style="@style/profile_layout_margin"
         >
 
         <ImageView
@@ -129,7 +130,7 @@
             android:layout_marginLeft="20dp"
             >
 
-            <TextView
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Pay729 Number"
@@ -138,11 +139,11 @@
                 android:textColor="#000000"
                 />
 
-            <TextView
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="+414-2356-21"
-                android:textSize="15sp"
+                android:text="+44-2356-21"
+                android:textSize="@dimen/phone_number_text_size"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dp"
                 />
@@ -162,7 +163,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_margin="22dp"
+        style="@style/profile_layout_margin"
         >
 
         <ImageView
@@ -179,7 +180,7 @@
             android:layout_marginLeft="20dp"
             >
 
-            <TextView
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Email Address"
@@ -188,11 +189,11 @@
                 android:textColor="#000000"
                 />
 
-            <TextView
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="jhonnewman@gmail.com"
-                android:textSize="15sp"
+                android:text="jane.carter@gmail.com"
+                android:textSize="@dimen/phone_number_text_size"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dp"
                 />

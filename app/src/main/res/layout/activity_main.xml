@@ -35,7 +35,7 @@
                 android:background="@color/colorPrimary"
                 />
 
-            <TextView
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:text="Sign out"

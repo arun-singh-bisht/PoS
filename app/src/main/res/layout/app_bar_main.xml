@@ -20,12 +20,13 @@
 
             >
 
-            <TextView
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:id="@+id/txt_screen_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="PoS"
                 android:textColor="#ffffff"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:layout_gravity="center"
                 />
 

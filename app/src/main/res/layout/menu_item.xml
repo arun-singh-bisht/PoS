@@ -15,7 +15,7 @@
         android:layout_marginLeft="18dp"
         />
 
-    <TextView
+    <com.posfone.promote.posfone.Utils.TitilliumWebTextView
         android:id="@+id/menu_item_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

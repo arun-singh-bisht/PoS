@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_weight="10"
+    android:paddingLeft="16dp"
+    android:paddingRight="15dp"
+    >
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="4"
+        android:layout_height="100dp"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        >
+
+        <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+44-257-2568"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="@color/color_phone_number"
+            />
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Transaction ID: 2546"
+            android:textSize="12sp"
+            android:layout_marginTop="5dp"
+            />
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="01 July 2018 | 12:37 PM"
+            android:layout_marginTop="5dp"
+            android:textSize="11sp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:layout_height="match_parent">
+
+        <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_phone_number"
+            android:text="11.99 $"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:layout_height="match_parent">
+
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:text="Approved"
+            android:textSize="8sp"
+            android:background="@drawable/round_bg_textview"
+            android:padding="5dp"
+
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:src="@drawable/view_arrow_right"
+            />
+
+    </LinearLayout>
+</LinearLayout>
