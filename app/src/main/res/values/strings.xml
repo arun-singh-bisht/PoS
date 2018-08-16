@@ -40,7 +40,7 @@
     <!-- Setting Screen -->
     <string name="pay_729">Pay729 Number</string>
     <string name="this_is">This is your secure telephone number for customer or you/your staff to call when making outbond calls to customer.</string>
-
+    <string name="invalid_credentials">Invalid Credentials. Please enter correct values.</string>
 
 
     <string-array name="countries_array">

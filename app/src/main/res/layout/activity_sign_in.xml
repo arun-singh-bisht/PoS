@@ -48,7 +48,7 @@
                 android:drawableRight="@drawable/login_usename"
                 android:singleLine="true"
                 android:textSize="@dimen/input_text_size"
-                android:text="Jane.Carter"
+                android:text="a.b"
                 android:hint="@string/hint_name" />
         </android.support.design.widget.TextInputLayout>
 
@@ -68,7 +68,7 @@
                 android:inputType="textPassword"
                 android:drawableRight="@drawable/password_see"
                 android:drawablePadding="5dp"
-                android:text="sfsfdfsdfd"
+                android:text="admin@123"
                 android:textSize="@dimen/input_text_size"
                 android:hint="@string/hint_password" />
         </android.support.design.widget.TextInputLayout>

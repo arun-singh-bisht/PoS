@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.posfone.promote.posfone.Utils.PermissionUtils;
+import com.posfone.promote.posfone.Utils.SharedPreferenceHandler;
 
 
 public class PreSignInActivity extends AppCompatActivity implements View.OnClickListener {
@@ -34,8 +35,20 @@ public class PreSignInActivity extends AppCompatActivity implements View.OnClick
         switch (v.getId())
         {
             case R.id.btn_sign_in:{
-                startActivity(new Intent(PreSignInActivity.this,SignInActivity.class));
-                //finish();
+
+                SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(PreSignInActivity.this);
+                String userID = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
+                        if(userID==null)
+                        {
+                            startActivity(new Intent(PreSignInActivity.this,SignInActivity.class));
+                        }else
+                        {
+                            //Open ChoosePlanActivity screen
+                            Intent intent = new Intent(PreSignInActivity.this,ChoosePlanActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            finish();
+                        }
             }
             break;
             case R.id.btn_free_trial:{

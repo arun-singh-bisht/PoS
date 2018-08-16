@@ -16,10 +16,15 @@ import okio.Buffer;
 public class RESTClient {
 
     public static String HOST_IP = "http://accounts.protechgenie.in/";
-    public static final String LOGIN = "auth.php";
+
     public static final String COUNTRY = "app/country";
     public static final String STATE = "app/state";
     public static final String SIGN_UP = "app/signup";
+    public static final String LOGIN = "app/login";
+    public static final String PACKAGES = "app/packages";
+    public static final String TWILIO_NUMBER = "app/twillio";
+
+
 
 
 

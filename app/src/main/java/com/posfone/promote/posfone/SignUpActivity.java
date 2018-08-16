@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.google.gson.JsonObject;
+import com.posfone.promote.posfone.Utils.SharedPreferenceHandler;
 import com.posfone.promote.posfone.rest.ApiClient;
 import com.posfone.promote.posfone.rest.RESTClient;
 import org.json.JSONObject;
@@ -125,7 +126,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         jsonObject.addProperty("country",((EditText)findViewById(R.id.input_country)).getText().toString());
         jsonObject.addProperty("state",((EditText)findViewById(R.id.input_state)).getText().toString());
         jsonObject.addProperty("email",((EditText)findViewById(R.id.input_email)).getText().toString());
-        jsonObject.addProperty("identity",((EditText)findViewById(R.id.input_username)).getText().toString());
+        jsonObject.addProperty("idenity",((EditText)findViewById(R.id.input_username)).getText().toString());
         jsonObject.addProperty("password",((EditText)findViewById(R.id.input_password)).getText().toString());
 
         String body = "json="+jsonObject.toString();
@@ -147,12 +148,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 if (response.isSuccessful()) {
                     try {
 
-
                         String res = response.body().string();
                         Log.i("onResponse",res);
                         JSONObject jsonObject = new JSONObject(res);
 
                         if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
+
+                            //Save User ID in SP.
+                            new SharedPreferenceHandler(SignUpActivity.this).putValue(SharedPreferenceHandler.SP_KEY_USER_ID,jsonObject.getString("user_id"));
 
                             runOnUiThread(new Runnable() {
                                 @Override

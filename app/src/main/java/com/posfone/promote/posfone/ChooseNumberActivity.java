@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.posfone.promote.posfone.fragment.NumberFragment;
 import com.posfone.promote.posfone.fragment.PaymentFragment;
+import com.posfone.promote.posfone.model.CountryModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,9 @@ import java.util.List;
 
 public class ChooseNumberActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private ViewPager viewPager;
+    private NumberFragment numberFragment_type;
+    private NumberFragment paymentFragment_country;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +40,7 @@ public class ChooseNumberActivity extends AppCompatActivity implements View.OnCl
         findViewById(R.id.img_left).setOnClickListener(this);
 
 
-        ViewPager viewPager = findViewById(R.id.viewpager);
+        viewPager = findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
         TabLayout tabLayout = findViewById(R.id.tabs);
@@ -61,19 +65,16 @@ public class ChooseNumberActivity extends AppCompatActivity implements View.OnCl
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        NumberFragment paymentFragment_country = new NumberFragment();
+        paymentFragment_country = new NumberFragment();
         paymentFragment_country.setTabName(NumberFragment.TAB_COUNTRY);
         adapter.addFrag(paymentFragment_country, "Country");
 
-        NumberFragment paymentFragment_area = new NumberFragment();
-        paymentFragment_area.setTabName(NumberFragment.TAB_AREA);
-        adapter.addFrag(paymentFragment_area, "Area");
-
-        NumberFragment paymentFragment_type = new NumberFragment();
-        paymentFragment_type.setTabName(NumberFragment.TAB_TYPE);
-        adapter.addFrag(paymentFragment_type, "Type");
+        numberFragment_type = new NumberFragment();
+        numberFragment_type.setTabName(NumberFragment.TAB_TYPE);
+        adapter.addFrag(numberFragment_type, "Type");
 
         viewPager.setAdapter(adapter);
+
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -106,5 +107,11 @@ public class ChooseNumberActivity extends AppCompatActivity implements View.OnCl
             System.out.println("Fragment getPageTitle "+position);
             return mFragmentTitleList.get(position);
         }
+    }
+
+    public void scrollToNextTab(CountryModel countryModel)
+    {
+        viewPager.setCurrentItem(1,true);
+        numberFragment_type.loadData(countryModel);
     }
 }

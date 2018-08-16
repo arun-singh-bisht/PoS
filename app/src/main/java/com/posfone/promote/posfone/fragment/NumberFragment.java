@@ -1,5 +1,6 @@
 package com.posfone.promote.posfone.fragment;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,18 +14,36 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.posfone.promote.posfone.ChooseNumberActivity;
+import com.posfone.promote.posfone.ChoosePlanActivity;
 import com.posfone.promote.posfone.MainActivity;
 import com.posfone.promote.posfone.PackageActivity;
 import com.posfone.promote.posfone.PackageDetailActivity;
 import com.posfone.promote.posfone.R;
 import com.posfone.promote.posfone.SignInActivity;
+import com.posfone.promote.posfone.SignUpActivity;
+import com.posfone.promote.posfone.Utils.SharedPreferenceHandler;
 import com.posfone.promote.posfone.adapters.GenericListAdapter;
+import com.posfone.promote.posfone.database.DAO;
 import com.posfone.promote.posfone.model.BaseModel;
 import com.posfone.promote.posfone.model.CountryModel;
+import com.posfone.promote.posfone.model.TwilioNumber;
+import com.posfone.promote.posfone.rest.ApiClient;
+import com.posfone.promote.posfone.rest.RESTClient;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+
+import dmax.dialog.SpotsDialog;
+import okhttp3.Call;
 
 
 /**
@@ -41,6 +60,9 @@ public class NumberFragment extends BaseFragment implements AdapterView.OnItemCl
     public static String TAB_AREA ="tab_area";
     public static String TAB_TYPE ="tab_type";
 
+
+    private List<CountryModel> countryModelList;
+    private GenericListAdapter genericListAdapter = null;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -62,30 +84,28 @@ public class NumberFragment extends BaseFragment implements AdapterView.OnItemCl
         return view;
     }
 
-
     private void initViews()
     {
 
         EditText ed_search =  view.findViewById(R.id.ed_search);
 
-        GenericListAdapter genericListAdapter = null;
         if(TAB_NAME.equalsIgnoreCase(TAB_COUNTRY))
         {
             ed_search.setHint("Search country");
+            loadData(null);
+        }else if(TAB_NAME.equalsIgnoreCase(TAB_TYPE))
+        {
+            ed_search.setHint("Search type");
+        }
+    }
 
-            List<String> countries_array = Arrays.asList(getResources().getStringArray(R.array.countries_array));
+    public void loadData(final CountryModel selectedCountry)
+    {
+        if(TAB_NAME.equalsIgnoreCase(TAB_COUNTRY))
+        {
+            countryModelList = DAO.getAllCountry();
 
-            final List<BaseModel> countryList = new ArrayList<BaseModel>();
-
-            for(String country: countries_array)
-            {
-                CountryModel countryModel = new CountryModel();
-                countryModel.setName(country);
-                countryModel.setPhonecode("+61");
-                countryList.add(countryModel);
-            }
-
-            genericListAdapter = new GenericListAdapter(getActivity(),countryList,R.layout.number_fragment_country_row){
+            genericListAdapter = new GenericListAdapter(getActivity(),countryModelList.size(),R.layout.number_fragment_country_row){
 
                 @Override
                 public View initGenericView(View view, int position) {
@@ -93,93 +113,182 @@ public class NumberFragment extends BaseFragment implements AdapterView.OnItemCl
                     TextView txt_country_name =  view.findViewById(R.id.txt_country_name);
                     TextView txt_country_code =  view.findViewById(R.id.txt_country_code);
 
-                    CountryModel countryModel = (CountryModel)countryList.get(position);
+                    CountryModel countryModel = countryModelList.get(position);
                     txt_country_name.setText(countryModel.getName());
                     txt_country_code.setText(countryModel.getPhonecode());
 
                     return view;
                 }
             };
-        }else if(TAB_NAME.equalsIgnoreCase(TAB_AREA))
-        {
-            ed_search.setHint("Search area");
 
-            List<String> india_states = Arrays.asList(getResources().getStringArray(R.array.india_states));
+            ListView listView =  view.findViewById(R.id.list_payment);
+            listView.setOnItemClickListener(this);
+            listView.setAdapter(genericListAdapter);
 
-            final List<BaseModel> countryList = new ArrayList<BaseModel>();
-
-            for(String country: india_states)
-            {
-                CountryModel countryModel = new CountryModel();
-                countryModel.setName(country);
-                countryModel.setPhonecode("+61");
-                countryList.add(countryModel);
-            }
-
-            genericListAdapter = new GenericListAdapter(getActivity(),countryList,R.layout.number_fragment_country_row){
-
-                @Override
-                public View initGenericView(View view, int position) {
-
-                    TextView txt_country_name =  view.findViewById(R.id.txt_country_name);
-                    TextView txt_country_code =  view.findViewById(R.id.txt_country_code);
-                    ImageView img_flag =  view.findViewById(R.id.img_flag);
-
-
-                    CountryModel countryModel = (CountryModel)countryList.get(position);
-                    txt_country_name.setText(countryModel.getName());
-                    //txt_country_code.setText(countryModel.getCountryCode());
-                    img_flag.setImageResource(R.drawable.ind_flag);
-
-                    return view;
-                }
-            };
         }else if(TAB_NAME.equalsIgnoreCase(TAB_TYPE))
         {
 
-            ed_search.setHint("Search type");
+            ListView listView =  view.findViewById(R.id.list_payment);
+            listView.setAdapter(null);
 
-            final List<BaseModel> countryList = new ArrayList<>();
-            for(int i = 0;i<15;i++)
+            if(selectedCountry!=null)
             {
-                CountryModel countryModel = new CountryModel();
-                countryModel.setName("+44 7447 301897");
-                countryList.add(countryModel);
-            }
+                //Show loading dialog
+                final AlertDialog progressDialog = new SpotsDialog.Builder()
+                        .setContext(getActivity())
+                        .setCancelable(false)
+                        .setMessage("Please wait")
+                        .build();
+                progressDialog.show();
 
-            genericListAdapter = new GenericListAdapter(getActivity(),countryList,R.layout.number_fragment_type_row){
+                //Header
+                HashMap<String,String> header = new HashMap<>();
+                header.put("x-api-key", ApiClient.X_API_KEY);
+                //RequestBody
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("country", selectedCountry.getIso());
+                jsonObject.addProperty("area_code",selectedCountry.getPhonecode());
+                String body = "json="+jsonObject.toString();
 
-                @Override
-                public View initGenericView(View view, int position) {
+                Call call = RESTClient.call_POST(RESTClient.TWILIO_NUMBER, header, body, new okhttp3.Callback() {
+                    @Override
+                    public void onFailure(okhttp3.Call call, IOException e) {
+                        if (progressDialog != null && progressDialog.isShowing())
+                            progressDialog.dismiss();
+                    }
 
-                    TextView txt_number =  view.findViewById(R.id.txt_number);
-                    TextView txt_country_code =  view.findViewById(R.id.txt_country_code);
+                    @Override
+                    public void onResponse(okhttp3.Call call, okhttp3.Response response) {
 
-                    CountryModel countryModel = (CountryModel)countryList.get(position);
-                    txt_number.setText(countryModel.getName());
+                        if(progressDialog!=null && progressDialog.isShowing())
+                            progressDialog.dismiss();
 
-                    txt_country_code.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            startActivity(new Intent(getActivity(),PackageActivity.class));
+                        if (response.isSuccessful()) {
+                            try {
+
+                                String res = response.body().string();
+                                Log.i("onResponse",res);
+                                JSONObject jsonObject = new JSONObject(res);
+
+                                if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
+
+
+                                    JSONObject phone_number = jsonObject.getJSONObject("phone_number");
+                                    JSONArray jsonArray_premium = phone_number.getJSONArray("premium");
+                                    JSONArray jsonArray_default = phone_number.getJSONArray("default");
+                                    JSONArray jsonArray_elite = phone_number.getJSONArray("elite");
+
+                                    final List<TwilioNumber> twilioNumberList = new ArrayList<>();
+
+                                    //Add Default Number
+                                    for(int k = 0;k<jsonArray_default.length();k++)
+                                    {
+                                        TwilioNumber twilioNumber = new TwilioNumber();
+                                        JSONObject object =  jsonArray_default.getJSONObject(k);
+                                        twilioNumber.phone_number = object.getString("phone_number");
+                                        twilioNumber.friendly_number = object.getString("friendly_number");
+                                        twilioNumber.voice = object.getBoolean("voice");
+                                        twilioNumber.SMS = object.getBoolean("SMS");
+                                        twilioNumber.MMS = object.getBoolean("MMS");
+                                        twilioNumber.type ="Default";
+                                        twilioNumberList.add(twilioNumber);
+                                    }
+                                    //Add premium Number
+                                    for(int k = 0;k<jsonArray_premium.length();k++)
+                                    {
+                                        TwilioNumber twilioNumber = new TwilioNumber();
+                                        JSONObject object =  jsonArray_premium.getJSONObject(k);
+                                        twilioNumber.phone_number = object.getString("phone_number");
+                                        twilioNumber.friendly_number = object.getString("friendly_number");
+                                        twilioNumber.voice = object.getBoolean("voice");
+                                        twilioNumber.SMS = object.getBoolean("SMS");
+                                        twilioNumber.MMS = object.getBoolean("MMS");
+                                        twilioNumber.type ="Premium";
+                                        twilioNumberList.add(twilioNumber);
+                                    }
+                                    //Add elite Number
+                                    for(int k = 0;k<jsonArray_elite.length();k++)
+                                    {
+                                        TwilioNumber twilioNumber = new TwilioNumber();
+                                        JSONObject object =  jsonArray_elite.getJSONObject(k);
+                                        twilioNumber.phone_number = object.getString("phone_number");
+                                        twilioNumber.friendly_number = object.getString("friendly_number");
+                                        twilioNumber.voice = object.getBoolean("voice");
+                                        twilioNumber.SMS = object.getBoolean("SMS");
+                                        twilioNumber.MMS = object.getBoolean("MMS");
+                                        twilioNumber.type ="Elite";
+                                        twilioNumberList.add(twilioNumber);
+                                    }
+
+
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            loadTwilioNumberList(twilioNumberList);
+                                        }
+                                    });
+
+                                }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            } finally {
+                                //-----
+                            }
+                        } else {
+                            //-----------
                         }
-                    });
 
-                    return view;
-                }
-            };
+                    }
+                });
+            }
         }
+    }
+
+    private void loadTwilioNumberList(final List<TwilioNumber> twilioNumberList)
+    {
+        genericListAdapter = new GenericListAdapter(getActivity(),twilioNumberList.size(),R.layout.number_fragment_type_row){
+
+            @Override
+            public View initGenericView(View view, int position) {
+
+                TextView txt_number =  view.findViewById(R.id.txt_number);
+                TextView txt_country_code =  view.findViewById(R.id.txt_country_code);
+                TextView txt_number_type =  view.findViewById(R.id.txt_number_type);
 
 
+                TwilioNumber twilioNumber = twilioNumberList.get(position);
+                txt_number.setText(twilioNumber.phone_number);
+                txt_number_type.setText(twilioNumber.type);
+
+
+                txt_country_code.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(new Intent(getActivity(),PackageActivity.class));
+                    }
+                });
+
+                return view;
+            }
+        };
 
         ListView listView =  view.findViewById(R.id.list_payment);
         listView.setOnItemClickListener(this);
         listView.setAdapter(genericListAdapter);
     }
 
+
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        if(TAB_NAME.equalsIgnoreCase(TAB_COUNTRY))
+        {
+            ((ChooseNumberActivity)getActivity()).scrollToNextTab(countryModelList.get(i));
 
+        }else if(TAB_NAME.equalsIgnoreCase(TAB_TYPE))
+        {
+
+        }
     }
 
     public void setTabName(String tab_name)
