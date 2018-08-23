@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.posfone.promote.posfone.fragment.NumberFragment;
 import com.posfone.promote.posfone.fragment.PaymentFragment;
 import com.posfone.promote.posfone.model.CountryModel;
+import com.posfone.promote.posfone.model.PackageModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class ChooseNumberActivity extends AppCompatActivity implements View.OnCl
     private ViewPager viewPager;
     private NumberFragment numberFragment_type;
     private NumberFragment paymentFragment_country;
+    private PackageModel packageModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +35,8 @@ public class ChooseNumberActivity extends AppCompatActivity implements View.OnCl
 
     private void initViews()
     {
+        packageModel = (PackageModel)getIntent().getParcelableExtra("SelectedPackage");
+
         TextView txt_title = findViewById(R.id.txt_title);
         txt_title.setText("Choose Number");
 
@@ -113,5 +117,10 @@ public class ChooseNumberActivity extends AppCompatActivity implements View.OnCl
     {
         viewPager.setCurrentItem(1,true);
         numberFragment_type.loadData(countryModel);
+    }
+
+    public PackageModel getSelectedPackage()
+    {
+        return packageModel;
     }
 }

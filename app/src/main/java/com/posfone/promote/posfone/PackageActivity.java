@@ -6,8 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.posfone.promote.posfone.model.PackageModel;
+
 
 public class PackageActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private PackageModel packageModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +23,8 @@ public class PackageActivity extends AppCompatActivity implements View.OnClickLi
 
     private void initViews()
     {
+
+        packageModel = (PackageModel)getIntent().getParcelableExtra("SelectedPackage");
 
         TextView txt_title = findViewById(R.id.txt_title);
         txt_title.setText("Package");

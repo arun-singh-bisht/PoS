@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/pakage_parent_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_choose_plan_green_top"
+        android:padding="20dp"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:id="@+id/package_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Free Plan"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/free_plan_text_size"
+                />
+            <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
+                android:id="@+id/package_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.00 $"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/free_plan_rate_text_size"
+                android:layout_marginTop="5dp"
+                android:textStyle="bold"
+                />
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:id="@+id/package_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Free 7 days"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/free_days_text_size"
+                android:visibility="gone"
+                android:layout_marginTop="5dp"
+                />
+
+        </LinearLayout>
+
+
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:id="@+id/get_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:text="Select"
+            android:textSize="@dimen/get_number_text_size"
+            android:background="@drawable/round_bg_textview"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:layout_alignParentRight="true"
+            />
+
+    </RelativeLayout>
+</LinearLayout>
