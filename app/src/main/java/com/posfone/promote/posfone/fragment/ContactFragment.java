@@ -37,7 +37,7 @@ public class ContactFragment extends BaseFragment implements LoaderManager.Loade
 
     String fragmentName;
     private View view;
-    ArrayList<BaseModel> alContacts;
+    ArrayList<Contact> alContacts;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -91,7 +91,7 @@ public class ContactFragment extends BaseFragment implements LoaderManager.Loade
     @Override
     public void onLoadFinished(Loader loader, Object data) {
 
-        alContacts = new ArrayList<BaseModel>();
+        alContacts = new ArrayList<>();
 
         Cursor cursor = (Cursor) data;
         if (cursor.moveToFirst()) {
@@ -123,10 +123,10 @@ public class ContactFragment extends BaseFragment implements LoaderManager.Loade
 
     }
 
-    private void loadContactList(final List<BaseModel> alContacts)
+    private void loadContactList(final List<Contact> alContacts)
     {
         ListView listView = view.findViewById(R.id.listView);
-        GenericListAdapter genericListAdapter = new GenericListAdapter(getActivity(),alContacts,R.layout.contact_lis_row){
+        GenericListAdapter genericListAdapter = new GenericListAdapter(getActivity(),alContacts.size(),R.layout.contact_lis_row){
 
             @Override
             public View initGenericView(View view, int position) {
@@ -136,7 +136,7 @@ public class ContactFragment extends BaseFragment implements LoaderManager.Loade
                 TextView contact_number = view.findViewById(R.id.contact_number);
 
 
-                Contact contact = (Contact)alContacts.get(position);
+                Contact contact = alContacts.get(position);
                 contact_title.setText((contact.getContactName().charAt(0)+"").toUpperCase());
                 contact_name.setText(contact.getContactName());
                 contact_number.setText(contact.getContactNumber());
@@ -153,7 +153,7 @@ public class ContactFragment extends BaseFragment implements LoaderManager.Loade
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-        Contact contact = (Contact)alContacts.get(i);
+        Contact contact = alContacts.get(i);
 
         Intent intent = new Intent(getContext(),VoiceActivity.class);
         intent.putExtra("from_number","16617480240");

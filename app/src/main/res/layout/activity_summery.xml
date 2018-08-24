@@ -77,6 +77,7 @@
                 />
 
             <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
+                android:id="@+id/txt_packageName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Free"
@@ -186,8 +187,12 @@
             android:background="@drawable/round_bg_textview"
             android:textColor="#ffffff"
             android:padding="@dimen/sign_in_button_padding"
-            android:layout_marginTop="40dp"
+            android:visibility="gone"
             />
+
+        <include layout="@layout/googlepay_button"
+            android:id="@+id/googlepay"
+            ></include>
 
 
 

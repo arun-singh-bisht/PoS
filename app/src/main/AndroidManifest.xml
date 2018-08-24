@@ -27,6 +27,10 @@
             android:name="AA_MODELS"
             android:value="com.posfone.promote.posfone.model.CountryModel" />
 
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
+
     <activity
         android:name=".SplashActivity"
         android:theme="@style/AppTheme.NoActionBar">

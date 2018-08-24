@@ -94,11 +94,14 @@ public class PackageActivity extends AppCompatActivity implements View.OnClickLi
         if(!packageType.isEmpty())
         {
             Intent intent = new Intent(PackageActivity.this,PackageDetailActivity.class);
-            intent.putExtra("packageType",packageType);
+            /*intent.putExtra("packageType",packageType);
             intent.putExtra("packageRate",packageRate);
             intent.putExtra("packageDuration",packageDuration);
-            intent.putExtra("packageGatewayName",packageGatewayName);
+            intent.putExtra("packageGatewayName",packageGatewayName);*/
 
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("SelectedPackage",packageModel);
+            intent.putExtras(bundle);
             startActivity(intent);
         }
 

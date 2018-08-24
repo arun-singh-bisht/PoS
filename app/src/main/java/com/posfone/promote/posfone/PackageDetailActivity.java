@@ -6,9 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.posfone.promote.posfone.model.PackageModel;
+
 
 public class PackageDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private PackageModel packageModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,13 +23,15 @@ public class PackageDetailActivity extends AppCompatActivity implements View.OnC
     private void initViews()
     {
 
+        packageModel = getIntent().getParcelableExtra("SelectedPackage");
+
         TextView txt_title = findViewById(R.id.txt_title);
         txt_title.setText("Package Detail");
 
-        ((TextView)findViewById(R.id.txt_packageType)).setText(getIntent().getStringExtra("packageType").toString());
-        ((TextView)findViewById(R.id.txt_packageRate)).setText(getIntent().getStringExtra("packageRate").toString()+" / ");
-        ((TextView)findViewById(R.id.txt_packageDuration)).setText(getIntent().getStringExtra("packageDuration").toString());
-        ((TextView)findViewById(R.id.txt_package_getway)).setText(getIntent().getStringExtra("packageGatewayName").toString());
+        ((TextView)findViewById(R.id.txt_packageType)).setText(packageModel.package_name);
+        ((TextView)findViewById(R.id.txt_packageRate)).setText(packageModel.recurring_total+" / ");
+        ((TextView)findViewById(R.id.txt_packageDuration)).setText("Month");
+        ((TextView)findViewById(R.id.txt_package_getway)).setText(packageModel.gateway_name);
 
         findViewById(R.id.img_right).setVisibility(View.GONE);
         findViewById(R.id.img_left).setOnClickListener(this);
@@ -44,7 +49,12 @@ public class PackageDetailActivity extends AppCompatActivity implements View.OnC
             }
             break;
             case R.id.btn_purchase:{
-                startActivity(new Intent(PackageDetailActivity.this,SummeryActivity.class));
+                Intent intent = new Intent(PackageDetailActivity.this,SummeryActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("SelectedPackage",packageModel);
+                intent.putExtras(bundle);
+                startActivity(intent);
+
             }
             break;
 

@@ -1,6 +1,6 @@
 package com.posfone.promote.posfone.model;
 
-public class Contact extends BaseModel{
+public class Contact {
 
     private String contactName;
     private String contactNumber;
