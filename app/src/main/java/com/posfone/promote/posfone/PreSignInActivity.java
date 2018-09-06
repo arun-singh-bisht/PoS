@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.posfone.promote.posfone.Utils.CustomAlertDialog;
 import com.posfone.promote.posfone.Utils.PermissionUtils;
 import com.posfone.promote.posfone.Utils.SharedPreferenceHandler;
 
@@ -53,8 +54,20 @@ public class PreSignInActivity extends AppCompatActivity implements View.OnClick
             }
             break;
             case R.id.btn_free_trial:{
-                startActivity(new Intent(PreSignInActivity.this,SignUpActivity.class));
+                //startActivity(new Intent(PreSignInActivity.this,SignUpActivity.class));
                 //finish();
+                CustomAlertDialog customAlertDialog = new CustomAlertDialog();
+                customAlertDialog.showDialog(PreSignInActivity.this, "Do you want to Logout from app?", new CustomAlertDialog.I_CustomAlertDialog() {
+                    @Override
+                    public void onPositiveClick() {
+
+                    }
+
+                    @Override
+                    public void onNegativeClick() {
+
+                    }
+                });
             }
             break;
         }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.JsonObject;
 import com.posfone.promote.posfone.Utils.GeneralUtil;
 import com.posfone.promote.posfone.Utils.SharedPreferenceHandler;
 import com.posfone.promote.posfone.model.PackageModel;
@@ -20,7 +21,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import okhttp3.Call;
@@ -38,10 +38,8 @@ public class PackageActivity extends AppCompatActivity implements View.OnClickLi
 
     private void initViews()
     {
-
-
         TextView txt_title = findViewById(R.id.txt_title);
-        txt_title.setText("Package");
+        txt_title.setText("Packages");
 
         findViewById(R.id.img_right).setVisibility(View.GONE);
         findViewById(R.id.img_left).setOnClickListener(this);
@@ -110,8 +108,12 @@ public class PackageActivity extends AppCompatActivity implements View.OnClickLi
         HashMap<String,String> header = new HashMap<>();
         header.put("x-api-key", ApiClient.X_API_KEY);
         header.put("userid", userID);
+        //RequestBody
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("isTrial","true");
+        String body = "json="+jsonObject.toString();
 
-        Call call = RESTClient.call_POST(RESTClient.PACKAGES, header, "", new okhttp3.Callback() {
+        Call call = RESTClient.call_POST(RESTClient.PACKAGES, header, body, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 GeneralUtil.dismissProgressDialog();

@@ -18,7 +18,7 @@
 
     <!--Sign In Screen-->
     <string name="activate_link_text">An activation link has been delivered to your registered email.Activate your account before login.</string>
-    <string name="hint_name">Your Name</string>
+    <string name="hint_name">Username</string>
     <string name="hint_password">Password</string>
     <string name="forgot_pwd">Forgot Password?</string>
     <string name="login">LOGIN</string>
@@ -29,11 +29,11 @@
 
 
     <!--Sign Up screen-->
-    <string name="first_name">First Name</string>
+    <string name="first_name">First Name*</string>
     <string name="last_name">Last Name</string>
     <string name="company_name">Company Name</string>
     <string name="company_address">Company Address</string>
-    <string name="company_country">Country</string>
+    <string name="company_country">Country*</string>
     <string name="state">State</string>
     <string name="save_and_next">SAVE AND NEXT</string>
 
@@ -46,6 +46,8 @@
 
     <string name="googlepay_button_content_description">Google Pay</string>
     <string name="buy_with_googlepay_button_content_description">Buy with Google Pay</string>
+
+    <string name="pound_symobl">\u00a3</string>
 
     <string-array name="countries_array">
         <item>Afghanistan</item>

@@ -64,8 +64,11 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
                 String messg = null;
                 if(countryCodeForIncomingCall.equalsIgnoreCase("Select Country") || countryCodeForOutgoingCall.equalsIgnoreCase("Select Country") )
                     messg = "Select country code.";
-                else if(txt_incoming_number.isEmpty() || txt_outgoing_number.isEmpty())
-                    messg = "Enter a valid number.";
+                else if(!GeneralUtil.validatePhoneNumberEditText(this,R.id.txt_incoming_number))
+                    messg = "Enter valid incoming number.";
+                else if(!GeneralUtil.validatePhoneNumberEditText(this,R.id.txt_outgoing_number))
+                    messg = "Enter valid outgoing number.";
+
 
                 if(messg!=null)
                 {

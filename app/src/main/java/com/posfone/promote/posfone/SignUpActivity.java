@@ -125,7 +125,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         jsonObject.addProperty("company_name",((EditText)findViewById(R.id.input_company_name)).getText().toString());
         jsonObject.addProperty("address",((EditText)findViewById(R.id.input_company_address)).getText().toString());
         jsonObject.addProperty("country",((EditText)findViewById(R.id.input_country)).getText().toString());
-        jsonObject.addProperty("state",((EditText)findViewById(R.id.input_state)).getText().toString());
+        String state = ((EditText)findViewById(R.id.input_state)).getText().toString();
+        if(state.equalsIgnoreCase("Please select"))
+            state = "";
+        jsonObject.addProperty("state",state);
         jsonObject.addProperty("email",((EditText)findViewById(R.id.input_email)).getText().toString());
         jsonObject.addProperty("idenity",((EditText)findViewById(R.id.input_username)).getText().toString());
         jsonObject.addProperty("password",((EditText)findViewById(R.id.input_password)).getText().toString());
@@ -143,24 +146,17 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         String input_country =  GeneralUtil.getTextFromEditText(this,R.id.input_country);
         String input_state =  GeneralUtil.getTextFromEditText(this,R.id.input_state);
 
-       if(!GeneralUtil.validateEditText(this,R.id.input_fname))
-           message = "Enter First Name.";
-       else if(!GeneralUtil.validateEditText(this,R.id.input_lname))
-           message = "Enter Last Name.";
-       else if(!GeneralUtil.validateEditText(this,R.id.input_company_name))
-           message = "Enter Company Name.";
-       else if(!GeneralUtil.validateEditText(this,R.id.input_company_address))
-           message = "Enter Company Address.";
-       else if(!GeneralUtil.validateEditText(this,R.id.input_email))
-           message = "Enter Email Address.";
+        if(!GeneralUtil.validateEditText(this,R.id.input_fname))
+            message = "Enter First name.";
+        else if(input_country.equalsIgnoreCase("Please select"))
+            message = "Please select your Country.";
+        else if(!GeneralUtil.validateEmailEditText(this,R.id.input_email))
+           message = "Enter Valid email address.";
        else if(!GeneralUtil.validateEditText(this,R.id.input_username))
            message = "Enter Username.";
-       else if(!GeneralUtil.validateEditText(this,R.id.input_password))
-           message = "Enter Password.";
-       else if(input_country.equalsIgnoreCase("Please select"))
-           message = "Please select your Country.";
-       else if(input_state.equalsIgnoreCase("Please select"))
-           message = "Please select your State.";
+       else if(!GeneralUtil.validatePAsswordEditText(this,R.id.input_password))
+           message = "Enter valid password.";
+
 
        if(message != null)
        {
@@ -181,7 +177,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         GeneralUtil.dismissProgressDialog();
 
-        if (response.isSuccessful()) {
             try {
 
                 String res = response.body().string();
@@ -217,8 +212,5 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             } finally {
                 //-----
             }
-        } else {
-            //-----------
-        }
     }
 }

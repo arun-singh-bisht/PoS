@@ -34,9 +34,38 @@ public class GeneralUtil {
         String text = ((EditText)activity.findViewById(resId)).getText().toString();
         if(text==null || text.isEmpty())
             return false;
+        return true;
+    }
+
+    public static boolean validateEmailEditText(Activity activity,int resId)
+    {
+        String text = ((EditText)activity.findViewById(resId)).getText().toString();
+        if(text==null || text.isEmpty())
+            return false;
+        if(!android.util.Patterns.EMAIL_ADDRESS.matcher(text).matches())
+            return false;
+        return true;
+    }
+
+    public static boolean validatePAsswordEditText(Activity activity,int resId)
+    {
+        String text = ((EditText)activity.findViewById(resId)).getText().toString();
+        if(text==null || text.isEmpty())
+            return false;
+        if(text.length()<8)
+            return false;
+        return true;
+    }
+    public static boolean validatePhoneNumberEditText(Activity activity,int resId)
+    {
+        String text = ((EditText)activity.findViewById(resId)).getText().toString();
+        if(text==null || text.isEmpty() || text.length()!=10)
+            return false;
 
         return true;
     }
+
+
 
     public static void showProgressDialog(Activity activity,String message)
     {

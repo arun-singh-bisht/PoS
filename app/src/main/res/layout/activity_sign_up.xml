@@ -174,7 +174,7 @@
                 android:singleLine="true"
                 android:textSize="@dimen/input_text_size_signup"
                 android:text=""
-                android:hint="Email Address" />
+                android:hint="Email Address*" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -191,7 +191,7 @@
                 android:singleLine="true"
                 android:textSize="@dimen/input_text_size_signup"
                 android:text=""
-                android:hint="UserName" />
+                android:hint="UserName*" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -209,7 +209,7 @@
                 android:inputType="textPassword"
                 android:textSize="@dimen/input_text_size_signup"
                 android:text=""
-                android:hint="Password" />
+                android:hint="Password*" />
         </android.support.design.widget.TextInputLayout>
 
 

@@ -72,19 +72,18 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         String password = input_password.getText().toString();
 
         //Validate Values
-        if(username.isEmpty() || password.isEmpty()) {
-            GeneralUtil.showToast(SignInActivity.this,getString(R.string.invalid_credentials));
+        String message = null;
+        if(!GeneralUtil.validateEditText(this,R.id.input_name))
+            message = "Enter Username.";
+        else if(!GeneralUtil.validatePAsswordEditText(this,R.id.input_password))
+            message = "Enter valid password.";
+
+        if(message !=null) {
+            GeneralUtil.showToast(SignInActivity.this, message);
             return;
         }
 
-
-        //Show loading dialog
-        final AlertDialog progressDialog = new SpotsDialog.Builder()
-                .setContext(this)
-                .setCancelable(false)
-                .setMessage("Please wait")
-                .build();
-        progressDialog.show();
+        GeneralUtil.showProgressDialog(this,"Please wait");
 
         //Header
         HashMap<String,String> header = new HashMap<>();
@@ -102,9 +101,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
                 Log.i("onFailure","onFailure");
                 e.printStackTrace();
-
-                if (progressDialog != null && progressDialog.isShowing())
-                    progressDialog.dismiss();
+                GeneralUtil.dismissProgressDialog();
 
             }
 
@@ -112,10 +109,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             public void onResponse(okhttp3.Call call, okhttp3.Response response) {
 
                 Log.i("onResponse","onResponse");
-                if(progressDialog!=null && progressDialog.isShowing())
-                    progressDialog.dismiss();
+                GeneralUtil.dismissProgressDialog();
 
-                if (response.isSuccessful()) {
                     try {
 
                         String res = response.body().string();
@@ -152,16 +147,12 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                     } finally {
                         //-----
                     }
-                } else {
-                    //-----------
-                    Log.i("onResponse","Not Successfull");
-                }
+
 
             }
         });
 
     }
-
 
     private void deviceRegistration() {
 
@@ -195,12 +186,12 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
                 GeneralUtil.dismissProgressDialog();
 
-                if (response.isSuccessful()) {
                     try {
 
                         String res = response.body().string();
                         Log.i("onResponse",res);
                         final JSONObject jsonObject = new JSONObject(res);
+                        String message = jsonObject.getString("message");
 
                         if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
 
@@ -244,6 +235,9 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                                 }
                             });
 
+                        }else
+                        {
+                            GeneralUtil.showToast(SignInActivity.this,message);
                         }
 
                     } catch (Exception e) {
@@ -251,9 +245,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                     } finally {
                         //-----
                     }
-                } else {
-                    //-----------
-                }
 
             }
         });
