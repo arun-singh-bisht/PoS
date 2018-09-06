@@ -10,23 +10,32 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
+import com.posfone.promote.posfone.Utils.GeneralUtil;
+import com.posfone.promote.posfone.Utils.SharedPreferenceHandler;
 import com.posfone.promote.posfone.adapters.NavigationViewItemAdapter;
-import com.posfone.promote.posfone.fragment.ChoosePlanFragment;
 import com.posfone.promote.posfone.fragment.ContactFragment;
 import com.posfone.promote.posfone.fragment.PaymentFragment;
 import com.posfone.promote.posfone.fragment.SettingFragment;
+import com.posfone.promote.posfone.rest.ApiClient;
+import com.posfone.promote.posfone.rest.RESTClient;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.Call;
 
 public class MainActivity extends AppCompatActivity
         implements AdapterView.OnItemClickListener {
@@ -46,13 +55,20 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        //Load Side Menu Items
-        initNavigationViewMenuList();
-
-
         //Open Contact Fragment
         ContactFragment contactFragment = new ContactFragment();
         openFragment(contactFragment,false,"ContactFragment");
+
+        //Get Profile Details
+        SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(MainActivity.this);
+        if(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_USER_EMAIL)==null)
+            getProfileDetails();
+        else
+            initNavigationViewMenuList();
+
+        //set LoggedIn status
+        preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_IS_LOGIN,true);
+
 
     }
 
@@ -97,6 +113,14 @@ public class MainActivity extends AppCompatActivity
     * */
     public void initNavigationViewMenuList()
     {
+        final SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(MainActivity.this);
+
+        //Init Profile Details
+        ((TextView)findViewById(R.id.txt_header_username)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_FIRST_NAME)+" "+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_LAST_NAME));
+        ((TextView)findViewById(R.id.txt_header_user_location)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_STATE)+","+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY));
+        ((TextView)findViewById(R.id.txt_header_user_contact_number)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER)+"");
+
+        //Init NAvigation Item List
         ListView listView =  findViewById(R.id.list_menu_items);
         listView.setOnItemClickListener(this);
 
@@ -136,6 +160,21 @@ public class MainActivity extends AppCompatActivity
 
         NavigationViewItemAdapter navigationViewItemAdapter = new NavigationViewItemAdapter(this,navigationViewItemModelList);
         listView.setAdapter(navigationViewItemAdapter);
+
+
+        //Sign Out button
+        findViewById(R.id.txt_signout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Clear All SP Data
+                preferenceHandler.clearSP();
+                //Redirect user to PreSignInActivity
+                Intent intent = new Intent(MainActivity.this,PreSignInActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -204,6 +243,82 @@ public class MainActivity extends AppCompatActivity
     {
         getSupportActionBar().setDisplayHomeAsUpEnabled(b);
     }
+
+
+    private void getProfileDetails() {
+
+        //Show loading dialog
+        GeneralUtil.showProgressDialog(this,null);
+
+        SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(this);
+        String userID = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
+        String token = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_TOKEN);
+
+        //Header
+        HashMap<String,String> header = new HashMap<>();
+        header.put("x-api-key", ApiClient.X_API_KEY);
+        header.put("userid", userID);
+        header.put("token", token);
+        //RequestBody
+
+        Call call = RESTClient.call_POST(RESTClient.PROFILE, header, "", new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                GeneralUtil.dismissProgressDialog();
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) {
+
+                GeneralUtil.dismissProgressDialog();
+
+                if (response.isSuccessful()) {
+                    try {
+
+                        String res = response.body().string();
+                        Log.i("onResponse",res);
+                        final JSONObject jsonObject = new JSONObject(res);
+
+                        if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
+
+
+                            JSONObject user = jsonObject.getJSONObject("user");
+
+                            final SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(MainActivity.this);
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_USERNAME,user.getString("username"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_USER_EMAIL,user.getString("user_email"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY,user.getString("country"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_STATE,user.getString("state"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_FIRST_NAME,user.getString("first_name"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_LAST_NAME,user.getString("last_name"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHOTO,user.getString("profile_photo"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_SESSION_TOKEN,user.getString("session_token"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHONE_NUMBER,user.getString("phone_number"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER,user.getString("pay729_number"));
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    initNavigationViewMenuList();
+                                }
+                            });
+
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        //-----
+                    }
+                } else {
+                    //-----------
+                }
+
+            }
+        });
+
+    }
+
 
 
 }

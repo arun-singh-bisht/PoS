@@ -21,13 +21,14 @@ public class RESTClient {
     public static final String STATE = "app/state";
     public static final String SIGN_UP = "app/signup";
     public static final String LOGIN = "app/login";
+    public static final String DEVICE_REGISTRATION = "app/device_registration";
+    public static final String PLANS = "app/numberCat";
     public static final String PACKAGES = "app/packages";
     public static final String TWILIO_NUMBER = "app/twillio";
-
-
-
-
-
+    public static final String TWILIO_NUMBER_SELECT = "app/twillio_save";
+    public static final String TWILIO_NUMBER_PURCHASE = "app/payment_reponse";
+    public static final String MANAGE_NUMBER = "app/manage_number";
+    public static final String PROFILE = "app/profile";
 
     private static OkHttpClient client = new OkHttpClient();
 
@@ -67,6 +68,7 @@ public class RESTClient {
         Call call = client.newCall(request);
         call.enqueue(callback);
         printRequest(request);
+
         return call;
     }
 

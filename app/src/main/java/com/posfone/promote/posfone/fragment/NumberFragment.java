@@ -18,7 +18,10 @@ import android.widget.TextView;
 import com.google.gson.JsonObject;
 import com.posfone.promote.posfone.ChooseNumberActivity;
 import com.posfone.promote.posfone.PackageActivity;
+import com.posfone.promote.posfone.PreSignInActivity;
 import com.posfone.promote.posfone.R;
+import com.posfone.promote.posfone.Utils.GeneralUtil;
+import com.posfone.promote.posfone.Utils.SharedPreferenceHandler;
 import com.posfone.promote.posfone.adapters.GenericListAdapter;
 import com.posfone.promote.posfone.database.DAO;
 import com.posfone.promote.posfone.model.CountryModel;
@@ -29,6 +32,7 @@ import com.posfone.promote.posfone.rest.RESTClient;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -39,13 +43,15 @@ import java.util.List;
 
 import dmax.dialog.SpotsDialog;
 import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 
 /**
  * Created by Arun.Singh on 7/20/2018.
  */
 
-public class NumberFragment extends BaseFragment implements AdapterView.OnItemClickListener{
+public class NumberFragment extends BaseFragment implements AdapterView.OnItemClickListener, Callback{
 
     String fragmentName;
     private View view;
@@ -345,7 +351,7 @@ public class NumberFragment extends BaseFragment implements AdapterView.OnItemCl
                                             twilioNumber.voice = object.getBoolean("voice");
                                             twilioNumber.SMS = object.getBoolean("SMS");
                                             twilioNumber.MMS = object.getBoolean("MMS");
-                                            twilioNumber.type ="Default";
+                                            twilioNumber.type ="default";
                                             twilioNumberList.add(twilioNumber);
                                         }
                                     }
@@ -363,7 +369,7 @@ public class NumberFragment extends BaseFragment implements AdapterView.OnItemCl
                                             twilioNumber.voice = object.getBoolean("voice");
                                             twilioNumber.SMS = object.getBoolean("SMS");
                                             twilioNumber.MMS = object.getBoolean("MMS");
-                                            twilioNumber.type ="Premium";
+                                            twilioNumber.type ="premium";
                                             twilioNumberList.add(twilioNumber);
                                         }
                                     }
@@ -381,7 +387,7 @@ public class NumberFragment extends BaseFragment implements AdapterView.OnItemCl
                                             twilioNumber.voice = object.getBoolean("voice");
                                             twilioNumber.SMS = object.getBoolean("SMS");
                                             twilioNumber.MMS = object.getBoolean("MMS");
-                                            twilioNumber.type ="Elite";
+                                            twilioNumber.type ="elite";
                                             twilioNumberList.add(twilioNumber);
                                         }
                                     }
@@ -428,21 +434,30 @@ public class NumberFragment extends BaseFragment implements AdapterView.OnItemCl
 
                 final TwilioNumber twilioNumber = twilioNumberList.get(position);
                 txt_number.setText(twilioNumber.phone_number);
-                txt_number_type.setText(twilioNumber.type);
+                txt_number_type.setText(twilioNumber.type.toUpperCase());
 
 
                 txt_country_code.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
-                        PackageModel selectedPackage = ((ChooseNumberActivity) getActivity()).getSelectedPackage();
+
+                        String selectedTwilioNumber = twilioNumber.phone_number;
+                        String selectedTwilioNumberType = twilioNumber.type;
+
+                        try {
+                            selectTwilioNumber(selectedTwilioNumberType,selectedTwilioNumber);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                       /* PackageModel selectedPackage = ((ChooseNumberActivity) getActivity()).getSelectedPackage();
                         selectedPackage.selectedTwillioNumber = twilioNumber.phone_number;
 
                         Intent intent = new Intent(getActivity(), PackageActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putParcelable("SelectedPackage",selectedPackage);
                         intent.putExtras(bundle);
-                        startActivity(intent);
+                        startActivity(intent);*/
                     }
                 });
 
@@ -453,5 +468,89 @@ public class NumberFragment extends BaseFragment implements AdapterView.OnItemCl
         ListView listView =  view.findViewById(R.id.list_payment);
         listView.setOnItemClickListener(this);
         listView.setAdapter(genericListAdapter);
+    }
+
+    private void selectTwilioNumber(String numberType,String number) throws JSONException {
+
+        //Show loading dialog
+        GeneralUtil.showProgressDialog(getActivity(),null);
+
+        SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(getActivity());
+        String userID = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
+
+        //Header
+        HashMap<String,String> header = new HashMap<>();
+        header.put("x-api-key", ApiClient.X_API_KEY);
+        header.put("userid", userID);
+        //RequestBody
+        JSONObject jsonNumber = new JSONObject();
+        jsonNumber.put("number",number);
+
+        JSONArray jsonArrayNumber = new JSONArray();
+        jsonArrayNumber.put(jsonNumber);
+
+        JSONObject jsonNumberType = new JSONObject();
+        jsonNumberType.put(numberType,jsonArrayNumber);
+
+        JSONObject jsonTwillioNumber = new JSONObject();
+        jsonTwillioNumber.put("twillio_nos",jsonNumberType);
+
+        String body = "json="+jsonTwillioNumber.toString();
+        Log.i("NumberFragment",body);
+
+        Call call = RESTClient.call_POST(RESTClient.TWILIO_NUMBER_SELECT, header, body, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                GeneralUtil.dismissProgressDialog();
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) {
+
+                GeneralUtil.dismissProgressDialog();
+
+
+                if (response.isSuccessful()) {
+                    try {
+
+                        String res = response.body().string();
+                        Log.i("onResponse",res);
+                        JSONObject jsonObject = new JSONObject(res);
+
+                        if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
+
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //loadTwilioNumberList(null);
+                                    Intent intent = new Intent(getActivity(), PackageActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
+
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        //-----
+                    }
+                } else {
+                    //-----------
+                }
+
+            }
+        });
+
+    }
+
+    @Override
+    public void onFailure(Call call, IOException e) {
+
+    }
+
+    @Override
+    public void onResponse(Call call, Response response) throws IOException {
+
     }
 }

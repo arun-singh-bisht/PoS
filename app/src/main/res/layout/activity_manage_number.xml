@@ -50,10 +50,11 @@
         >
 
         <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:id="@+id/txt_select_country_incoming_call"
             android:layout_width="0dp"
-            android:layout_weight="6"
+            android:layout_weight="5"
             android:layout_height="wrap_content"
-            android:text="United Kingdom(+44)"
+            android:text="Select Country"
             android:background="@drawable/round_bg_border_highlight"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
@@ -63,12 +64,14 @@
             android:textSize="13sp"
             android:layout_marginRight="3dp"
             />
-        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+        <com.posfone.promote.posfone.Utils.TitilliumWebEditText
+            android:id="@+id/txt_incoming_number"
             android:layout_width="0dp"
-            android:layout_weight="4"
+            android:layout_weight="5"
             android:layout_marginLeft="3dp"
             android:layout_height="wrap_content"
-            android:text="203024565"
+            android:text=""
+            android:singleLine="true"
             android:background="@drawable/round_bg_border_highlight"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
@@ -98,10 +101,11 @@
             >
 
             <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:id="@+id/txt_select_country_outgoing_call"
                 android:layout_width="0dp"
-                android:layout_weight="6"
+                android:layout_weight="5"
                 android:layout_height="wrap_content"
-                android:text="United Kingdom(+44)"
+                android:text="Select Country"
                 android:background="@drawable/round_bg_border_highlight"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
@@ -111,12 +115,14 @@
                 android:textSize="13sp"
                 android:layout_marginRight="3dp"
                 />
-            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            <com.posfone.promote.posfone.Utils.TitilliumWebEditText
+                android:id="@+id/txt_outgoing_number"
                 android:layout_width="0dp"
-                android:layout_weight="4"
+                android:layout_weight="5"
                 android:layout_marginLeft="3dp"
                 android:layout_height="wrap_content"
-                android:text="203024565"
+                android:text=""
+                android:singleLine="true"
                 android:background="@drawable/round_bg_border_highlight"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"

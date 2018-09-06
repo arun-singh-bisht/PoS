@@ -20,6 +20,7 @@ import com.posfone.promote.posfone.model.CountryModel;
 import com.posfone.promote.posfone.model.StateModel;
 import com.posfone.promote.posfone.rest.ApiClient;
 import com.posfone.promote.posfone.rest.RESTClient;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -237,7 +238,8 @@ public class SearchCountryActivity extends AppCompatActivity implements View.OnC
                 txt_country_name.setText(countryModel.getName());
                 txt_country_code.setText(countryModel.getPhonecode());
 
-                PicasoImageUtil.loadImageInImageView(SearchCountryActivity.this,countryModel.getFlag(),img_flag);
+                Picasso.with(SearchCountryActivity.this).load(countryModel.getFlag()).into(img_flag);
+                //PicasoImageUtil.loadImageInImageView(SearchCountryActivity.this,countryModel.getFlag(),img_flag);
 
                 return view;
             }

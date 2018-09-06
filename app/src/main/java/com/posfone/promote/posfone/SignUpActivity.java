@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.google.gson.JsonObject;
+import com.posfone.promote.posfone.Utils.GeneralUtil;
 import com.posfone.promote.posfone.Utils.SharedPreferenceHandler;
 import com.posfone.promote.posfone.rest.ApiClient;
 import com.posfone.promote.posfone.rest.RESTClient;
@@ -19,8 +20,10 @@ import java.util.HashMap;
 
 import dmax.dialog.SpotsDialog;
 import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
-public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
+public class SignUpActivity extends AppCompatActivity implements View.OnClickListener , Callback{
 
     private final int ACTION_FOR_COUNTRY = 1001;
     private final int ACTION_FOR_STATE = 1002;
@@ -106,13 +109,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     private void signUp()
     {
-        //Show loading dialog
-        final AlertDialog  progressDialog = new SpotsDialog.Builder()
-                .setContext(this)
-                .setCancelable(false)
-                .setMessage("Please wait")
-                .build();
-        progressDialog.show();
+
+        if(!validateData())
+            return;
+
+        GeneralUtil.showProgressDialog(this,"Sign Up in progress...");
 
         //Header
         HashMap<String,String> header = new HashMap<>();
@@ -131,54 +132,93 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         String body = "json="+jsonObject.toString();
 
-        Call call = RESTClient.call_POST(RESTClient.SIGN_UP, header, body, new okhttp3.Callback() {
-            @Override
-            public void onFailure(okhttp3.Call call, IOException e) {
-                if (progressDialog != null && progressDialog.isShowing())
-                    progressDialog.dismiss();
-            }
+        Call call = RESTClient.call_POST(RESTClient.SIGN_UP, header, body, this);
 
-            @Override
-            public void onResponse(okhttp3.Call call, okhttp3.Response response) {
+    }
 
-                if(progressDialog!=null && progressDialog.isShowing())
-                    progressDialog.dismiss();
+    private boolean validateData()
+    {
+        String message = null;
 
+        String input_country =  GeneralUtil.getTextFromEditText(this,R.id.input_country);
+        String input_state =  GeneralUtil.getTextFromEditText(this,R.id.input_state);
 
-                if (response.isSuccessful()) {
-                    try {
+       if(!GeneralUtil.validateEditText(this,R.id.input_fname))
+           message = "Enter First Name.";
+       else if(!GeneralUtil.validateEditText(this,R.id.input_lname))
+           message = "Enter Last Name.";
+       else if(!GeneralUtil.validateEditText(this,R.id.input_company_name))
+           message = "Enter Company Name.";
+       else if(!GeneralUtil.validateEditText(this,R.id.input_company_address))
+           message = "Enter Company Address.";
+       else if(!GeneralUtil.validateEditText(this,R.id.input_email))
+           message = "Enter Email Address.";
+       else if(!GeneralUtil.validateEditText(this,R.id.input_username))
+           message = "Enter Username.";
+       else if(!GeneralUtil.validateEditText(this,R.id.input_password))
+           message = "Enter Password.";
+       else if(input_country.equalsIgnoreCase("Please select"))
+           message = "Please select your Country.";
+       else if(input_state.equalsIgnoreCase("Please select"))
+           message = "Please select your State.";
 
-                        String res = response.body().string();
-                        Log.i("onResponse",res);
-                        JSONObject jsonObject = new JSONObject(res);
+       if(message != null)
+       {
+           GeneralUtil.showToast(this,message);
+           return false;
+       }
 
-                        if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
+        return true;
+    }
 
-                            //Save User ID in SP.
-                            new SharedPreferenceHandler(SignUpActivity.this).putValue(SharedPreferenceHandler.SP_KEY_USER_ID,jsonObject.getString("user_id"));
+    @Override
+    public void onFailure(Call call, IOException e) {
+        GeneralUtil.dismissProgressDialog();
+    }
 
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Intent intent = new Intent(SignUpActivity.this,ChoosePlanActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    startActivity(intent);
+    @Override
+    public void onResponse(Call call, Response response) throws IOException {
 
-                                }
-                            });
+        GeneralUtil.dismissProgressDialog();
+
+        if (response.isSuccessful()) {
+            try {
+
+                String res = response.body().string();
+                Log.i("onResponse",res);
+                JSONObject jsonObject = new JSONObject(res);
+                String message = jsonObject.getString("message");
+                if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
+
+                    //Save User ID in SP.
+                    //new SharedPreferenceHandler(SignUpActivity.this).putValue(SharedPreferenceHandler.SP_KEY_USER_ID,jsonObject.getString("user_id"));
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            finish();
+                            //GeneralUtil.showToast(SignUpActivity.this,"SignUp Successfull.");
+                            Intent intent = new Intent(SignUpActivity.this,SignInActivity.class);
+                            intent.putExtra("username",((EditText)findViewById(R.id.input_username)).getText().toString());
+                            intent.putExtra("password",((EditText)findViewById(R.id.input_password)).getText().toString());
+                            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+
                         }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                            //-----
-                    }
-                } else {
-                  //-----------
+                    });
+                }else
+                {
+                    GeneralUtil.showToast(SignUpActivity.this,message);
                 }
 
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                //-----
             }
-        });
-
+        } else {
+            //-----------
+        }
     }
 }

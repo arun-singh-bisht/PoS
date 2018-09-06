@@ -58,123 +58,16 @@
         </LinearLayout>
 
 
-        <!--Package Name-->
-        <RelativeLayout
+
+        <LinearLayout
+            android:id="@+id/packageDetailslayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
+            android:orientation="vertical"
             android:layout_marginTop="30dp"
             >
 
-            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Package Name"
-                android:textSize="14sp"
-                android:gravity="center_vertical"
-                android:textColor="@color/color_phone_number"
-                />
-
-            <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
-                android:id="@+id/txt_packageName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Free"
-                android:textSize="16sp"
-                android:gravity="center_vertical"
-                android:layout_alignParentRight="true"
-                />
-
-        </RelativeLayout>
-
-
-        <!--Package Amount-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
-            >
-
-            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Package Amount + Number Charges"
-                android:textSize="14sp"
-                android:gravity="center_vertical"
-                android:textColor="@color/color_phone_number"
-                />
-
-            <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="$0.00"
-                android:textSize="16sp"
-                android:gravity="center_vertical"
-                android:layout_alignParentRight="true"
-                />
-
-        </RelativeLayout>
-
-
-        <!--Monthaly Charges-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
-            >
-
-            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Monthly Charges"
-                android:textSize="14sp"
-                android:gravity="center_vertical"
-                android:textColor="@color/color_phone_number"
-                />
-
-            <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="$0.00"
-                android:textSize="16sp"
-                android:gravity="center_vertical"
-                android:layout_alignParentRight="true"
-                />
-
-        </RelativeLayout>
-
-
-        <!--Total Amount-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
-            >
-
-            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Total Amount"
-                android:textSize="14sp"
-                android:gravity="center_vertical"
-                android:textColor="@color/color_phone_number"
-                />
-
-            <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="$0.00"
-                android:textSize="16sp"
-                android:gravity="center_vertical"
-                android:layout_alignParentRight="true"
-                />
-
-        </RelativeLayout>
-
+        </LinearLayout>
 
 
         <com.posfone.promote.posfone.Utils.TitilliumWebTextView
@@ -187,11 +80,13 @@
             android:background="@drawable/round_bg_textview"
             android:textColor="#ffffff"
             android:padding="@dimen/sign_in_button_padding"
-            android:visibility="gone"
+            android:visibility="visible"
+            android:layout_marginTop="20dp"
             />
 
         <include layout="@layout/googlepay_button"
             android:id="@+id/googlepay"
+            android:visibility="gone"
             ></include>
 
 

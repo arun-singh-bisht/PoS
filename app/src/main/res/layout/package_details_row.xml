@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+    <!--Trial -->
+    <RelativeLayout
+        android:id="@+id/lay_pakage"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:paddingRight="18dp"
+        android:paddingLeft="18dp"
+        >
+
+        <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
+            android:id="@+id/package_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trial"
+            android:textColor="@color/color_phone_number"
+            android:textSize="@dimen/package_name_text_size"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="40dp"
+            />
+
+
+
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:id="@+id/gateway_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GETWAY"
+            android:textColor="#ffffff"
+            android:background="@drawable/round_bg_top_corner"
+            android:textSize="10sp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:layout_alignParentBottom="true"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="130dp"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            >
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Free / "
+                android:textColor="@color/color_phone_number"
+                android:textSize="@dimen/package_rate_text_size"
+                android:layout_gravity="center_horizontal"
+                android:layout_centerVertical="true"
+                />
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:id="@+id/duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="7 Days Trial"
+                android:textSize="@dimen/package_duration_text_size"
+                android:layout_gravity="center_vertical"
+
+                />
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/view_arrow_right"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            />
+
+
+
+    </RelativeLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:background="@color/color_circul_border"
+        ></View>
+
+</LinearLayout>

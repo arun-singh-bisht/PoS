@@ -1,20 +1,68 @@
 package com.posfone.promote.posfone.Utils;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import dmax.dialog.SpotsDialog;
+
 public class GeneralUtil {
 
-    public static void showToast(Context context, String msg)
+    private static  AlertDialog progressDialog;
+    public static void showToast(final Context context,final String msg)
     {
-        Toast.makeText(context,msg,Toast.LENGTH_SHORT).show();
+        ((Activity)context).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context,msg,Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
-    public static String getTextFromEditText(View view, int resId)
+    public static String getTextFromEditText(Activity activity, int resId)
     {
-        return ((EditText)view.findViewById(resId)).getText().toString();
+        return ((EditText)activity.findViewById(resId)).getText().toString();
+    }
+
+    public static boolean validateEditText(Activity activity,int resId)
+    {
+        String text = ((EditText)activity.findViewById(resId)).getText().toString();
+        if(text==null || text.isEmpty())
+            return false;
+
+        return true;
+    }
+
+    public static void showProgressDialog(Activity activity,String message)
+    {
+
+        //Dismiss Previoud Dialog
+        dismissProgressDialog();
+
+        if(message==null)
+            message = "Please wait..";
+        //Show loading dialog
+        progressDialog = new SpotsDialog.Builder()
+                .setContext(activity)
+                .setCancelable(false)
+                .setMessage(message)
+                .build();
+        progressDialog.show();
+    }
+    public static void  dismissProgressDialog()
+    {
+        if(progressDialog!=null && progressDialog.isShowing())
+            progressDialog.dismiss();
+    }
+
+    public static String getImei(Context context)
+    {
+        TelephonyManager mngr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+        return mngr.getDeviceId();
     }
 }

@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.HashMap;
 import dmax.dialog.SpotsDialog;
+import okhttp3.Call;
 
 public class SignInActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -28,10 +29,19 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     private void intiView()
     {
+        String username = getIntent().getStringExtra("username");
+        String password = getIntent().getStringExtra("password");
+
         findViewById(R.id.txt_title).setVisibility(View.GONE);
         findViewById(R.id.img_right).setVisibility(View.GONE);
         findViewById(R.id.img_left).setOnClickListener(this);
         findViewById(R.id.btn_login).setOnClickListener(this);
+
+        if(username!=null) {
+            ((EditText) findViewById(R.id.input_name)).setText(username);
+            ((EditText) findViewById(R.id.input_password)).setText(password);
+            findViewById(R.id.txt_account_activation_messg).setVisibility(View.VISIBLE);
+        }
 
     }
     @Override
@@ -96,7 +106,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 if (progressDialog != null && progressDialog.isShowing())
                     progressDialog.dismiss();
 
-
             }
 
             @Override
@@ -106,13 +115,13 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 if(progressDialog!=null && progressDialog.isShowing())
                     progressDialog.dismiss();
 
-
                 if (response.isSuccessful()) {
                     try {
 
                         String res = response.body().string();
                         Log.i("onResponse",res);
                         JSONObject jsonObject = new JSONObject(res);
+                        String message = jsonObject.getString("message");
 
                         if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
 
@@ -129,31 +138,13 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                                 @Override
                                 public void run() {
 
-                                    String step = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_SIGN_UP_STEP_2);
-
-                                    Intent intent = null;
-                                    if(step.equalsIgnoreCase("0"))
-                                    {
-                                        //Open ChoosePlanActivity screen
-                                        intent = new Intent(SignInActivity.this,ChoosePlanActivity.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        startActivity(intent);
-                                        finish();
-                                    }
-                                    else
-                                    {
-
-                                            //Open package screen
-                                            intent = new Intent(SignInActivity.this,MainActivity.class);
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            startActivity(intent);
-                                            finish();
-
-
-                                    }
-
+                                    //Call Device Registration API
+                                    deviceRegistration();
                                 }
                             });
+                        }else
+                        {
+                            GeneralUtil.showToast(SignInActivity.this,message);
                         }
 
                     } catch (Exception e) {
@@ -171,4 +162,101 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+
+    private void deviceRegistration() {
+
+        //Show loading dialog
+        GeneralUtil.showProgressDialog(this,null);
+
+        SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(this);
+        String userID = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
+
+        //Header
+        HashMap<String,String> header = new HashMap<>();
+        header.put("x-api-key", ApiClient.X_API_KEY);
+        header.put("userid", userID);
+        //RequestBody
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("userid",userID);
+        jsonObject.addProperty("fcm_id","dummy_fcm_xxxx");
+        jsonObject.addProperty("os","android");
+        jsonObject.addProperty("device_id",GeneralUtil.getImei(SignInActivity.this));
+
+        String body = "json="+jsonObject.toString();
+
+        Call call = RESTClient.call_POST(RESTClient.DEVICE_REGISTRATION, header, body, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                GeneralUtil.dismissProgressDialog();
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) {
+
+                GeneralUtil.dismissProgressDialog();
+
+                if (response.isSuccessful()) {
+                    try {
+
+                        String res = response.body().string();
+                        Log.i("onResponse",res);
+                        final JSONObject jsonObject = new JSONObject(res);
+
+                        if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
+
+                            final SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(SignInActivity.this);
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_TOKEN,jsonObject.getString("token"));
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    String step2 = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_SIGN_UP_STEP_2);
+                                    String step3 = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_SIGN_UP_STEP_3);
+                                    String step4 = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_SIGN_UP_STEP_4);
+
+                                    Intent intent = null;
+                                    if(step2.equalsIgnoreCase("0") || step3.equalsIgnoreCase("0"))
+                                    {
+                                        //Open ChoosePlanActivity screen
+                                        intent = new Intent(SignInActivity.this,ChoosePlanActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent);
+                                        finish();
+                                    }else if(step4.equalsIgnoreCase("0"))
+                                    {
+                                        //
+                                        //Open Manage Number Screen
+                                        intent = new Intent(SignInActivity.this,ManageNumberActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                    else
+                                    {
+                                        //Open Home Screen
+                                        intent = new Intent(SignInActivity.this,MainActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+
+                                }
+                            });
+
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        //-----
+                    }
+                } else {
+                    //-----------
+                }
+
+            }
+        });
+
+    }
 }

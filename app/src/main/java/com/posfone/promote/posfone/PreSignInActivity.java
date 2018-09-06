@@ -38,6 +38,7 @@ public class PreSignInActivity extends AppCompatActivity implements View.OnClick
 
                 SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(PreSignInActivity.this);
                 String userID = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
+                userID = null;
                         if(userID==null)
                         {
                             startActivity(new Intent(PreSignInActivity.this,SignInActivity.class));

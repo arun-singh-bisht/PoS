@@ -41,8 +41,11 @@ public class GooglePay {
         tokenizationSpecification.put(
                 "parameters",
                 new JSONObject()
-                        .put("gateway", "example")
-                        .put("gatewayMerchantId", "exampleGatewayMerchantId"));
+                        .put("gateway", "stripe")
+                        .put("stripe:publishableKey", "pk_test_socFsxOcvRVSE6gZQmqCX87t")
+                        .put("stripe:version", "5.1.0"));
+                //.put("gatewayMerchantId", "exampleGatewayMerchantId"))
+
 
         return tokenizationSpecification;
     }
@@ -178,9 +181,9 @@ public class GooglePay {
     public static JSONObject getPaymentDataRequest() {
         try {
             JSONObject paymentDataRequest = GooglePay.getBaseRequest();
+            paymentDataRequest.put("transactionInfo", GooglePay.getTransactionInfo());
             paymentDataRequest.put(
                     "allowedPaymentMethods", new JSONArray().put(GooglePay.getCardPaymentMethod()));
-            paymentDataRequest.put("transactionInfo", GooglePay.getTransactionInfo());
             paymentDataRequest.put("merchantInfo", GooglePay.getMerchantInfo());
             return paymentDataRequest;
         } catch (JSONException e) {

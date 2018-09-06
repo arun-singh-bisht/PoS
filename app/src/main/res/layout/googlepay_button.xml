@@ -6,7 +6,7 @@
     android:layout_height="48sp"
     android:background="@drawable/googlepay_button_background"
     android:padding="2sp"
-    android:layout_marginTop="40dp"
+    android:layout_marginTop="20dp"
     android:contentDescription="@string/googlepay_button_content_description">
     <LinearLayout
         android:duplicateParentState="true"

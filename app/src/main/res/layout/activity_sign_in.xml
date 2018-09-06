@@ -22,6 +22,20 @@
             android:src="@drawable/logo_white"
             android:layout_centerInParent="true"
             />
+
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:id="@+id/txt_account_activation_messg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/activate_link_text"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
+            android:textSize="@dimen/activate_link_text_size"
+            android:textColor="#ffffff"
+            android:visibility="gone"
+            />
+
     </RelativeLayout>
 
     <LinearLayout
@@ -48,7 +62,7 @@
                 android:drawableRight="@drawable/login_usename"
                 android:singleLine="true"
                 android:textSize="@dimen/input_text_size"
-                android:text="a.b"
+                android:text=""
                 android:hint="@string/hint_name" />
         </android.support.design.widget.TextInputLayout>
 
@@ -68,7 +82,7 @@
                 android:inputType="textPassword"
                 android:drawableRight="@drawable/password_see"
                 android:drawablePadding="5dp"
-                android:text="admin@123"
+                android:text=""
                 android:textSize="@dimen/input_text_size"
                 android:hint="@string/hint_password" />
         </android.support.design.widget.TextInputLayout>

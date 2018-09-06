@@ -24,7 +24,7 @@ public class ChooseNumberActivity extends AppCompatActivity implements View.OnCl
     private ViewPager viewPager;
     private NumberFragment numberFragment_type;
     private NumberFragment paymentFragment_country;
-    private PackageModel packageModel;
+    //private PackageModel packageModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +35,7 @@ public class ChooseNumberActivity extends AppCompatActivity implements View.OnCl
 
     private void initViews()
     {
-        packageModel = (PackageModel)getIntent().getParcelableExtra("SelectedPackage");
+        //packageModel = (PackageModel)getIntent().getParcelableExtra("SelectedPackage");
 
         TextView txt_title = findViewById(R.id.txt_title);
         txt_title.setText("Choose Number");
@@ -121,6 +121,7 @@ public class ChooseNumberActivity extends AppCompatActivity implements View.OnCl
 
     public PackageModel getSelectedPackage()
     {
-        return packageModel;
+        //return packageModel;
+        return null;
     }
 }

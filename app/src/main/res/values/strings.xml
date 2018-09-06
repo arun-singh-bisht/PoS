@@ -17,6 +17,7 @@
     <string name="terms_of_use">Terms of Use - Privacy - FAQ</string>
 
     <!--Sign In Screen-->
+    <string name="activate_link_text">An activation link has been delivered to your registered email.Activate your account before login.</string>
     <string name="hint_name">Your Name</string>
     <string name="hint_password">Password</string>
     <string name="forgot_pwd">Forgot Password?</string>

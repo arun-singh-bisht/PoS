@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textSize="@dimen/input_text_size_signup"
-                android:text="Jane"
+                android:text=""
                 android:hint="@string/first_name" />
         </android.support.design.widget.TextInputLayout>
 
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textSize="@dimen/input_text_size_signup"
-                android:text="Carter"
+                android:text=""
                 android:hint="@string/last_name" />
         </android.support.design.widget.TextInputLayout>
 
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textSize="@dimen/input_text_size_signup"
-                android:text="MicroBay Inc."
+                android:text=""
                 android:hint="@string/company_name" />
         </android.support.design.widget.TextInputLayout>
 
@@ -108,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textSize="@dimen/input_text_size_signup"
-            android:text="New Mango Street,UK."
+            android:text=""
                 android:hint="@string/company_address" />
         </android.support.design.widget.TextInputLayout>
 
@@ -173,7 +173,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textSize="@dimen/input_text_size_signup"
-                android:text="jane.carter@gmail.com"
+                android:text=""
                 android:hint="Email Address" />
         </android.support.design.widget.TextInputLayout>
 
@@ -190,7 +190,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textSize="@dimen/input_text_size_signup"
-                android:text="Jane.Carter"
+                android:text=""
                 android:hint="UserName" />
         </android.support.design.widget.TextInputLayout>
 
@@ -208,7 +208,7 @@
                 android:singleLine="true"
                 android:inputType="textPassword"
                 android:textSize="@dimen/input_text_size_signup"
-                android:text="jane@carter"
+                android:text=""
                 android:hint="Password" />
         </android.support.design.widget.TextInputLayout>
 

@@ -33,7 +33,9 @@
 
     <activity
         android:name=".SplashActivity"
-        android:theme="@style/AppTheme.NoActionBar">
+        android:theme="@style/AppTheme.NoActionBar"
+        android:screenOrientation="portrait"
+        >
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 
@@ -48,40 +50,41 @@
     <activity android:name=".ProfileActivity"
         android:theme="@style/AppTheme.NoActionBar"
         android:windowSoftInputMode="stateHidden"
-
+        android:screenOrientation="portrait"
         >
     </activity>
 
         <activity android:name=".PreSignInActivity"
         android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
         >
     </activity>
 
         <activity android:name=".SignInActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden"
-
+            android:screenOrientation="portrait"
             >
         </activity>
 
         <activity android:name=".SignUpActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden"
-
+            android:screenOrientation="portrait"
             >
         </activity>
 
         <activity android:name=".ChoosePlanActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden"
-
+            android:screenOrientation="portrait"
             >
         </activity>
 
         <activity android:name=".PackageDetailActivity"
         android:theme="@style/AppTheme.NoActionBar"
         android:windowSoftInputMode="stateHidden"
-
+            android:screenOrientation="portrait"
         >
     </activity>
 
@@ -89,44 +92,49 @@
         <activity android:name=".ManageNumberActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden"
-
+            android:screenOrientation="portrait"
             >
         </activity>
 
         <activity android:name=".PackageActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"
             >
         </activity>
 
         <activity android:name=".SummeryActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"
             >
         </activity>
 
         <activity android:name=".ChooseNumberActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden"
-
+            android:screenOrientation="portrait"
             >
         </activity>
 
         <activity android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"
             >
         </activity>
 
         <activity android:name=".VoiceActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"
             >
         </activity>
 
         <activity android:name=".SearchCountryActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"
             >
         </activity>
 

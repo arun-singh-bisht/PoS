@@ -21,6 +21,14 @@ public class PackageModel implements Parcelable {
     public String recurring_amount_flat_Subscription_Charge;
     public String selectedTwillioNumber;
 
+    public String PackageName;
+    public String SubscriptionCharge;
+    public String OneTimeCharge;
+    public String NumberCharges;
+    public String TotalAmount;
+    public String Vat;
+
+
     public PackageModel(Parcel in) {
         package_id = in.readString();
         package_name = in.readString();

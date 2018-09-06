@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.activeandroid.ActiveAndroid;
 import com.posfone.promote.posfone.Utils.PicasoImageUtil;
+import com.posfone.promote.posfone.Utils.SharedPreferenceHandler;
 import com.posfone.promote.posfone.database.DAO;
 import com.posfone.promote.posfone.model.CountryModel;
 import com.posfone.promote.posfone.model.GetCountryResponse;
@@ -34,7 +35,15 @@ public class SplashActivity extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        startActivity(new Intent(SplashActivity.this,PreSignInActivity.class));
+
+                        SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(SplashActivity.this);
+                        if(preferenceHandler.getBooleanValue(SharedPreferenceHandler.SP_KEY_IS_LOGIN))
+                        {
+                            startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                        }else
+                        {
+                            startActivity(new Intent(SplashActivity.this,PreSignInActivity.class));
+                        }
                         finish();
                     }
                 },1000*2);

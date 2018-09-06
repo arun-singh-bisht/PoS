@@ -34,6 +34,7 @@
     </RelativeLayout>
 
     <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+        android:id="@+id/txt_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Jane Carter"
@@ -42,6 +43,7 @@
         android:layout_gravity="center_horizontal"
         />
     <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+        android:id="@+id/txt_user_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Southampton,UK"
@@ -90,6 +92,7 @@
                 />
 
             <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:id="@+id/txt_user_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="+44-2356-21"
@@ -140,6 +143,7 @@
                 />
 
             <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:id="@+id/txt_pay_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="+44-2356-21"
@@ -190,6 +194,7 @@
                 />
 
             <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:id="@+id/txt_email_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="jane.carter@gmail.com"
