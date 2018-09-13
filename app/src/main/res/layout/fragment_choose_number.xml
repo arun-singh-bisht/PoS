@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/search_contact"
         android:background="@drawable/round_bg_editview"
-        android:padding="10dp"
+        android:padding="7dp"
         android:drawableLeft="@drawable/search"
         android:drawablePadding="20dp"
         android:textSize="14dp"

@@ -1,5 +1,6 @@
 package com.posfone.promote.posfone;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -7,24 +8,45 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.JsonObject;
+import com.posfone.promote.posfone.Utils.GeneralUtil;
+import com.posfone.promote.posfone.Utils.SharedPreferenceHandler;
 import com.posfone.promote.posfone.fragment.NumberFragment;
 import com.posfone.promote.posfone.fragment.PaymentFragment;
 import com.posfone.promote.posfone.model.CountryModel;
 import com.posfone.promote.posfone.model.PackageModel;
+import com.posfone.promote.posfone.model.TwilioNumber;
+import com.posfone.promote.posfone.rest.ApiClient;
+import com.posfone.promote.posfone.rest.RESTClient;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.Call;
 
-public class ChooseNumberActivity extends AppCompatActivity implements View.OnClickListener {
+
+public class ChooseNumberActivity extends AppCompatActivity  {
 
     private ViewPager viewPager;
-    private NumberFragment numberFragment_type;
-    private NumberFragment paymentFragment_country;
+    private NumberFragment numberFragment_type_regular;
+    private NumberFragment numberFragment_type_premium;
+    private NumberFragment numberFragment_type_elite;
     //private PackageModel packageModel;
+    List<TwilioNumber> twilioNumbers_regular = new ArrayList<>();
+    List<TwilioNumber> twilioNumbers_premium = new ArrayList<>();
+    List<TwilioNumber> twilioNumbers_elite = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,8 +62,9 @@ public class ChooseNumberActivity extends AppCompatActivity implements View.OnCl
         TextView txt_title = findViewById(R.id.txt_title);
         txt_title.setText("Choose Number");
 
+        //((ImageView)findViewById(R.id.img_right)).setImageResource(R.mipmap.ic_language);
         findViewById(R.id.img_right).setVisibility(View.GONE);
-        findViewById(R.id.img_left).setOnClickListener(this);
+        findViewById(R.id.img_left).setVisibility(View.GONE);
 
 
         viewPager = findViewById(R.id.viewpager);
@@ -51,31 +74,35 @@ public class ChooseNumberActivity extends AppCompatActivity implements View.OnCl
         tabLayout.setupWithViewPager(viewPager);
 
 
+        getTwilioNumber(null);
+
     }
 
     @Override
-    public void onClick(View v) {
+    public void onBackPressed() {
 
-        switch (v.getId())
-        {
-            case R.id.img_left:{
-                finish();
-            }
-            break;
-        }
+        Intent intent = new Intent(ChooseNumberActivity.this,PreSignInActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        paymentFragment_country = new NumberFragment();
-        paymentFragment_country.setTabName(NumberFragment.TAB_COUNTRY);
-        adapter.addFrag(paymentFragment_country, "Country");
+        //Tab Regular
+        numberFragment_type_regular = new NumberFragment();
+        numberFragment_type_regular.setFragmentName("Regular");
+        adapter.addFrag(numberFragment_type_regular, "Regular");
+        //Tab Premium
+        numberFragment_type_premium = new NumberFragment();
+        numberFragment_type_premium.setFragmentName("Premium");
+        adapter.addFrag(numberFragment_type_premium, "Premium");
+        //Tab Elite
+        numberFragment_type_elite = new NumberFragment();
+        numberFragment_type_elite.setFragmentName("Elite");
+        adapter.addFrag(numberFragment_type_elite, "Elite");
 
-        numberFragment_type = new NumberFragment();
-        numberFragment_type.setTabName(NumberFragment.TAB_TYPE);
-        adapter.addFrag(numberFragment_type, "Type");
 
         viewPager.setAdapter(adapter);
 
@@ -113,15 +140,204 @@ public class ChooseNumberActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    public void scrollToNextTab(CountryModel countryModel)
+
+    private void getTwilioNumber(final CountryModel selectedCountry)
     {
-        viewPager.setCurrentItem(1,true);
-        numberFragment_type.loadData(countryModel);
+
+        //Show loading dialog
+        GeneralUtil.showProgressDialog(this,"Please wait");
+
+        //Header
+        HashMap<String,String> header = new HashMap<>();
+        header.put("x-api-key", ApiClient.X_API_KEY);
+        //RequestBody
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("country", "GB");
+        jsonObject.addProperty("area_code","44");
+        String body = "json="+jsonObject.toString();
+
+        Call call = RESTClient.call_POST(RESTClient.TWILIO_NUMBER, header, body, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                GeneralUtil.dismissProgressDialog();
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) {
+
+                GeneralUtil.dismissProgressDialog();
+
+                twilioNumbers_regular.clear();
+                twilioNumbers_premium.clear();
+                twilioNumbers_elite.clear();
+
+                if (response.isSuccessful()) {
+                    try {
+
+                        String res = response.body().string();
+                        Log.i("onResponse",res);
+                        JSONObject jsonObject = new JSONObject(res);
+
+                        if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
+
+
+                            JSONObject phone_number = jsonObject.getJSONObject("phone_number");
+
+                            //Add Default Number
+
+                            if(phone_number.has("default"))
+                            {
+                                JSONArray jsonArray_default = phone_number.getJSONArray("default");
+                                for(int k = 0;k<jsonArray_default.length();k++)
+                                {
+                                    TwilioNumber twilioNumber = new TwilioNumber();
+                                    JSONObject object =  jsonArray_default.getJSONObject(k);
+                                    twilioNumber.phone_number = object.getString("phone_number");
+                                    twilioNumber.friendly_number = object.getString("friendly_number");
+                                    twilioNumber.voice = object.getBoolean("voice");
+                                    twilioNumber.SMS = object.getBoolean("SMS");
+                                    twilioNumber.MMS = object.getBoolean("MMS");
+                                    twilioNumber.type ="Regular";
+                                    twilioNumbers_regular.add(twilioNumber);
+                                }
+                            }
+
+                            //Add premium Number
+                            if(phone_number.has("premium"))
+                            {
+                                JSONArray jsonArray_premium = phone_number.getJSONArray("premium");
+                                for(int k = 0;k<jsonArray_premium.length();k++)
+                                {
+                                    TwilioNumber twilioNumber = new TwilioNumber();
+                                    JSONObject object =  jsonArray_premium.getJSONObject(k);
+                                    twilioNumber.phone_number = object.getString("phone_number");
+                                    twilioNumber.friendly_number = object.getString("friendly_number");
+                                    twilioNumber.voice = object.getBoolean("voice");
+                                    twilioNumber.SMS = object.getBoolean("SMS");
+                                    twilioNumber.MMS = object.getBoolean("MMS");
+                                    twilioNumber.type ="premium";
+                                    twilioNumbers_premium.add(twilioNumber);
+                                }
+                            }
+
+                            //Add elite Number
+                            if(phone_number.has("elite"))
+                            {
+                                JSONArray jsonArray_elite = phone_number.getJSONArray("elite");
+                                for(int k = 0;k<jsonArray_elite.length();k++)
+                                {
+                                    TwilioNumber twilioNumber = new TwilioNumber();
+                                    JSONObject object =  jsonArray_elite.getJSONObject(k);
+                                    twilioNumber.phone_number = object.getString("phone_number");
+                                    twilioNumber.friendly_number = object.getString("friendly_number");
+                                    twilioNumber.voice = object.getBoolean("voice");
+                                    twilioNumber.SMS = object.getBoolean("SMS");
+                                    twilioNumber.MMS = object.getBoolean("MMS");
+                                    twilioNumber.type ="elite";
+                                    twilioNumbers_elite.add(twilioNumber);
+                                }
+                            }
+
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                        numberFragment_type_regular.setData(twilioNumbers_regular);
+                                        numberFragment_type_premium.setData(twilioNumbers_premium);
+                                        numberFragment_type_elite.setData(twilioNumbers_elite);
+                                }
+                            });
+
+
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        //-----
+                    }
+                } else {
+                    //-----------
+                }
+
+            }
+        });
+
     }
 
-    public PackageModel getSelectedPackage()
-    {
-        //return packageModel;
-        return null;
+
+    private void selectTwilioNumber(String numberType,String number) throws JSONException {
+
+        //Show loading dialog
+        GeneralUtil.showProgressDialog(this,null);
+
+        SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(ChooseNumberActivity.this);
+        String userID = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
+
+        //Header
+        HashMap<String,String> header = new HashMap<>();
+        header.put("x-api-key", ApiClient.X_API_KEY);
+        header.put("userid", userID);
+        //RequestBody
+        JSONObject jsonNumber = new JSONObject();
+        jsonNumber.put("number",number);
+
+        JSONArray jsonArrayNumber = new JSONArray();
+        jsonArrayNumber.put(jsonNumber);
+
+        JSONObject jsonNumberType = new JSONObject();
+        jsonNumberType.put(numberType,jsonArrayNumber);
+
+        JSONObject jsonTwillioNumber = new JSONObject();
+        jsonTwillioNumber.put("twillio_nos",jsonNumberType);
+
+        String body = "json="+jsonTwillioNumber.toString();
+        Log.i("NumberFragment",body);
+
+        Call call = RESTClient.call_POST(RESTClient.TWILIO_NUMBER_SELECT, header, body, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                GeneralUtil.dismissProgressDialog();
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) {
+
+                GeneralUtil.dismissProgressDialog();
+
+
+                if (response.isSuccessful()) {
+                    try {
+
+                        String res = response.body().string();
+                        Log.i("onResponse",res);
+                        JSONObject jsonObject = new JSONObject(res);
+
+                        if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //loadTwilioNumberList(null);
+                                    Intent intent = new Intent(ChooseNumberActivity.this, PackageActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
+
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        //-----
+                    }
+                } else {
+                    //-----------
+                }
+
+            }
+        });
+
     }
+
 }

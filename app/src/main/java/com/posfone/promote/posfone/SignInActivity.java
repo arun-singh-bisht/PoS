@@ -15,6 +15,9 @@ import com.posfone.promote.posfone.rest.RESTClient;
 import org.json.JSONObject;
 import java.io.IOException;
 import java.util.HashMap;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import dmax.dialog.SpotsDialog;
 import okhttp3.Call;
 
@@ -24,6 +27,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        ButterKnife.bind(this);
+
         intiView();
     }
 
@@ -35,7 +40,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         findViewById(R.id.txt_title).setVisibility(View.GONE);
         findViewById(R.id.img_right).setVisibility(View.GONE);
         findViewById(R.id.img_left).setOnClickListener(this);
-        findViewById(R.id.btn_login).setOnClickListener(this);
 
         if(username!=null) {
             ((EditText) findViewById(R.id.input_name)).setText(username);
@@ -53,17 +57,18 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 finish();
             }
             break;
-            case R.id.btn_login:{
-
-                login();
-
-            }
-            break;
         }
     }
 
+    @OnClick(R.id.txt_enroll)
+    public void goToSignUp()
+    {
+        startActivity(new Intent(SignInActivity.this,SignUpActivity.class));
+        finish();
+    }
 
-    private void login()
+    @OnClick(R.id.btn_login)
+    public void login()
     {
         //Get Values
         EditText input_name =  findViewById(R.id.input_name);
@@ -147,8 +152,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                     } finally {
                         //-----
                     }
-
-
             }
         });
 
@@ -210,7 +213,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                                     if(step2.equalsIgnoreCase("0") || step3.equalsIgnoreCase("0"))
                                     {
                                         //Open ChoosePlanActivity screen
-                                        intent = new Intent(SignInActivity.this,ChoosePlanActivity.class);
+                                        intent = new Intent(SignInActivity.this,ChooseNumberActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                                         startActivity(intent);
                                         finish();

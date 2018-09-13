@@ -10,25 +10,48 @@
 
     <include layout="@layout/app_bar_custom"></include>
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tabs"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabGravity="fill"
-        app:tabIndicatorColor="@color/colorPrimary"
-        android:background="@android:color/white"
-        app:tabIndicatorHeight="2dp"
-        app:tabMode="fixed" />
+        android:layout_height="match_parent">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@android:color/darker_gray" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/colorPrimary"
+            android:background="@android:color/white"
+            app:tabIndicatorHeight="2dp"
+            app:tabMode="fixed" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_below="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@android:color/darker_gray" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_below="@+id/divider"
+            android:layout_above="@+id/txt_select_country"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <TextView
+            android:id="@+id/txt_select_country"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Change Country"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            android:padding="10sp"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            />
+
+    </RelativeLayout>
 
 </LinearLayout>

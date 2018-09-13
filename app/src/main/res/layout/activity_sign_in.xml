@@ -113,6 +113,7 @@
             android:layout_marginTop="@dimen/margin_between_buttons_sign_in"
             />
         <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:id="@+id/txt_enroll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/dont_have"
