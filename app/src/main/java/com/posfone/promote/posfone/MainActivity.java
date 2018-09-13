@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
+import com.posfone.promote.posfone.Utils.CustomAlertDialog;
 import com.posfone.promote.posfone.Utils.GeneralUtil;
 import com.posfone.promote.posfone.Utils.SharedPreferenceHandler;
 import com.posfone.promote.posfone.adapters.NavigationViewItemAdapter;
@@ -134,10 +135,6 @@ public class MainActivity extends AppCompatActivity
         NavigationViewItemAdapter.NavigationViewItemModel navigationViewItemModel_payment = new NavigationViewItemAdapter.NavigationViewItemModel();
         navigationViewItemModel_payment.item_name = "Payments";
         navigationViewItemModel_payment.res_icon = R.drawable.side_menu_payment;
-        //Messages
-        NavigationViewItemAdapter.NavigationViewItemModel navigationViewItemModel_messages = new NavigationViewItemAdapter.NavigationViewItemModel();
-        navigationViewItemModel_messages.item_name = "Messages";
-        navigationViewItemModel_messages.res_icon = R.drawable.side_menu_message;
         //Calls
         NavigationViewItemAdapter.NavigationViewItemModel navigationViewItemModel_calls = new NavigationViewItemAdapter.NavigationViewItemModel();
         navigationViewItemModel_calls.item_name = "Calls";
@@ -153,7 +150,6 @@ public class MainActivity extends AppCompatActivity
 
         navigationViewItemModelList.add(navigationViewItemModel_profile);
         navigationViewItemModelList.add(navigationViewItemModel_payment);
-        navigationViewItemModelList.add(navigationViewItemModel_messages);
         navigationViewItemModelList.add(navigationViewItemModel_calls);
         navigationViewItemModelList.add(navigationViewItemModel_contacts);
         navigationViewItemModelList.add(navigationViewItemModel_settings);
@@ -167,12 +163,23 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                //Clear All SP Data
-                preferenceHandler.clearSP();
-                //Redirect user to PreSignInActivity
-                Intent intent = new Intent(MainActivity.this,PreSignInActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                CustomAlertDialog.showDialog(MainActivity.this, "Are you sure?", new CustomAlertDialog.I_CustomAlertDialog() {
+                    @Override
+                    public void onPositiveClick() {
+                        //Clear All SP Data
+                        preferenceHandler.clearSP();
+                        //Redirect user to PreSignInActivity
+                        Intent intent = new Intent(MainActivity.this,PreSignInActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onNegativeClick() {
+
+                    }
+                });
+
             }
         });
     }
@@ -198,19 +205,15 @@ public class MainActivity extends AppCompatActivity
             }
             break;
             case 2:{
-                //Messages Click
-            }
-            break;
-            case 3:{
                 //Calls Click
             }
             break;
-            case 4:{
+            case 3:{
                 //Contacts Click
                 getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
             break;
-            case 5:{
+            case 4:{
                 //Settings Click
                 SettingFragment settingFragment = new SettingFragment();
                 openFragment(settingFragment,true,"SettingFragment");

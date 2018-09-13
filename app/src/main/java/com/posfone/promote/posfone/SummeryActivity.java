@@ -24,6 +24,7 @@ import com.google.android.gms.wallet.PaymentsClient;
 import com.google.android.gms.wallet.Wallet;
 import com.google.android.gms.wallet.WalletConstants;
 import com.google.gson.JsonObject;
+import com.posfone.promote.posfone.Utils.CustomAlertDialog;
 import com.posfone.promote.posfone.Utils.GeneralUtil;
 import com.posfone.promote.posfone.Utils.SharedPreferenceHandler;
 import com.posfone.promote.posfone.googlepay.GooglePay;
@@ -102,7 +103,10 @@ public class SummeryActivity extends AppCompatActivity implements View.OnClickLi
             TextView txt_item_value =  view.findViewById(R.id.txt_item_value);
 
             txt_item_name.setText(key_order);
-            txt_item_value.setText(packageModel.get(key_order).isEmpty()?"-":packageModel.get(key_order));
+            String value = packageModel.get(key_order);
+            if(value.isEmpty() || value.equalsIgnoreCase("null"))
+                value = "-";
+            txt_item_value.setText(value);
 
             linearLayout.addView(view);
         }
@@ -119,7 +123,20 @@ public class SummeryActivity extends AppCompatActivity implements View.OnClickLi
             }
             break;
             case R.id.btn_pay:{
-                purchaseTrialPakage();
+                //Show Confirmation Dialog Box before confirming order
+
+                CustomAlertDialog.showDialog(SummeryActivity.this, "Are you sure?", new CustomAlertDialog.I_CustomAlertDialog() {
+                    @Override
+                    public void onPositiveClick() {
+                        purchaseTrialPakage();
+                    }
+
+                    @Override
+                    public void onNegativeClick() {
+
+                    }
+                });
+
             }
             break;
 

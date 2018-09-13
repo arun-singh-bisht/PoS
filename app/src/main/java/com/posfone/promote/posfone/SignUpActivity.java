@@ -192,12 +192,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                         @Override
                         public void run() {
 
-                            finish();
                             //GeneralUtil.showToast(SignUpActivity.this,"SignUp Successfull.");
+                            finish();
                             Intent intent = new Intent(SignUpActivity.this,SignInActivity.class);
                             intent.putExtra("username",((EditText)findViewById(R.id.input_username)).getText().toString());
                             intent.putExtra("password",((EditText)findViewById(R.id.input_password)).getText().toString());
-                            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
 
                         }

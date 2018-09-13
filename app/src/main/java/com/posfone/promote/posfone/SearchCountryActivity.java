@@ -256,7 +256,7 @@ public class SearchCountryActivity extends AppCompatActivity implements View.OnC
                 Intent intent = new Intent();
                 intent.putExtra("result",selectedCountryName);
                 intent.putExtra("selectedCountryFlag",countryModel.getFlag());
-                intent.putExtra("selectedCountryPhoneCode",countryModel.getPhonecode());
+                intent.putExtra("selectedCountryPhoneCode",countryModel.getLocalId());
                 setResult(RESULT_OK,intent);
                 finish();
 

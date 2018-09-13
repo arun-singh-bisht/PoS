@@ -133,13 +133,13 @@ public class ContactFragment extends BaseFragment implements LoaderManager.Loade
 
                 TextView contact_title = view.findViewById(R.id.contact_title);
                 TextView contact_name = view.findViewById(R.id.contact_name);
-                TextView contact_number = view.findViewById(R.id.contact_number);
+
 
 
                 Contact contact = alContacts.get(position);
                 contact_title.setText((contact.getContactName().charAt(0)+"").toUpperCase());
                 contact_name.setText(contact.getContactName());
-                contact_number.setText(contact.getContactNumber());
+
 
                 return view;
             }

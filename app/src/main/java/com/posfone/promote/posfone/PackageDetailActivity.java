@@ -33,7 +33,7 @@ public class PackageDetailActivity extends AppCompatActivity implements View.OnC
         txt_title.setText("Package Detail");
 
         ((TextView)findViewById(R.id.txt_packageType)).setText(packageModel.get("Package Name"));
-        ((TextView)findViewById(R.id.txt_packageRate)).setText("\u20ac"+packageModel.get("Subscription Charge")+" / ");
+        ((TextView)findViewById(R.id.txt_packageRate)).setText("\u00a3"+packageModel.get("Subscription Charge")+" / ");
         ((TextView)findViewById(R.id.txt_packageDuration)).setText("Per Month");
         ((TextView)findViewById(R.id.txt_package_getway)).setText(packageModel.get("gatewayName"));
 

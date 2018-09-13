@@ -20,7 +20,7 @@ public class CustomAlertDialog {
         void onNegativeClick();
     }
 
-    public void showDialog(Activity activity, String msg,I_CustomAlertDialog i_customAlertDialog){
+    public static void showDialog(Activity activity, String msg,final I_CustomAlertDialog i_customAlertDialog){
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
@@ -41,6 +41,7 @@ public class CustomAlertDialog {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                i_customAlertDialog.onPositiveClick();
             }
         });
         dialog.show();

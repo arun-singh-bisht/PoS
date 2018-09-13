@@ -43,9 +43,8 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
         findViewById(R.id.img_right).setVisibility(View.GONE);
         findViewById(R.id.img_left).setVisibility(View.GONE);
         findViewById(R.id.btn_save).setOnClickListener(this);
-        findViewById(R.id.txt_select_country_incoming_call).setOnClickListener(this);
-        findViewById(R.id.txt_select_country_outgoing_call).setOnClickListener(this);
-
+        //findViewById(R.id.txt_select_country_incoming_call).setOnClickListener(this);
+        //findViewById(R.id.txt_select_country_outgoing_call).setOnClickListener(this);
 
     }
 
@@ -99,7 +98,7 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(ManageNumberActivity.this,MainActivity.class);
+        Intent intent = new Intent(ManageNumberActivity.this,PreSignInActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
@@ -161,12 +160,14 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
 
                         if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
 
+                            final String stripeurl = jsonObject.getString("stripeurl");
 
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Intent intent = new Intent(ManageNumberActivity.this,MainActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    Intent intent = new Intent(ManageNumberActivity.this,WebViewActivity.class);
+                                    intent.putExtra("stripeurl",stripeurl);
+                                    //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(intent);
                                 }
                             });

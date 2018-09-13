@@ -39,6 +39,7 @@
         android:textColor="@color/color_phone_number"
         android:gravity="center"
         android:layout_marginLeft="15dp"
+        android:visibility="gone"
         />
 
 </LinearLayout>

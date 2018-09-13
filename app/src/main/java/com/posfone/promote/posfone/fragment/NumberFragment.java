@@ -351,7 +351,7 @@ public class NumberFragment extends BaseFragment implements AdapterView.OnItemCl
                                             twilioNumber.voice = object.getBoolean("voice");
                                             twilioNumber.SMS = object.getBoolean("SMS");
                                             twilioNumber.MMS = object.getBoolean("MMS");
-                                            twilioNumber.type ="default";
+                                            twilioNumber.type ="Regular";
                                             twilioNumberList.add(twilioNumber);
                                         }
                                     }

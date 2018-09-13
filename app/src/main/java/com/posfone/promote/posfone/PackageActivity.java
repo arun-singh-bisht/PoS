@@ -78,7 +78,7 @@ public class PackageActivity extends AppCompatActivity implements View.OnClickLi
 
             package_name.setText(packageModel.get("Package Name"));
             gateway_name.setText(packageModel.get("gatewayName"));
-            price.setText("\u20ac"+packageModel.get("Subscription Charge")+" / ");
+            price.setText("\u00a3"+packageModel.get("Subscription Charge")+" / ");
             duration.setText("Per Month");
             linearLayout.addView(view);
             view.setOnClickListener(new View.OnClickListener() {

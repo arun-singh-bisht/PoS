@@ -66,7 +66,7 @@
     <com.posfone.promote.posfone.Utils.TitilliumWebTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Account Subscription Charge: $00.00"
+        android:text="Account Subscription Charge: 00.00"
         android:textSize="14sp"
         android:gravity="center_vertical"
         android:layout_marginTop="30dp"
@@ -75,7 +75,7 @@
     <com.posfone.promote.posfone.Utils.TitilliumWebTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Processing Charge: $00.00"
+        android:text="Processing Charge: 00.00"
         android:textSize="14sp"
         android:gravity="center_vertical"
         android:layout_marginTop="13dp"

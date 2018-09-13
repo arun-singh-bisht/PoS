@@ -42,7 +42,7 @@ public class ChoosePlanActivity extends AppCompatActivity implements View.OnClic
     private void initViews()
     {
         TextView txt_title = findViewById(R.id.txt_title);
-        txt_title.setText("Choose Package");
+        txt_title.setText("Choose Number Category");
 
         findViewById(R.id.img_right).setVisibility(View.GONE);
         findViewById(R.id.img_left).setVisibility(View.GONE);
@@ -179,7 +179,8 @@ public class ChoosePlanActivity extends AppCompatActivity implements View.OnClic
            //Set Values in View
            ((TextView)pakage_item.findViewById(R.id.package_name)).setText(nubmerCategoryModelList.get(i).category_name );
 
-           ((TextView)pakage_item.findViewById(R.id.package_price)).setText("\u00a3"+" "+nubmerCategoryModelList.get(i).amount);
+           //((TextView)pakage_item.findViewById(R.id.package_price)).setText("\u00a3"+" "+nubmerCategoryModelList.get(i).amount);
+           ((TextView)pakage_item.findViewById(R.id.package_price)).setVisibility(View.GONE);
 
            //Add button click Listener
            pakage_item.findViewById(R.id.get_number).setOnClickListener(new View.OnClickListener() {
