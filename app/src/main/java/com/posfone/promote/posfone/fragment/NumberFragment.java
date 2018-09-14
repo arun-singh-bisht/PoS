@@ -1,5 +1,6 @@
 package com.posfone.promote.posfone.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -12,10 +13,15 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.posfone.promote.posfone.ChooseNumberActivity;
 import com.posfone.promote.posfone.R;
 import com.posfone.promote.posfone.adapters.GenericListAdapter;
 import com.posfone.promote.posfone.model.CountryModel;
 import com.posfone.promote.posfone.model.TwilioNumber;
+
+import org.json.JSONException;
+
 import java.util.List;
 
 /**
@@ -28,6 +34,13 @@ public class NumberFragment extends BaseFragment{
     private View view;
     private List<TwilioNumber> twilioNumberList;
     private GenericListAdapter genericListAdapter = null;
+
+    private ChooseNumberActivity activity;
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.activity = (ChooseNumberActivity)activity;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,7 +84,7 @@ public class NumberFragment extends BaseFragment{
     private void initViews()
     {
         EditText ed_search =  view.findViewById(R.id.ed_search);
-        ed_search.setHint("Search type");
+        ed_search.setHint("Search number");
 
         ed_search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -128,11 +141,12 @@ public class NumberFragment extends BaseFragment{
                         String selectedTwilioNumber = twilioNumber.phone_number;
                         String selectedTwilioNumberType = twilioNumber.type;
 
-                        /*try {
-                            selectTwilioNumber(selectedTwilioNumberType,selectedTwilioNumber);
+                        try {
+                            activity.selectTwilioNumber(selectedTwilioNumber,selectedTwilioNumberType);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                        }*/
+                        }
+
 
                     }
                 });

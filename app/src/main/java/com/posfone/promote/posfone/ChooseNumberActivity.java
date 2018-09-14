@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -34,11 +35,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.Call;
 
 
 public class ChooseNumberActivity extends AppCompatActivity  {
 
+    private final int ACTION_FOR_COUNTRY = 1001;
     private ViewPager viewPager;
     private NumberFragment numberFragment_type_regular;
     private NumberFragment numberFragment_type_premium;
@@ -47,10 +52,16 @@ public class ChooseNumberActivity extends AppCompatActivity  {
     List<TwilioNumber> twilioNumbers_regular = new ArrayList<>();
     List<TwilioNumber> twilioNumbers_premium = new ArrayList<>();
     List<TwilioNumber> twilioNumbers_elite = new ArrayList<>();
+
+    @BindView(R.id.txt_select_country)
+    TextView currenCountry;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_number);
+
+        ButterKnife.bind(this);
 
         initViews();
     }
@@ -84,6 +95,14 @@ public class ChooseNumberActivity extends AppCompatActivity  {
         Intent intent = new Intent(ChooseNumberActivity.this,PreSignInActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    @OnClick(R.id.txt_select_country)
+    public void onSelectCountryClick()
+    {
+        Intent intent = new Intent(ChooseNumberActivity.this,SearchCountryActivity.class);
+        intent.putExtra(SearchCountryActivity.TAG_TYPE,SearchCountryActivity.TAG_COUNTRY);
+        startActivityForResult(intent,ACTION_FOR_COUNTRY);
     }
 
 
@@ -141,20 +160,51 @@ public class ChooseNumberActivity extends AppCompatActivity  {
     }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(resultCode == RESULT_OK)
+        {
+            switch (requestCode)
+            {
+                case ACTION_FOR_COUNTRY:
+                {
+
+                    CountryModel countryModel = new CountryModel();
+                    countryModel.name = data.getStringExtra("result");
+                    countryModel.iso = data.getStringExtra("selectedCountryIso");
+                    countryModel.phonecode = data.getStringExtra("selectedCountryPhoneCode");
+
+                    currenCountry.setText(countryModel.name);
+                    getTwilioNumber(countryModel);
+                }
+                break;
+            }
+        }
+    }
+
+
     private void getTwilioNumber(final CountryModel selectedCountry)
     {
 
         //Show loading dialog
         GeneralUtil.showProgressDialog(this,"Please wait");
+        SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(this);
+        String userID = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
 
         //Header
         HashMap<String,String> header = new HashMap<>();
         header.put("x-api-key", ApiClient.X_API_KEY);
+        if(selectedCountry==null)
+        header.put("userid", userID);
         //RequestBody
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("country", "GB");
-        jsonObject.addProperty("area_code","44");
-        String body = "json="+jsonObject.toString();
+        String body = "";
+        if(selectedCountry!=null) {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("country", selectedCountry.getIso());
+            jsonObject.addProperty("area_code", selectedCountry.getPhonecode());
+            body = "json=" + jsonObject.toString();
+        }
 
         Call call = RESTClient.call_POST(RESTClient.TWILIO_NUMBER, header, body, new okhttp3.Callback() {
             @Override
@@ -266,7 +316,7 @@ public class ChooseNumberActivity extends AppCompatActivity  {
     }
 
 
-    private void selectTwilioNumber(String numberType,String number) throws JSONException {
+    public void selectTwilioNumber(String numberType,String number) throws JSONException {
 
         //Show loading dialog
         GeneralUtil.showProgressDialog(this,null);

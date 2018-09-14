@@ -66,7 +66,7 @@ public class SummeryActivity extends AppCompatActivity implements View.OnClickLi
                                 .build());
 
         //possiblyShowGooglePayButton();
-        isReadyToPay();
+        //isReadyToPay();
     }
 
     private void initViews()
@@ -157,6 +157,7 @@ public class SummeryActivity extends AppCompatActivity implements View.OnClickLi
         HashMap<String,String> header = new HashMap<>();
         header.put("x-api-key", ApiClient.X_API_KEY);
         header.put("userid", userID);
+        Log.i("userid",userID);
         //RequestBody
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("package_id",packageModel.get("packageId"));
