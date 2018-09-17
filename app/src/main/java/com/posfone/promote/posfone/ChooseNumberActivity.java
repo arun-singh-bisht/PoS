@@ -231,6 +231,7 @@ public class ChooseNumberActivity extends AppCompatActivity  {
                         if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
 
 
+                            final String country_name = jsonObject.getString("country_name");
                             JSONObject phone_number = jsonObject.getJSONObject("phone_number");
 
                             //Add Default Number
@@ -292,6 +293,7 @@ public class ChooseNumberActivity extends AppCompatActivity  {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                        currenCountry.setText(country_name);
                                         numberFragment_type_regular.setData(twilioNumbers_regular);
                                         numberFragment_type_premium.setData(twilioNumbers_premium);
                                         numberFragment_type_elite.setData(twilioNumbers_elite);

@@ -13,20 +13,20 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="140dp"
         android:layout_below="@+id/app_bar"
         >
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="70dp"
             android:background="@color/colorPrimary"
             >
         </RelativeLayout>
 
         <ImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:src="@drawable/round_profile_pic"
             android:layout_centerInParent="true"
             />
@@ -49,16 +49,61 @@
         android:text="Southampton,UK"
         android:textSize="14sp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="2dp"
         />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_bg_border_white_solid_white"
+        android:padding="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
+        >
 
+      <TextView
+          android:id="@+id/txt_plan_type"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Free Trial"
+          android:textStyle="bold"
+          android:textColor="@color/color_phone_number"
+          />
+
+        <TextView
+            android:layout_below="@+id/txt_plan_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Expire - 20/12/2018"
+            android:textSize="11sp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/color_phone_number"
+            />
+
+        <TextView
+            android:id="@+id/btn_upgrade_plan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upgrade"
+            android:textColor="#ffffff"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/round_bg_textview"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textSize="12sp"
+            />
+
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/color_profile_divider"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         ></View>
 
     <LinearLayout

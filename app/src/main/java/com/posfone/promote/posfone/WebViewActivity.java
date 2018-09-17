@@ -8,6 +8,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.posfone.promote.posfone.interfaces.WebViewInterface;
+
 public class WebViewActivity extends AppCompatActivity implements View.OnClickListener {
 
 
@@ -32,10 +34,12 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
     {
 
         String stripeurl = getIntent().getStringExtra("stripeurl");
-        myWebView = (WebView) findViewById(R.id.webview);
+        stripeurl = "https://dashboard.stripe.com/oauth/authorize?response_type=code&client_id=ca_Cc0qF3AKZqT8F2rcaXaGkfrtcy5tUxUl&scope=read_write&redirect_uri=https://accounts.protechgenie.in/stripereturn&state=eyJ1c2VyX2lkIjoyMzUsImdhdGV3YXlfaWQiOjEsInJ1cmkiOiJodHRwczpcL1wvYWNjb3VudHMucHJvdGVjaGdlbmllLmluYXBwXC9zdHJpcGVyZXNwb25zZSJ9";
+        myWebView = findViewById(R.id.webview);
         WebSettings webSettings = myWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         myWebView.setWebViewClient(new MyWebViewClient());
+        myWebView.addJavascriptInterface(new WebViewInterface(this), "Android");
         myWebView.loadUrl(stripeurl);
     }
 

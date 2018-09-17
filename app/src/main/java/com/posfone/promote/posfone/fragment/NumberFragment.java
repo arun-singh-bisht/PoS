@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 import com.posfone.promote.posfone.ChooseNumberActivity;
 import com.posfone.promote.posfone.R;
 import com.posfone.promote.posfone.adapters.GenericListAdapter;
-import com.posfone.promote.posfone.model.CountryModel;
 import com.posfone.promote.posfone.model.TwilioNumber;
 
 import org.json.JSONException;
@@ -67,7 +65,7 @@ public class NumberFragment extends BaseFragment{
     public void onResume() {
         super.onResume();
         Log.i("NumberFragment",fragmentName+" Fragment onResume");
-        loadTwilioNumberList(null);
+        loadTwilioNumberList(twilioNumberList);
     }
 
     @Override
@@ -95,6 +93,8 @@ public class NumberFragment extends BaseFragment{
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+                List<TwilioNumber> filterdList = TwilioNumber.getFilterdList(twilioNumberList, s+"");
+                loadTwilioNumberList(filterdList);
             }
 
             @Override
@@ -108,18 +108,18 @@ public class NumberFragment extends BaseFragment{
     public void setData(List<TwilioNumber> twilioNumberList)
     {
         this.twilioNumberList = twilioNumberList;
-        loadTwilioNumberList(null);
+        loadTwilioNumberList(twilioNumberList);
     }
 
-    private void loadTwilioNumberList(String searchedNumber)
+    private void loadTwilioNumberList(final List<TwilioNumber> list)
     {
         if(view==null)
             return;
 
-        if(twilioNumberList==null || twilioNumberList.size()==0)
+        if(list==null || list.size()==0)
             return;
 
-        genericListAdapter = new GenericListAdapter(getActivity(),twilioNumberList.size(),R.layout.number_fragment_type_row){
+        genericListAdapter = new GenericListAdapter(getActivity(),list.size(),R.layout.number_fragment_type_row){
 
             @Override
             public View initGenericView(View view, int position) {
@@ -128,7 +128,7 @@ public class NumberFragment extends BaseFragment{
                 TextView txt_country_code =  view.findViewById(R.id.txt_country_code);
                 //TextView txt_number_type =  view.findViewById(R.id.txt_number_type);
 
-                final TwilioNumber twilioNumber = twilioNumberList.get(position);
+                final TwilioNumber twilioNumber = list.get(position);
                 txt_number.setText(twilioNumber.phone_number);
                 //txt_number_type.setText(twilioNumber.type.toUpperCase());
 

@@ -94,4 +94,7 @@ public class GeneralUtil {
         TelephonyManager mngr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
         return mngr.getDeviceId();
     }
+
+
+
 }
