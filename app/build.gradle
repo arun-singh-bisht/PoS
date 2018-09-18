@@ -47,4 +47,7 @@ dependencies {
 
     api 'com.google.guava:guava:26.0-android'
 
+    //Image Picker
+    compile 'com.github.Mariovc:ImagePicker:1.2.2'
+
 }

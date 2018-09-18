@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    >
+
+
+    <include android:id="@+id/app_bar" layout="@layout/app_bar_custom"></include>
+
+    <ScrollView android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/app_bar"
+        >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#ffffff"
+        >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="40dp"
+        >
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_fname"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/margin_between_buttons_sign_in"
+            android:layout_height="wrap_content">
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebEditText
+                android:id="@+id/input_fname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textSize="@dimen/input_text_size_signup"
+                android:text=""
+                android:hint="@string/first_name" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_lname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_between_buttons_sign_in"
+            >
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebEditText
+                android:id="@+id/input_lname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textSize="@dimen/input_text_size_signup"
+                android:text=""
+                android:hint="@string/last_name" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_company_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_between_buttons_sign_in"
+            >
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebEditText
+                android:id="@+id/input_company_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textSize="@dimen/input_text_size_signup"
+                android:text=""
+                android:hint="@string/company_name" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_company_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_between_buttons_sign_in"
+            android:focusable="false"
+            >
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebEditText
+                android:id="@+id/input_company_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textSize="@dimen/input_text_size_signup"
+            android:text=""
+                android:hint="@string/company_address" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_country"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:layout_marginTop="@dimen/margin_between_buttons_sign_in"
+
+            >
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebEditText
+                android:id="@+id/input_country"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textSize="@dimen/input_text_size_signup"
+                android:hint="@string/company_country"
+                android:text="Please select"
+                android:clickable="false"
+                android:focusable="false"
+                android:drawableRight="@drawable/dropdown"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:layout_marginTop="@dimen/margin_between_buttons_sign_in"
+            >
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebEditText
+                android:id="@+id/input_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textSize="@dimen/input_text_size_signup"
+                android:hint="@string/state"
+                android:text="Please select"
+                android:clickable="false"
+                android:focusable="false"
+                android:drawableRight="@drawable/dropdown"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_between_buttons_sign_in"
+            android:visibility="gone"
+            >
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebEditText
+                android:id="@+id/input_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textSize="@dimen/input_text_size_signup"
+                android:text=""
+                android:hint="Email Address*" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_between_buttons_sign_in"
+            android:visibility="gone"
+            >
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebEditText
+                android:id="@+id/input_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textSize="@dimen/input_text_size_signup"
+                android:text=""
+                android:hint="UserName*" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_between_buttons_sign_in"
+            android:visibility="gone"
+            >
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebEditText
+                android:id="@+id/input_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:inputType="textPassword"
+                android:textSize="@dimen/input_text_size_signup"
+                android:text=""
+                android:hint="Password*" />
+        </android.support.design.widget.TextInputLayout>
+
+
+
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:id="@+id/btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:gravity="center"
+            android:textSize="@dimen/get_a_pay_text_size"
+            android:background="@drawable/round_bg_textview"
+            android:textColor="#ffffff"
+            android:padding="@dimen/sign_in_button_padding"
+            android:layout_marginTop="30dp"
+            />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    </ScrollView>
+</RelativeLayout>

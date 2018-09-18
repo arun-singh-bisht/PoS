@@ -29,6 +29,8 @@ public class RESTClient {
     public static final String TWILIO_NUMBER_PURCHASE = "app/payment_reponse";
     public static final String MANAGE_NUMBER = "app/manage_number";
     public static final String PROFILE = "app/profile";
+    public static final String EDIT_PROFILE = "app/edit_profile";
+
 
     private static OkHttpClient client = new OkHttpClient();
 

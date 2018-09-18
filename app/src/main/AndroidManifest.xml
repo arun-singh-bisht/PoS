@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.posfone.promote.posfone">
-
-
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
@@ -53,6 +52,13 @@
         android:screenOrientation="portrait"
         >
     </activity>
+
+        <activity android:name=".EidtProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"
+            >
+        </activity>
 
         <activity android:name=".PreSignInActivity"
         android:theme="@style/AppTheme.NoActionBar"
@@ -163,6 +169,18 @@
            </intent-filter>
        </receiver>
 
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.posfone.promote.posfone.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"
+                tools:replace="android:resource"
+                />
+        </provider>
 
     </application>
 
