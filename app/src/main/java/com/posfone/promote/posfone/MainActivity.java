@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -28,6 +29,7 @@ import com.posfone.promote.posfone.fragment.PaymentFragment;
 import com.posfone.promote.posfone.fragment.SettingFragment;
 import com.posfone.promote.posfone.rest.ApiClient;
 import com.posfone.promote.posfone.rest.RESTClient;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
@@ -231,6 +233,12 @@ public class MainActivity extends AppCompatActivity
         ((TextView)findViewById(R.id.txt_header_username)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_FIRST_NAME)+" "+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_LAST_NAME));
         ((TextView)findViewById(R.id.txt_header_user_location)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_STATE)+","+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY));
         ((TextView)findViewById(R.id.txt_header_user_contact_number)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER)+"");
+
+        ImageView imageView =  findViewById(R.id.imageView);
+        //Load New Image in Profile Pic
+        String profile_pic_url = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHOTO);
+        if(profile_pic_url!=null && !profile_pic_url.isEmpty())
+            Picasso.with(MainActivity.this).load(profile_pic_url).into(imageView);
     }
 
     private void openFragment(Fragment fragment,boolean isAddToBackStack,String TAG)

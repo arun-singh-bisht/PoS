@@ -74,7 +74,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         //Load New Image in Profile Pic
         String profile_pic_url = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHOTO);
-        if(profile_pic_url!=null)
+        if(profile_pic_url!=null && !profile_pic_url.isEmpty())
         Picasso.with(ProfileActivity.this).load(profile_pic_url).into(profile_image);
     }
 

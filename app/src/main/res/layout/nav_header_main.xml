@@ -20,7 +20,7 @@
         android:layout_width="@dimen/profile_pic_size"
         android:layout_height="@dimen/profile_pic_size"
         android:contentDescription="@string/nav_header_desc"
-        android:src="@drawable/round_profile_pic"
+        android:src="@drawable/blank_profile_image"
         app:civ_border_width="2dp"
         app:civ_border_color="#ffffff"/>
 
