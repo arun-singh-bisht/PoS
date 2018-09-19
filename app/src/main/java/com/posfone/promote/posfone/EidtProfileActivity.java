@@ -225,7 +225,18 @@ public class EidtProfileActivity extends AppCompatActivity implements View.OnCli
                         @Override
                         public void run() {
 
-                            //GeneralUtil.showToast(SignUpActivity.this,"SignUp Successfull.");
+                            //Save Profile Details
+                            final SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(EidtProfileActivity.this);
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY,input_country.getText().toString());
+                            String state = input_state.getText().toString();
+                            if(state.equalsIgnoreCase("Please select"))
+                                state = "";
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_STATE,state);
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_FIRST_NAME,input_fname.getText().toString());
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_LAST_NAME,input_lname.getText().toString());
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_COMPANY_NAME,input_company_name.getText().toString());
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_COMPANY_ADDRESS,input_company_address.getText().toString());
+
                             setResult(RESULT_OK);
                             finish();
                         }

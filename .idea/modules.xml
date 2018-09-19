@@ -3,15 +3,16 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/PoS.iml" filepath="$PROJECT_DIR$/PoS.iml" />
-      <module fileurl="file://D:\arun_workspace\TrainingWorkspace\PoSGit\PoS\PoS.iml" filepath="D:\arun_workspace\TrainingWorkspace\PoSGit\PoS\PoS.iml" />
-      <module fileurl="file://D:\arun_workspace\TrainingWorkspace\PoS\PoS.iml" filepath="D:\arun_workspace\TrainingWorkspace\PoS\PoS.iml" />
-      <module fileurl="file://D:\arun_workspace\TrainingWorkspace\PosGit\PoS\PoSFone.iml" filepath="D:\arun_workspace\TrainingWorkspace\PosGit\PoS\PoSFone.iml" />
-      <module fileurl="file://D:\arun_workspace\TrainingWorkspace\PoSGit\PoS\PoSFone.iml" filepath="D:\arun_workspace\TrainingWorkspace\PoSGit\PoS\PoSFone.iml" />
-      <module fileurl="file://D:\arun_workspace\TrainingWorkspace\PoS\PoSFone.iml" filepath="D:\arun_workspace\TrainingWorkspace\PoS\PoSFone.iml" />
+      <module fileurl="file://D:/arun_workspace/TrainingWorkspace/PoSGit/PoS/PoS.iml" filepath="D:/arun_workspace/TrainingWorkspace/PoSGit/PoS/PoS.iml" />
+      <module fileurl="file://D:/arun_workspace/TrainingWorkspace/PoS/PoS.iml" filepath="D:/arun_workspace/TrainingWorkspace/PoS/PoS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PoSFone.iml" filepath="$PROJECT_DIR$/PoSFone.iml" />
+      <module fileurl="file://D:/arun_workspace/TrainingWorkspace/PoS/PoSFone.iml" filepath="D:/arun_workspace/TrainingWorkspace/PoS/PoSFone.iml" />
+      <module fileurl="file://D:/arun_workspace/TrainingWorkspace/PosGit/PoS/PoSFone.iml" filepath="D:/arun_workspace/TrainingWorkspace/PosGit/PoS/PoSFone.iml" />
+      <module fileurl="file://D:/arun_workspace/TrainingWorkspace/PoSGit/PoS/PoSFone.iml" filepath="D:/arun_workspace/TrainingWorkspace/PoSGit/PoS/PoSFone.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://D:\arun_workspace\TrainingWorkspace\PoS\app\app.iml" filepath="D:\arun_workspace\TrainingWorkspace\PoS\app\app.iml" />
-      <module fileurl="file://D:\arun_workspace\TrainingWorkspace\PosGit\PoS\app\app.iml" filepath="D:\arun_workspace\TrainingWorkspace\PosGit\PoS\app\app.iml" />
-      <module fileurl="file://D:\arun_workspace\TrainingWorkspace\PoSGit\PoS\app\app.iml" filepath="D:\arun_workspace\TrainingWorkspace\PoSGit\PoS\app\app.iml" />
+      <module fileurl="file://D:/arun_workspace/TrainingWorkspace/PosGit/PoS/app/app.iml" filepath="D:/arun_workspace/TrainingWorkspace/PosGit/PoS/app/app.iml" />
+      <module fileurl="file://D:/arun_workspace/TrainingWorkspace/PoS/app/app.iml" filepath="D:/arun_workspace/TrainingWorkspace/PoS/app/app.iml" />
+      <module fileurl="file://D:/arun_workspace/TrainingWorkspace/PoSGit/PoS/app/app.iml" filepath="D:/arun_workspace/TrainingWorkspace/PoSGit/PoS/app/app.iml" />
     </modules>
   </component>
 </project>

@@ -1,6 +1,5 @@
 package com.posfone.promote.posfone;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +17,6 @@ import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import dmax.dialog.SpotsDialog;
 import okhttp3.Call;
 
 public class SignInActivity extends AppCompatActivity implements View.OnClickListener {
@@ -40,6 +38,9 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         findViewById(R.id.txt_title).setVisibility(View.GONE);
         findViewById(R.id.img_right).setVisibility(View.GONE);
         findViewById(R.id.img_left).setOnClickListener(this);
+        findViewById(R.id.txt_forgot_password).setOnClickListener(this);
+
+
 
         if(username!=null) {
             ((EditText) findViewById(R.id.input_name)).setText(username);
@@ -57,6 +58,11 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 finish();
             }
             break;
+            case R.id.txt_forgot_password:{
+                //Start email enter activity
+                startActivityForResult(new Intent(SignInActivity.this,ForgotPasswordActivity.class),1002);
+            }
+            break;
         }
     }
 
@@ -65,6 +71,14 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     {
         startActivity(new Intent(SignInActivity.this,SignUpActivity.class));
         finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 1002 && resultCode == RESULT_OK)
+        {
+            findViewById(R.id.txt_account_activation_messg).setVisibility(View.VISIBLE);
+        }
     }
 
     @OnClick(R.id.btn_login)

@@ -53,6 +53,31 @@
         >
     </activity>
 
+        <activity android:name=".ForgotPasswordActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"
+            ></activity>
+
+        <activity android:name=".CreatePasswordActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"
+            >
+            <intent-filter >
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
+                <data android:scheme="https"
+                    android:host="accounts.protechgenie.in"
+                    android:pathPrefix="/reset_password" />
+                <!-- note that the leading "/" is required for pathPrefix-->
+            </intent-filter>
+
+        </activity>
+
+
         <activity android:name=".EidtProfileActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden"
@@ -72,16 +97,6 @@
             android:screenOrientation="portrait"
             android:launchMode="singleInstance"
             >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data
-                    android:host="accounts.protechgenie.in"
-                    android:scheme="https"/>
-            </intent-filter>
         </activity>
 
         <activity android:name=".SignUpActivity"
@@ -171,15 +186,14 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.posfone.promote.posfone.fileprovider"
+            android:authorities="com.mvc.imagepicker.provider"
             android:exported="false"
             android:grantUriPermissions="true"
             tools:replace="android:authorities">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"
-                tools:replace="android:resource"
-                />
+                android:resource="@xml/provider_paths"
+                tools:replace="android:resource"/>
         </provider>
 
     </application>

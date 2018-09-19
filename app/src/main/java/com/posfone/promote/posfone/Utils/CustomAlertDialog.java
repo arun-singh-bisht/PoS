@@ -46,4 +46,24 @@ public class CustomAlertDialog {
         });
         dialog.show();
     }
+
+    public static void showDialogSingleButton(Activity activity,String msg,final I_CustomAlertDialog i_customAlertDialog){
+        final Dialog dialog = new Dialog(activity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.custom_dialo_single_button);
+
+        TextView text = (TextView) dialog.findViewById(R.id.txt_title);
+        text.setText(msg);
+
+        TextView txt_ok = (TextView) dialog.findViewById(R.id.txt_ok);
+        txt_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                i_customAlertDialog.onPositiveClick();
+            }
+        });
+        dialog.show();
+    }
 }

@@ -47,7 +47,9 @@ dependencies {
 
     api 'com.google.guava:guava:26.0-android'
 
+    //Circular Image View
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
     //Image Picker
-    compile 'com.github.Mariovc:ImagePicker:1.2.2'
+    implementation 'com.github.Mariovc:ImagePicker:1.2.2'
 
 }

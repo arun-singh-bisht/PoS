@@ -12,13 +12,17 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <ImageView
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/imageView"
         android:layout_width="@dimen/profile_pic_size"
         android:layout_height="@dimen/profile_pic_size"
         android:contentDescription="@string/nav_header_desc"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@drawable/round_profile_pic" />
+        android:src="@drawable/round_profile_pic"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#ffffff"/>
 
     <LinearLayout
         android:layout_width="match_parent"

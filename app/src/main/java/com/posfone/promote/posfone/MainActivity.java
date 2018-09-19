@@ -116,11 +116,6 @@ public class MainActivity extends AppCompatActivity
     {
         final SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(MainActivity.this);
 
-        //Init Profile Details
-        ((TextView)findViewById(R.id.txt_header_username)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_FIRST_NAME)+" "+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_LAST_NAME));
-        ((TextView)findViewById(R.id.txt_header_user_location)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_STATE)+","+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY));
-        ((TextView)findViewById(R.id.txt_header_user_contact_number)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER)+"");
-
         //Init NAvigation Item List
         ListView listView =  findViewById(R.id.list_menu_items);
         listView.setOnItemClickListener(this);
@@ -185,6 +180,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        setProfileDetails();
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -221,6 +222,15 @@ public class MainActivity extends AppCompatActivity
             break;
 
         }
+    }
+
+    private void setProfileDetails()
+    {
+        //Init Profile Details
+        SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(MainActivity.this);
+        ((TextView)findViewById(R.id.txt_header_username)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_FIRST_NAME)+" "+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_LAST_NAME));
+        ((TextView)findViewById(R.id.txt_header_user_location)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_STATE)+","+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY));
+        ((TextView)findViewById(R.id.txt_header_user_contact_number)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER)+"");
     }
 
     private void openFragment(Fragment fragment,boolean isAddToBackStack,String TAG)
@@ -302,6 +312,7 @@ public class MainActivity extends AppCompatActivity
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    setProfileDetails();
                                     initNavigationViewMenuList();
                                 }
                             });

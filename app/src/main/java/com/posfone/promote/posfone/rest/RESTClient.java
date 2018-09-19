@@ -1,5 +1,6 @@
 package com.posfone.promote.posfone.rest;
 
+import android.content.Context;
 import android.util.Log;
 
 import java.io.IOException;
@@ -30,6 +31,11 @@ public class RESTClient {
     public static final String MANAGE_NUMBER = "app/manage_number";
     public static final String PROFILE = "app/profile";
     public static final String EDIT_PROFILE = "app/edit_profile";
+    public static final String FORGOT_PASSWORD = "app/forget_password";
+    public static final String RESET_PASSWORD = "app/reset_password";
+    public static final String UPDATE_PHOTO = "app/update_photo";
+
+
 
 
     private static OkHttpClient client = new OkHttpClient();
@@ -75,7 +81,20 @@ public class RESTClient {
     }
 
 
+    public static Call uploadPhoto( HashMap<String,String> header,RequestBody formBody, Callback callback) {
+        Request.Builder builder = new Request.Builder();
+        builder.url(HOST_IP+UPDATE_PHOTO);
 
+        for (String key : header.keySet()) {
+            builder.addHeader(key,header.get(key));
+        }
+        builder.post(formBody);
+        Request request = builder.build();
+        Call call = client.newCall(request);
+        call.enqueue(callback);
+        printRequest(request);
+        return call;
+    }
 
 
 

@@ -22,6 +22,8 @@ public class SharedPreferenceHandler {
     public static String SP_KEY_PROFILE_LAST_NAME = "last_name";
     public static String SP_KEY_PROFILE_PHOTO = "profile_photo";
     public static String SP_KEY_SESSION_TOKEN = "session_token";
+    public static String SP_KEY_COMPANY_NAME = "company_name";
+    public static String SP_KEY_COMPANY_ADDRESS = "company_address";
     public static String SP_KEY_PROFILE_PHONE_NUMBER = "phone_number";
     public static String SP_KEY_PROFILE_PAY_729_NUMBER = "pay729_number";
 

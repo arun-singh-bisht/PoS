@@ -54,8 +54,8 @@ public class PreSignInActivity extends AppCompatActivity implements View.OnClick
             }
             break;
             case R.id.btn_free_trial:{
-                //startActivity(new Intent(PreSignInActivity.this,SignUpActivity.class));
-                startActivity(new Intent(PreSignInActivity.this,WebViewActivity.class));
+                startActivity(new Intent(PreSignInActivity.this,SignUpActivity.class));
+                //startActivity(new Intent(PreSignInActivity.this,WebViewActivity.class));
             }
             break;
         }
