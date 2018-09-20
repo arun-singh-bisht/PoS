@@ -2,17 +2,23 @@ package com.posfone.promote.posfone;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mvc.imagepicker.ImagePicker;
+import com.posfone.promote.posfone.Utils.CustomAlertDialog;
 import com.posfone.promote.posfone.Utils.GeneralUtil;
 import com.posfone.promote.posfone.Utils.SharedPreferenceHandler;
 import com.posfone.promote.posfone.rest.ApiClient;
 import com.posfone.promote.posfone.rest.RESTClient;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
@@ -38,6 +44,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @BindView(R.id.profile_image)
     ImageView profile_image;
 
+    @BindView(R.id.indeterminateBar)
+    ProgressBar indeterminateBar;
+
+
+    Handler handler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,10 +66,40 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         findViewById(R.id.img_left).setOnClickListener(this);
         findViewById(R.id.img_right).setOnClickListener(this);
 
+        handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+
+                //Set Empty Image in Image View
+                profile_image.setImageResource(R.drawable.blank_profile_image);
+                //Show progress bar
+                indeterminateBar.setVisibility(View.VISIBLE);
+
+                String image_path = msg.getData().getString("image_path");
+                Log.i("handleMessage",image_path);
+                if(image_path!=null && !image_path.isEmpty())
+                    Picasso.with(ProfileActivity.this)
+                            .load(image_path)
+                            .memoryPolicy(MemoryPolicy.NO_CACHE)
+                            .into(profile_image, new com.squareup.picasso.Callback() {
+                                @Override
+                                public void onSuccess() {
+                                    indeterminateBar.setVisibility(View.GONE);
+                                }
+
+                                @Override
+                                public void onError() {
+                                    indeterminateBar.setVisibility(View.GONE);
+                                    Toast.makeText(ProfileActivity.this,"Error in Image updation.",Toast.LENGTH_SHORT).show();
+                                }
+                            });
+            }
+        };
+
         loadProfileDetails();
 
         //ImagePicker.setMinQuality(200, 200);
-
+        Picasso.with(this).setLoggingEnabled(true);
     }
 
     private void loadProfileDetails()
@@ -75,7 +117,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         //Load New Image in Profile Pic
         String profile_pic_url = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHOTO);
         if(profile_pic_url!=null && !profile_pic_url.isEmpty())
-        Picasso.with(ProfileActivity.this).load(profile_pic_url).into(profile_image);
+        Picasso.with(ProfileActivity.this)
+                .load(profile_pic_url)
+                .placeholder(R.drawable.blank_profile_image)
+                .into(profile_image);
+
     }
 
 
@@ -103,6 +149,27 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         ImagePicker.pickImage(this, "Select your image:");
     }
 
+    @OnClick(R.id.btn_upgrade_plan)
+    public void onUpgrade()
+    {
+        CustomAlertDialog.showDialog(this, "Do you wish to retain your number?", R.layout.custom_dialog_upgrade, new CustomAlertDialog.I_CustomAlertDialog() {
+            @Override
+            public void onPositiveClick() {
+                Intent intent = new Intent(ProfileActivity.this, PackageActivity.class);
+                intent.putExtra("redirect_from","profile_screen");
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void onNegativeClick() {
+                Intent intent = new Intent(ProfileActivity.this,ChooseNumberActivity.class);
+                intent.putExtra("redirect_from","profile_screen");
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -163,19 +230,20 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             final String profile_photo = jsonObject.getString("profile_photo");
             if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
 
-                        //Save Profile Details
+                //Save Profile Details
+                Log.i("runOnUiThread",profile_photo);
 
-                        final SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(ProfileActivity.this);
-                        preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHOTO,profile_photo);
+                final SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(ProfileActivity.this);
+                preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHOTO,profile_photo);
 
-                        //Load New Image in Profile Pic
-                        Picasso.with(ProfileActivity.this).load(profile_photo).into(profile_image);
-                    }
-                });
+                Message message1 = new Message();
+                Bundle bundle = new Bundle();
+                bundle.putString("image_path",profile_photo);
+                message1.setData(bundle);
+                handler.sendMessage(message1);
+
+
             }else
             {
                 GeneralUtil.showToast(ProfileActivity.this,message);

@@ -20,11 +20,10 @@ public class CustomAlertDialog {
         void onNegativeClick();
     }
 
-    public static void showDialog(Activity activity, String msg,final I_CustomAlertDialog i_customAlertDialog){
+    public static void showDialog(Activity activity, String msg,int res_id,final I_CustomAlertDialog i_customAlertDialog){
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
-        dialog.setContentView(R.layout.custom_dialo);
+        dialog.setContentView(res_id);
 
        TextView text = (TextView) dialog.findViewById(R.id.txt_title);
         text.setText(msg);
@@ -34,6 +33,7 @@ public class CustomAlertDialog {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                i_customAlertDialog.onNegativeClick();
             }
         });
         TextView txt_positive = (TextView) dialog.findViewById(R.id.txt_positive);

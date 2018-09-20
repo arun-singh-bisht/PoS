@@ -125,7 +125,7 @@ public class SummeryActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.btn_pay:{
                 //Show Confirmation Dialog Box before confirming order
 
-                CustomAlertDialog.showDialog(SummeryActivity.this, "Are you sure?", new CustomAlertDialog.I_CustomAlertDialog() {
+                CustomAlertDialog.showDialog(SummeryActivity.this, "Are you sure?",R.layout.custom_dialo, new CustomAlertDialog.I_CustomAlertDialog() {
                     @Override
                     public void onPositiveClick() {
                         purchaseTrialPakage();

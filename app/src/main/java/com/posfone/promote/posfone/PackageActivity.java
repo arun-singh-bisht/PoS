@@ -110,7 +110,7 @@ public class PackageActivity extends AppCompatActivity implements View.OnClickLi
         header.put("userid", userID);
         //RequestBody
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("isTrial","true");
+        jsonObject.addProperty("isTrial","false");
         String body = "json="+jsonObject.toString();
 
         Call call = RESTClient.call_POST(RESTClient.PACKAGES, header, body, new okhttp3.Callback() {

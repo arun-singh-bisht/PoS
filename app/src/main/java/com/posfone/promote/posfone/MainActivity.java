@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                CustomAlertDialog.showDialog(MainActivity.this, "Are you sure?", new CustomAlertDialog.I_CustomAlertDialog() {
+                CustomAlertDialog.showDialog(MainActivity.this, "Are you sure?",R.layout.custom_dialo, new CustomAlertDialog.I_CustomAlertDialog() {
                     @Override
                     public void onPositiveClick() {
                         //Clear All SP Data

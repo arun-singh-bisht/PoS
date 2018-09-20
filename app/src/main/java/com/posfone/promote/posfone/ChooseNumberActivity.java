@@ -44,6 +44,7 @@ import okhttp3.Call;
 public class ChooseNumberActivity extends AppCompatActivity  {
 
     private final int ACTION_FOR_COUNTRY = 1001;
+    private String redirect_from;
     private ViewPager viewPager;
     private NumberFragment numberFragment_type_regular;
     private NumberFragment numberFragment_type_premium;
@@ -68,14 +69,17 @@ public class ChooseNumberActivity extends AppCompatActivity  {
 
     private void initViews()
     {
-        //packageModel = (PackageModel)getIntent().getParcelableExtra("SelectedPackage");
+        redirect_from =  getIntent().getStringExtra("redirect_from");
 
         TextView txt_title = findViewById(R.id.txt_title);
         txt_title.setText("Choose Number");
 
         //((ImageView)findViewById(R.id.img_right)).setImageResource(R.mipmap.ic_language);
         findViewById(R.id.img_right).setVisibility(View.GONE);
-        findViewById(R.id.img_left).setVisibility(View.GONE);
+        if(redirect_from!=null && redirect_from.equalsIgnoreCase("profile_screen"))
+            findViewById(R.id.img_left).setVisibility(View.VISIBLE);
+        else
+            findViewById(R.id.img_left).setVisibility(View.GONE);
 
 
         viewPager = findViewById(R.id.viewpager);
@@ -89,12 +93,24 @@ public class ChooseNumberActivity extends AppCompatActivity  {
 
     }
 
+    @OnClick(R.id.img_left)
+    public void onBackArrowClick()
+    {
+        finish();
+    }
+
+
     @Override
     public void onBackPressed() {
 
-        Intent intent = new Intent(ChooseNumberActivity.this,PreSignInActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        if(redirect_from!=null && redirect_from.equalsIgnoreCase("profile_screen"))
+        {
+            finish();
+        }else {
+            Intent intent = new Intent(ChooseNumberActivity.this, PreSignInActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
     }
 
     @OnClick(R.id.txt_select_country)
@@ -370,7 +386,6 @@ public class ChooseNumberActivity extends AppCompatActivity  {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    //loadTwilioNumberList(null);
                                     Intent intent = new Intent(ChooseNumberActivity.this, PackageActivity.class);
                                     startActivity(intent);
                                 }
