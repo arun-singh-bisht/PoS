@@ -1,6 +1,8 @@
 package com.posfone.promote.posfone;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,10 +17,12 @@ import android.widget.Toast;
 import com.mvc.imagepicker.ImagePicker;
 import com.posfone.promote.posfone.Utils.CustomAlertDialog;
 import com.posfone.promote.posfone.Utils.GeneralUtil;
+import com.posfone.promote.posfone.Utils.ImageUtil;
 import com.posfone.promote.posfone.Utils.SharedPreferenceHandler;
 import com.posfone.promote.posfone.rest.ApiClient;
 import com.posfone.promote.posfone.rest.RESTClient;
 import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
@@ -81,6 +85,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     Picasso.with(ProfileActivity.this)
                             .load(image_path)
                             .memoryPolicy(MemoryPolicy.NO_CACHE)
+                            .networkPolicy(NetworkPolicy.NO_CACHE)
                             .into(profile_image, new com.squareup.picasso.Callback() {
                                 @Override
                                 public void onSuccess() {
@@ -184,6 +189,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             String file_path = ImagePicker.getImagePathFromResult(ProfileActivity.this,requestCode,resultCode,data);
             Log.i("ProfileActivity",file_path);
             File file = new File(file_path);
+
+            /*Uri uri = Uri.fromFile(file);
+
+            Bitmap bm =ImageUtil.rotateImageIfNeeded(ProfileActivity.this,uri);
+
+            if(bm!=null)
+                profile_image.setImageBitmap(bm);*/
+
             uploadProfileImage(file);
         }
     }

@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.google.gson.JsonObject;
-import com.posfone.promote.posfone.Utils.PicasoImageUtil;
+import com.posfone.promote.posfone.Utils.ImageUtil;
 import com.posfone.promote.posfone.adapters.GenericListAdapter;
 import com.posfone.promote.posfone.database.DAO;
 import com.posfone.promote.posfone.model.CountryModel;
@@ -31,9 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import dmax.dialog.SpotsDialog;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class SearchCountryActivity extends AppCompatActivity implements View.OnClickListener {
@@ -185,7 +182,7 @@ public class SearchCountryActivity extends AppCompatActivity implements View.OnC
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            PicasoImageUtil.saveImage(SearchCountryActivity.this,countryModel.getFlag(),null);
+                                            ImageUtil.saveImage(SearchCountryActivity.this,countryModel.getFlag(),null);
                                         }
                                     });
 
@@ -239,7 +236,7 @@ public class SearchCountryActivity extends AppCompatActivity implements View.OnC
                 txt_country_code.setText(countryModel.getPhonecode());
 
                 Picasso.with(SearchCountryActivity.this).load(countryModel.getFlag()).into(img_flag);
-                //PicasoImageUtil.loadImageInImageView(SearchCountryActivity.this,countryModel.getFlag(),img_flag);
+                //ImageUtil.loadImageInImageView(SearchCountryActivity.this,countryModel.getFlag(),img_flag);
 
                 return view;
             }
@@ -365,7 +362,7 @@ public class SearchCountryActivity extends AppCompatActivity implements View.OnC
 
                 StateModel stateModel = stateModels.get(position);
                 txt_country_name.setText(stateModel.getName());
-                PicasoImageUtil.loadImageInImageView(SearchCountryActivity.this,selectedCountryFlag,img_flag);
+                ImageUtil.loadImageInImageView(SearchCountryActivity.this,selectedCountryFlag,img_flag);
 
                 return view;
             }
