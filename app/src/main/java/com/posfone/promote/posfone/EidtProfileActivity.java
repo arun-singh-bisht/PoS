@@ -46,6 +46,10 @@ public class EidtProfileActivity extends AppCompatActivity implements View.OnCli
     EditText input_country;
     @BindView(R.id.input_state)
     EditText input_state;
+    @BindView(R.id.input_city)
+    EditText input_city;
+    @BindView(R.id.input_postcode)
+    EditText input_postcode;
 
 
     @Override
@@ -69,12 +73,15 @@ public class EidtProfileActivity extends AppCompatActivity implements View.OnCli
 
 
         SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(EidtProfileActivity.this);
-        input_fname.setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_FIRST_NAME));
-        input_lname.setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_LAST_NAME));
-        input_company_name.setText("");
-        input_company_address.setText("");
-        input_country.setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY));
-        input_state.setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_STATE));
+        GeneralUtil.setValueInEditText(input_fname,preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_FIRST_NAME));
+        GeneralUtil.setValueInEditText(input_lname,preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_LAST_NAME));
+        GeneralUtil.setValueInEditText(input_company_name,preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_COMPANY_NAME));
+        GeneralUtil.setValueInEditText(input_company_address,preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_COMPANY_ADDRESS));
+        GeneralUtil.setValueInEditText(input_country,preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY));
+        GeneralUtil.setValueInEditText(input_state,preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_STATE));
+        GeneralUtil.setValueInEditText(input_city,preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_CITY));
+        GeneralUtil.setValueInEditText(input_postcode,preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_POSTCODE));
+
 
         selectedCountry = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY);
     }
@@ -168,6 +175,8 @@ public class EidtProfileActivity extends AppCompatActivity implements View.OnCli
         jsonObject.addProperty("company_name",input_company_name.getText().toString());
         jsonObject.addProperty("address",input_company_address.getText().toString());
         jsonObject.addProperty("country",input_country.getText().toString());
+        jsonObject.addProperty("city",input_city.getText().toString());
+        jsonObject.addProperty("postcode",input_postcode.getText().toString());
         String state = input_state.getText().toString();
         if(state.equalsIgnoreCase("Please select"))
             state = "";
@@ -236,6 +245,8 @@ public class EidtProfileActivity extends AppCompatActivity implements View.OnCli
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_LAST_NAME,input_lname.getText().toString());
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_COMPANY_NAME,input_company_name.getText().toString());
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_COMPANY_ADDRESS,input_company_address.getText().toString());
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_CITY,input_city.getText().toString());
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_POSTCODE,input_postcode.getText().toString());
 
                             setResult(RESULT_OK);
                             finish();

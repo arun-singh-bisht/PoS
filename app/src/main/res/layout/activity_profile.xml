@@ -130,7 +130,6 @@
             android:src="@drawable/profile_phone"
             android:layout_marginTop="5dp"
             />
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -141,14 +140,14 @@
             <com.posfone.promote.posfone.Utils.TitilliumWebTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Phone"
+                android:text="Pay729 Number"
                 android:textSize="@dimen/phone_text_size"
                 android:layout_gravity="center_horizontal"
                 android:textColor="#000000"
                 />
 
             <com.posfone.promote.posfone.Utils.TitilliumWebTextView
-                android:id="@+id/txt_user_phone"
+                android:id="@+id/txt_pay_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="+44-2356-21"
@@ -159,6 +158,7 @@
 
 
         </LinearLayout>
+
 
     </LinearLayout>
 
@@ -192,14 +192,14 @@
             <com.posfone.promote.posfone.Utils.TitilliumWebTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Pay729 Number"
+                android:text="Phone"
                 android:textSize="@dimen/phone_text_size"
                 android:layout_gravity="center_horizontal"
                 android:textColor="#000000"
                 />
 
             <com.posfone.promote.posfone.Utils.TitilliumWebTextView
-                android:id="@+id/txt_pay_number"
+                android:id="@+id/txt_user_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="+44-2356-21"

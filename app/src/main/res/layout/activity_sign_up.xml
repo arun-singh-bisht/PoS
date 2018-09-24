@@ -100,6 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_between_buttons_sign_in"
             android:focusable="false"
+            android:visibility="gone"
             >
 
             <com.posfone.promote.posfone.Utils.TitilliumWebEditText

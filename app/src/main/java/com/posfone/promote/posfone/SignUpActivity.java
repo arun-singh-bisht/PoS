@@ -123,7 +123,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         jsonObject.addProperty("first_name", ((EditText)findViewById(R.id.input_fname)).getText().toString());
         jsonObject.addProperty("last_name",((EditText)findViewById(R.id.input_lname)).getText().toString());
         jsonObject.addProperty("company_name",((EditText)findViewById(R.id.input_company_name)).getText().toString());
-        jsonObject.addProperty("address",((EditText)findViewById(R.id.input_company_address)).getText().toString());
+        //jsonObject.addProperty("address",((EditText)findViewById(R.id.input_company_address)).getText().toString());
         jsonObject.addProperty("country",((EditText)findViewById(R.id.input_country)).getText().toString());
         String state = ((EditText)findViewById(R.id.input_state)).getText().toString();
         if(state.equalsIgnoreCase("Please select"))

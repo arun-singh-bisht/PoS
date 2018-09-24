@@ -27,6 +27,8 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
     private int ACTION_FOR_COUNTRY_OUTGOING_CALL = 1001;
     private int ACTION_FOR_COUNTRY_INCOMING_CALL = 1002;
 
+    private String countryCode_callReciveNumber;
+    private String countryCode_callMakingNumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +45,8 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
         findViewById(R.id.img_right).setVisibility(View.GONE);
         findViewById(R.id.img_left).setVisibility(View.GONE);
         findViewById(R.id.btn_save).setOnClickListener(this);
-        //findViewById(R.id.txt_select_country_incoming_call).setOnClickListener(this);
-        //findViewById(R.id.txt_select_country_outgoing_call).setOnClickListener(this);
+        findViewById(R.id.txt_select_country_incoming_call).setOnClickListener(this);
+        findViewById(R.id.txt_select_country_outgoing_call).setOnClickListener(this);
 
     }
 
@@ -55,14 +57,14 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
         {
             case R.id.btn_save:{
 
-                String countryCodeForIncomingCall =  ((TextView)findViewById(R.id.txt_select_country_incoming_call)).getText().toString();
-                String countryCodeForOutgoingCall = ((TextView)findViewById(R.id.txt_select_country_outgoing_call)).getText().toString();
                 String txt_incoming_number =  ((EditText)findViewById(R.id.txt_incoming_number)).getText().toString();
                 String txt_outgoing_number = ((EditText)findViewById(R.id.txt_outgoing_number)).getText().toString();
 
                 String messg = null;
-                if(countryCodeForIncomingCall.equalsIgnoreCase("Select Country") || countryCodeForOutgoingCall.equalsIgnoreCase("Select Country") )
-                    messg = "Select country code.";
+                if(countryCode_callReciveNumber==null)
+                    messg = "Select country of your registered number on which you will receive incoming call.";
+                else if(countryCode_callMakingNumber==null)
+                    messg = "Select country of your registered number from which you will make outgoing call.";
                 else if(!GeneralUtil.validatePhoneNumberEditText(this,R.id.txt_incoming_number))
                     messg = "Enter valid incoming number.";
                 else if(!GeneralUtil.validatePhoneNumberEditText(this,R.id.txt_outgoing_number))
@@ -75,7 +77,7 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
                     return;
                 }
 
-                purchaseTrialPakage(countryCodeForIncomingCall,txt_incoming_number,countryCodeForOutgoingCall,txt_outgoing_number);
+                purchaseTrialPakage(countryCode_callReciveNumber,txt_incoming_number,countryCode_callMakingNumber,txt_outgoing_number);
 
 
             }
@@ -109,14 +111,18 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
         if(resultCode == RESULT_OK)
         {
             String country_name = data.getStringExtra("result");
-            String selectedCountryPhoneCode = data.getStringExtra("selectedCountryPhoneCode");
+            String selectedCountryCode = data.getStringExtra("selectedCountryCode");
             if(requestCode == ACTION_FOR_COUNTRY_INCOMING_CALL)
             {
-                ((TextView)findViewById(R.id.txt_select_country_incoming_call)).setText(country_name+"("+selectedCountryPhoneCode+")");
+                countryCode_callReciveNumber = selectedCountryCode;
+                ((TextView)findViewById(R.id.txt_select_country_incoming_call)).setText(country_name+"");
+
             }else if(requestCode == ACTION_FOR_COUNTRY_OUTGOING_CALL)
             {
-                ((TextView)findViewById(R.id.txt_select_country_outgoing_call)).setText(country_name+"("+selectedCountryPhoneCode+")");
+                countryCode_callMakingNumber = selectedCountryCode;
+                ((TextView)findViewById(R.id.txt_select_country_outgoing_call)).setText(country_name+"");
             }
+            Log.i("onActivityResult",selectedCountryCode);
         }
     }
 
@@ -134,9 +140,9 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
         header.put("userid", userID);
         //RequestBody
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("in1c",inCominNumberCountryCode);
+        jsonObject.addProperty("in1c","+"+inCominNumberCountryCode);
         jsonObject.addProperty("in1",inCominNumber);
-        jsonObject.addProperty("out1c",ountGoingNumberCountryCode);
+        jsonObject.addProperty("out1c","+"+ountGoingNumberCountryCode);
         jsonObject.addProperty("out1",outGoingNumber);
         String body = "json="+jsonObject.toString();
 

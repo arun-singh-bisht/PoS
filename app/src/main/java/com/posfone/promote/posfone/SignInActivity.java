@@ -1,12 +1,14 @@
 package com.posfone.promote.posfone;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import com.google.gson.JsonObject;
+import com.posfone.promote.posfone.Utils.CustomAlertDialog;
 import com.posfone.promote.posfone.Utils.GeneralUtil;
 import com.posfone.promote.posfone.Utils.SharedPreferenceHandler;
 import com.posfone.promote.posfone.rest.ApiClient;
@@ -46,6 +48,16 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             ((EditText) findViewById(R.id.input_name)).setText(username);
             ((EditText) findViewById(R.id.input_password)).setText(password);
             findViewById(R.id.txt_account_activation_messg).setVisibility(View.VISIBLE);
+        }
+
+
+        Intent intent = getIntent();
+        Uri data = intent.getData();
+        if(data!=null) {
+            String code = data.toString();
+            String activationCode = code.substring(code.lastIndexOf('/') + 1);
+            Log.i("SignInActivity", " " + data.toString());
+            accountActivation(activationCode);
         }
 
     }
@@ -262,6 +274,76 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                     } finally {
                         //-----
                     }
+
+            }
+        });
+
+    }
+
+
+    private void accountActivation(String activationCode) {
+
+        //Show loading dialog
+        GeneralUtil.showProgressDialog(this,null);
+
+        SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(this);
+        String userID = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
+
+        //Header
+        HashMap<String,String> header = new HashMap<>();
+        header.put("x-api-key", ApiClient.X_API_KEY);
+        //RequestBody
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("code",activationCode);
+        String body = "json="+jsonObject.toString();
+
+        Call call = RESTClient.call_POST(RESTClient.ACCOUNT_ACTIVATION, header, body, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                GeneralUtil.dismissProgressDialog();
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) {
+
+                GeneralUtil.dismissProgressDialog();
+
+                try {
+
+                    String res = response.body().string();
+                    Log.i("onResponse",res);
+                    final JSONObject jsonObject = new JSONObject(res);
+                    final String message = jsonObject.getString("message");
+
+                    if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
+
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                CustomAlertDialog.showDialogSingleButton(SignInActivity.this, message, new CustomAlertDialog.I_CustomAlertDialog() {
+                                    @Override
+                                    public void onPositiveClick() {
+                                    }
+
+                                    @Override
+                                    public void onNegativeClick() {
+
+                                    }
+                                });
+                            }
+                        });
+
+                    }else
+                    {
+                        GeneralUtil.showToast(SignInActivity.this,message);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    //-----
+                }
 
             }
         });

@@ -23,6 +23,8 @@
 
     <color name="color_orange">#ffa515</color>
 
+    <color name="color_selected_iteam">#4885ed</color>
+
 
 
 </resources>

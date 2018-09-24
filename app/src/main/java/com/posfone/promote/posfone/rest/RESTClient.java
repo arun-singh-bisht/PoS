@@ -21,6 +21,7 @@ public class RESTClient {
     public static final String COUNTRY = "app/country";
     public static final String STATE = "app/state";
     public static final String SIGN_UP = "app/signup";
+    public static final String ACCOUNT_ACTIVATION = "app/activate";
     public static final String LOGIN = "app/login";
     public static final String DEVICE_REGISTRATION = "app/device_registration";
     public static final String PLANS = "app/numberCat";
@@ -29,11 +30,14 @@ public class RESTClient {
     public static final String TWILIO_NUMBER_SELECT = "app/twillio_save";
     public static final String TWILIO_NUMBER_PURCHASE = "app/payment_reponse";
     public static final String MANAGE_NUMBER = "app/manage_number";
+    public static final String MANAGE_NUMBERS = "app/manage_numbers";
     public static final String PROFILE = "app/profile";
     public static final String EDIT_PROFILE = "app/edit_profile";
     public static final String FORGOT_PASSWORD = "app/forget_password";
     public static final String RESET_PASSWORD = "app/reset_password";
     public static final String UPDATE_PHOTO = "app/update_photo";
+    public static final String MANAGE_GATEWAY = "app/manage_gateway";
+
 
 
 

@@ -230,15 +230,36 @@ public class MainActivity extends AppCompatActivity
     {
         //Init Profile Details
         SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(MainActivity.this);
+
+        String address = "";
+        String city =  preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_CITY);
+        String state =  preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_STATE);
+        String country =  preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY);
+        String postcode =  preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_POSTCODE);
+
+
+
+        if(city!=null && city.length()>0 && !city.equalsIgnoreCase("null"))
+            address = city+",";
+        if(state!=null && state.length()>0 && !state.equalsIgnoreCase("null"))
+            address = address+""+state+",";
+        if(country!=null && country.length()>0 && !country.equalsIgnoreCase("null"))
+            address = address+""+country;
+        if(postcode!=null && postcode.length()>0 && !postcode.equalsIgnoreCase("null"))
+            address = address+","+postcode;
+
         ((TextView)findViewById(R.id.txt_header_username)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_FIRST_NAME)+" "+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_LAST_NAME));
-        ((TextView)findViewById(R.id.txt_header_user_location)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_STATE)+","+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY));
+        ((TextView)findViewById(R.id.txt_header_user_location)).setText(address);
         ((TextView)findViewById(R.id.txt_header_user_contact_number)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER)+"");
 
         ImageView imageView =  findViewById(R.id.imageView);
         //Load New Image in Profile Pic
         String profile_pic_url = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHOTO);
-        if(profile_pic_url!=null && !profile_pic_url.isEmpty())
-            Picasso.with(MainActivity.this).load(profile_pic_url).into(imageView);
+
+            Picasso.with(MainActivity.this)
+                    .load(profile_pic_url)
+                    .placeholder(R.drawable.blank_profile_image)
+                    .into(imageView);
     }
 
     private void openFragment(Fragment fragment,boolean isAddToBackStack,String TAG)
@@ -310,6 +331,8 @@ public class MainActivity extends AppCompatActivity
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_USER_EMAIL,user.getString("user_email"));
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY,user.getString("country"));
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_STATE,user.getString("state"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_POSTCODE,user.getString("zipcode"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_CITY,user.getString("city"));
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_FIRST_NAME,user.getString("first_name"));
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_LAST_NAME,user.getString("last_name"));
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHOTO,user.getString("profile_photo"));

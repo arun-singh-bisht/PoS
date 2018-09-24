@@ -24,6 +24,12 @@ public class GeneralUtil {
 
     }
 
+    public static void setValueInEditText(EditText editText,String value)
+    {
+        if(value!=null && !value.isEmpty() && !value.equalsIgnoreCase("null"))
+            editText.setText(value);
+    }
+
     public static String getTextFromEditText(Activity activity, int resId)
     {
         return ((EditText)activity.findViewById(resId)).getText().toString();
@@ -64,6 +70,8 @@ public class GeneralUtil {
 
         return true;
     }
+
+
 
 
 

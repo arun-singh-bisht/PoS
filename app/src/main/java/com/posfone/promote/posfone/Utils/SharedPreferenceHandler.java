@@ -18,6 +18,8 @@ public class SharedPreferenceHandler {
     public static String SP_KEY_PROFILE_USER_EMAIL = "user_email";
     public static String SP_KEY_PROFILE_COUNTRY = "country";
     public static String SP_KEY_PROFILE_STATE = "state";
+    public static String SP_KEY_PROFILE_CITY = "city";
+    public static String SP_KEY_PROFILE_POSTCODE = "postcode";
     public static String SP_KEY_PROFILE_FIRST_NAME = "first_name";
     public static String SP_KEY_PROFILE_LAST_NAME = "last_name";
     public static String SP_KEY_PROFILE_PHOTO = "profile_photo";
@@ -31,6 +33,7 @@ public class SharedPreferenceHandler {
     public static String SP_KEY_IS_LOGIN = "is_user_logged_in";
 
     private SharedPreferences sharedPreferences;
+
 
     public SharedPreferenceHandler(Context context) {
 

@@ -111,8 +111,24 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     {
         SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(ProfileActivity.this);
 
+
+        String address = "";
+        String city =  preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_CITY);
+        String state =  preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_STATE);
+        String country =  preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY);
+        String postcode =  preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_POSTCODE);
+
+        if(city!=null && city.length()>0 && !city.equalsIgnoreCase("null"))
+            address = city+",";
+        if(state!=null && state.length()>0 && !state.equalsIgnoreCase("null"))
+            address = address+""+state+",";
+        if(country!=null && country.length()>0 && !country.equalsIgnoreCase("null"))
+            address = address+""+country;
+        if(postcode!=null && postcode.length()>0 && !postcode.equalsIgnoreCase("null"))
+            address = address+","+postcode;
+
         ((TextView)findViewById(R.id.txt_user_name)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_FIRST_NAME)+" "+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_LAST_NAME));
-        ((TextView)findViewById(R.id.txt_user_location)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_STATE)+","+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY));
+        ((TextView)findViewById(R.id.txt_user_location)).setText(address);
 
         ((TextView)findViewById(R.id.txt_user_phone)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHONE_NUMBER)+"");
         ((TextView)findViewById(R.id.txt_pay_number)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER)+"");
@@ -157,7 +173,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @OnClick(R.id.btn_upgrade_plan)
     public void onUpgrade()
     {
-        CustomAlertDialog.showDialog(this, "Do you wish to retain your number?", R.layout.custom_dialog_upgrade, new CustomAlertDialog.I_CustomAlertDialog() {
+        //Show Confirmation Dialog before making a call
+        CustomAlertDialog.showDialog(this, "Do you wish to retain your number?","Yes","No, I want to change my number", R.layout.custom_dialog_upgrade, new CustomAlertDialog.I_CustomAlertDialog() {
             @Override
             public void onPositiveClick() {
                 Intent intent = new Intent(ProfileActivity.this, PackageActivity.class);
@@ -174,6 +191,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 finish();
             }
         });
+
+
     }
 
     @Override
