@@ -101,72 +101,39 @@ public class ImageUtil {
         };
     }
 
-    @TargetApi(Build.VERSION_CODES.N)
-    public static Bitmap rotateImageIfNeeded(Context context, Uri imageUri)
-    {
-        int rotate = 0;
+    public static int getImageRotation(Context context, Uri imageUri) {
         try {
-            String photoPAth=getRealPathFromUri(imageUri,context);
+            ExifInterface exif = new ExifInterface(imageUri.getPath());
+            int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
 
-           InputStream stream= context.getContentResolver().openInputStream(imageUri);
-            File imageFile = new File(imageUri.getPath());
-            ExifInterface exif = new ExifInterface(photoPAth);
-            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-
-            switch (orientation) {
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    rotate = 270;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    rotate = 180;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    rotate = 90;
-                    break;
-            }
-
-            Log.i("rotateImageIfNeeded","Exif orientation:"+orientation);
-
-            Bitmap rotattedBitmap= BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-            Matrix matrix = new Matrix();
-            matrix.postRotate(rotate);
-            stream.close();
-            return Bitmap.createBitmap(rotattedBitmap, 0, 0, rotattedBitmap.getWidth(), rotattedBitmap.getHeight(), matrix, true);
-        } catch (Exception e) {
-            e.printStackTrace();
+            if (rotation == ExifInterface.ORIENTATION_UNDEFINED)
+                return getRotationFromMediaStore(context, imageUri);
+            else return exifToDegrees(rotation);
+        } catch (IOException e) {
+            return 0;
         }
-        return null;
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private static String getRealPathFromUri(Uri uri,Context context){
-        String filePath="";
-        String wholeid= DocumentsContract.getDocumentId(uri);
-        String id=wholeid.split(":")[1];
-        String [] coloumn={MediaStore.Images.Media.DATA};
-        String sel = MediaStore.Images.Media._ID + "=?";
-        Cursor cursor = context.getContentResolver() .query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, coloumn, sel, new String[]{ id }, null);
-        int columnIndex = cursor.getColumnIndex(coloumn[0]);
-        if (cursor.moveToFirst()) {
-            filePath = cursor.getString(columnIndex);
-        }
-        cursor.close();
-        return filePath;
-    }
-    private static int getOrientation(Context context, Uri photoUri) {
-        Cursor cursor = context.getContentResolver().query(photoUri,
-                new String[]{MediaStore.Images.ImageColumns.ORIENTATION}, null, null, null);
-
-        if (cursor.getCount() != 1) {
-            cursor.close();
-            return -1;
-        }
+    public static int getRotationFromMediaStore(Context context, Uri imageUri) {
+        String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media.ORIENTATION};
+        Cursor cursor = context.getContentResolver().query(imageUri, columns, null, null, null);
+        if (cursor == null) return 0;
 
         cursor.moveToFirst();
-        int orientation = cursor.getInt(0);
-        cursor.close();
-        cursor = null;
-        return orientation;
+
+        int orientationColumnIndex = cursor.getColumnIndex(columns[1]);
+        return cursor.getInt(orientationColumnIndex);
     }
 
+    private static int exifToDegrees(int exifOrientation) {
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270;
+        } else {
+            return 0;
+        }
+    }
 
 }

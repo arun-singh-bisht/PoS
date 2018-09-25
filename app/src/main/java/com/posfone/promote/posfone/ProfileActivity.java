@@ -66,6 +66,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     private void initViews()
     {
+
+
+
         //Back arrow
         findViewById(R.id.img_left).setOnClickListener(this);
         findViewById(R.id.img_right).setOnClickListener(this);
@@ -179,6 +182,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             public void onPositiveClick() {
                 Intent intent = new Intent(ProfileActivity.this, PackageActivity.class);
                 intent.putExtra("redirect_from","profile_screen");
+                intent.putExtra("isTrial","0");
+
                 startActivity(intent);
                 finish();
             }
@@ -187,6 +192,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             public void onNegativeClick() {
                 Intent intent = new Intent(ProfileActivity.this,ChooseNumberActivity.class);
                 intent.putExtra("redirect_from","profile_screen");
+                intent.putExtra("isTrial","0");
                 startActivity(intent);
                 finish();
             }
@@ -197,26 +203,32 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.i("ProfileActivity",requestCode +" "+resultCode);
-        if(requestCode==1001 && resultCode==RESULT_OK)
+
+        try {
+
+            Log.i("ProfileActivity", requestCode + " " + resultCode);
+            if (requestCode == 1001 && resultCode == RESULT_OK) {
+                //Update Profile Data from Server
+                loadProfileDetails();
+            } else if (requestCode == 234 && resultCode == RESULT_OK) {
+                //ImagePicker Pick Image Default request code
+                String file_path = ImagePicker.getImagePathFromResult(ProfileActivity.this, requestCode, resultCode, data);
+                Log.i("ProfileActivity", file_path);
+                File file = new File(file_path);
+
+                //Uri uri = Uri.fromFile(file);
+                //int orientation = ImageUtil.getImageRotation(ProfileActivity.this, uri);
+
+                //Log.i("ProfileActivity", "orientation "+orientation);
+
+                /*if (bm != null)
+                    profile_image.setImageBitmap(bm);*/
+
+                uploadProfileImage(file);
+            }
+        }catch (Exception ex)
         {
-            //Update Profile Data from Server
-            loadProfileDetails();
-        }else if(requestCode ==234 && resultCode == RESULT_OK)
-        {
-            //ImagePicker Pick Image Default request code
-            String file_path = ImagePicker.getImagePathFromResult(ProfileActivity.this,requestCode,resultCode,data);
-            Log.i("ProfileActivity",file_path);
-            File file = new File(file_path);
-
-            /*Uri uri = Uri.fromFile(file);
-
-            Bitmap bm =ImageUtil.rotateImageIfNeeded(ProfileActivity.this,uri);
-
-            if(bm!=null)
-                profile_image.setImageBitmap(bm);*/
-
-            uploadProfileImage(file);
+            ex.printStackTrace();
         }
     }
 

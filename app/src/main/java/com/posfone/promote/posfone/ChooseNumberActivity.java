@@ -45,6 +45,7 @@ public class ChooseNumberActivity extends AppCompatActivity  {
 
     private final int ACTION_FOR_COUNTRY = 1001;
     private String redirect_from;
+    private String isTrial ="1";
     private ViewPager viewPager;
     private NumberFragment numberFragment_type_regular;
     private NumberFragment numberFragment_type_premium;
@@ -76,8 +77,10 @@ public class ChooseNumberActivity extends AppCompatActivity  {
 
         //((ImageView)findViewById(R.id.img_right)).setImageResource(R.mipmap.ic_language);
         findViewById(R.id.img_right).setVisibility(View.GONE);
-        if(redirect_from!=null && redirect_from.equalsIgnoreCase("profile_screen"))
+        if(redirect_from!=null && redirect_from.equalsIgnoreCase("profile_screen")) {
             findViewById(R.id.img_left).setVisibility(View.VISIBLE);
+            isTrial = "0";
+        }
         else
             findViewById(R.id.img_left).setVisibility(View.GONE);
 
@@ -387,6 +390,8 @@ public class ChooseNumberActivity extends AppCompatActivity  {
                                 @Override
                                 public void run() {
                                     Intent intent = new Intent(ChooseNumberActivity.this, PackageActivity.class);
+                                    intent.putExtra("isTrial",isTrial);
+
                                     startActivity(intent);
                                 }
                             });

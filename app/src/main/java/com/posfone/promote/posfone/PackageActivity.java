@@ -28,6 +28,7 @@ import okhttp3.Call;
 
 public class PackageActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private String isTrial;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +39,8 @@ public class PackageActivity extends AppCompatActivity implements View.OnClickLi
 
     private void initViews()
     {
+        isTrial = getIntent().getStringExtra("isTrial");
+
         TextView txt_title = findViewById(R.id.txt_title);
         txt_title.setText("Packages");
 
@@ -110,7 +113,7 @@ public class PackageActivity extends AppCompatActivity implements View.OnClickLi
         header.put("userid", userID);
         //RequestBody
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("isTrial","false");
+        jsonObject.addProperty("isTrial",isTrial);
         String body = "json="+jsonObject.toString();
 
         Call call = RESTClient.call_POST(RESTClient.PACKAGES, header, body, new okhttp3.Callback() {
