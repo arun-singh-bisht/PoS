@@ -116,8 +116,10 @@ public class NumberFragment extends BaseFragment{
         if(view==null)
             return;
 
-        if(list==null || list.size()==0)
+        if(list==null ) {
+            Log.i("loadTwilioNumberList:",list+"");
             return;
+        }
 
         genericListAdapter = new GenericListAdapter(getActivity(),list.size(),R.layout.number_fragment_type_row){
 

@@ -66,6 +66,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             break;
             case R.id.input_state:{
 
+                String input_country =  GeneralUtil.getTextFromEditText(this,R.id.input_country);
+                if(input_country.equalsIgnoreCase("Please select")) {
+                    String message = "Please select your Country.";
+                    GeneralUtil.showToast(this,message);
+                    return;
+                }
+
                 Intent intent = new Intent(SignUpActivity.this,SearchCountryActivity.class);
                 intent.putExtra(SearchCountryActivity.TAG_TYPE,selectedCountry);
                 intent.putExtra("selectedCountryPhoneCode",selectedCountryPhoneCode);

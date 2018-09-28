@@ -225,6 +225,8 @@ public class ChooseNumberActivity extends AppCompatActivity  {
             body = "json=" + jsonObject.toString();
         }
 
+        Log.i("getTwilioNumber",userID+" "+body);
+
         Call call = RESTClient.call_POST(RESTClient.TWILIO_NUMBER, header, body, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {

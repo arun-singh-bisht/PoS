@@ -43,6 +43,7 @@ public class SearchCountryActivity extends AppCompatActivity implements View.OnC
     private String selectedCountryFlag;
     private String selectedCountryPhoneCode;
 
+    private List<StateModel> stateModelsList = new ArrayList<>();
     String type;
     private okhttp3.Call call;
     @Override
@@ -108,8 +109,15 @@ public class SearchCountryActivity extends AppCompatActivity implements View.OnC
 
             @Override
             public void afterTextChanged(Editable editable) {
+
                 String inputText = editable.toString();
-                loadContryList(inputText);
+                if(type.equalsIgnoreCase(TAG_COUNTRY)) {
+                    loadContryList(inputText);
+                }
+                else {
+                    List<StateModel> filterdList = StateModel.getFilterdList(stateModelsList, inputText);
+                    loadStateList(filterdList);
+                }
             }
         });
 
@@ -296,11 +304,9 @@ public class SearchCountryActivity extends AppCompatActivity implements View.OnC
                 if (response.isSuccessful()) {
                     try {
 
-                        final List<StateModel> stateModelsList = new ArrayList<>();
-
                         String res = response.body().string();
                         JSONObject jsonObject = new JSONObject(res);
-
+                        stateModelsList.clear();
                         if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
 
                             JSONArray jsonArray = jsonObject.getJSONArray("statelist");
