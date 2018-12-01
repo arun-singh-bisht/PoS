@@ -80,6 +80,7 @@ public class SoundPoolManager {
     }
 
     public void playDisconnect() {
+
         if (loaded && !playing) {
             soundPool.play(disconnectSoundId, volume, volume, 1, 0, 1f);
             playing = false;

@@ -14,6 +14,7 @@ import com.posfone.promote.posfone.Utils.SharedPreferenceHandler;
 import com.posfone.promote.posfone.rest.ApiClient;
 import com.posfone.promote.posfone.rest.RESTClient;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -26,27 +27,41 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
 
     private int ACTION_FOR_COUNTRY_OUTGOING_CALL = 1001;
     private int ACTION_FOR_COUNTRY_INCOMING_CALL = 1002;
-
+    private String redirect_from;
     private String countryCode_callReciveNumber;
     private String countryCode_callMakingNumber;
+    private String numberForReceivingCall_country;
+    private String numberFoMakingCall_country;
+    private String inbound_number;
+    private String outbound_number;
+    TextView inbound_country,outbound_country;
+    TextView inbound_country_number,outbound_country_number;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_number);
-
+        redirect_from=getIntent().getStringExtra("redirect_from");
         initViews();
+
+        getCallProfle();
     }
 
     private void initViews()
     {
+
         TextView txt_title = findViewById(R.id.txt_title);
         txt_title.setText("Manage Number");
-
+        inbound_country=findViewById(R.id.txt_select_country_incoming_call);
+        outbound_country=findViewById(R.id.txt_select_country_outgoing_call);
+        inbound_country_number=findViewById(R.id.txt_incoming_number);
+        outbound_country_number=findViewById(R.id.txt_outgoing_number);
         findViewById(R.id.img_right).setVisibility(View.GONE);
         findViewById(R.id.img_left).setVisibility(View.GONE);
         findViewById(R.id.btn_save).setOnClickListener(this);
-        findViewById(R.id.txt_select_country_incoming_call).setOnClickListener(this);
-        findViewById(R.id.txt_select_country_outgoing_call).setOnClickListener(this);
+        inbound_country.setOnClickListener(this);
+        outbound_country.setOnClickListener(this);
 
     }
 
@@ -167,16 +182,107 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
                         if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
 
                             final String stripeurl = jsonObject.getString("stripeurl");
+                            System.out.println("--------------------"+stripeurl);
 
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Intent intent = new Intent(ManageNumberActivity.this,WebViewActivity.class);
-                                    intent.putExtra("stripeurl",stripeurl);
-                                    //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    startActivity(intent);
+                                    if("profile_screen".equals(redirect_from)){
+                                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                    else {
+                                        Intent intent = new Intent(ManageNumberActivity.this, WebViewActivity.class);
+                                        intent.putExtra("stripeurl", stripeurl);
+                                        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent);
+                                    }
                                 }
                             });
+
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        //-----
+                    }
+                } else {
+                    //-----------
+                }
+
+            }
+        });
+
+    }
+
+
+
+
+    private void getCallProfle() {
+
+        //Show loading dialog
+        GeneralUtil.showProgressDialog(this,null);
+
+        SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(this);
+        String userID = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
+        String token = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_TOKEN);
+
+        //Header
+        HashMap<String,String> header = new HashMap<>();
+        header.put("x-api-key", ApiClient.X_API_KEY);
+        header.put("userid", userID);
+        header.put("token", token);
+        //RequestBody
+
+        Call call = RESTClient.call_GET(RESTClient.MANAGE_NUMBER, header,  new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                GeneralUtil.dismissProgressDialog();
+            }
+
+            @ Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) {
+
+                GeneralUtil.dismissProgressDialog();
+
+                if (response.isSuccessful()) {
+                    try {
+
+                        String res = response.body().string();
+                        System.out.println("--------------------------------------------------------------------------------");
+                        Log.i("onResponse",res);
+                        final JSONObject jsonObject = new JSONObject(res);
+
+
+                        if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
+
+                            JSONObject mypreference =  jsonObject.getJSONObject("mypreference");
+                            JSONObject in1_user_number =  mypreference.getJSONObject("in1_user_number");
+                            JSONObject out1_user_number =  mypreference.getJSONObject("out1_user_number");
+
+                            numberForReceivingCall_country = in1_user_number.getString("country");
+                            countryCode_callReciveNumber = "+"+in1_user_number.getString("code");
+                            inbound_number = "+"+in1_user_number.getString("number");
+
+                            numberFoMakingCall_country = out1_user_number.getString("country");
+                            countryCode_callMakingNumber = "+"+out1_user_number.getString("code");
+                            outbound_number = "+"+out1_user_number.getString("number");
+
+                            if("profile_screen".equals(redirect_from)){
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        inbound_country.setText(numberForReceivingCall_country);
+                                        outbound_country.setText(numberFoMakingCall_country);
+                                        inbound_country_number.setText(inbound_number.replace("+",""));
+                                        outbound_country_number.setText(outbound_number.replace("+",""));
+                                    }
+                                });
+
+                            }
 
                         }
 

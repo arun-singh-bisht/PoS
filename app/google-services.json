@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "9061648838",
+    "firebase_url": "https://receive-call.firebaseio.com",
+    "project_id": "receive-call",
+    "storage_bucket": "receive-call.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:9061648838:android:c902df7bfcc9480f",
+        "android_client_info": {
+          "package_name": "com.posfone.promote.posfone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "9061648838-k591s6hf715botjjtpv2jugfkibke27s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVzxxvvSHTdfq575QENm3lLztXYCk0QBw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

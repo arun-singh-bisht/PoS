@@ -1,16 +1,23 @@
 package com.posfone.promote.posfone;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,9 +31,12 @@ import com.posfone.promote.posfone.Utils.CustomAlertDialog;
 import com.posfone.promote.posfone.Utils.GeneralUtil;
 import com.posfone.promote.posfone.Utils.SharedPreferenceHandler;
 import com.posfone.promote.posfone.adapters.NavigationViewItemAdapter;
+import com.posfone.promote.posfone.adapters.ConatactPageAdapter;
 import com.posfone.promote.posfone.fragment.ContactFragment;
+import com.posfone.promote.posfone.fragment.ContactLog;
 import com.posfone.promote.posfone.fragment.PaymentFragment;
 import com.posfone.promote.posfone.fragment.SettingFragment;
+import com.posfone.promote.posfone.model.Contact;
 import com.posfone.promote.posfone.rest.ApiClient;
 import com.posfone.promote.posfone.rest.RESTClient;
 import com.squareup.picasso.Picasso;
@@ -38,15 +48,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 
 public class MainActivity extends AppCompatActivity
         implements AdapterView.OnItemClickListener {
 
+CircleImageView profile_icon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        profile_icon=findViewById(R.id.imageView);
+        profile_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Profile Click
+                Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -59,19 +80,24 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         //Open Contact Fragment
-        ContactFragment contactFragment = new ContactFragment();
-        openFragment(contactFragment,false,"ContactFragment");
+
+        //ContactFragment contactFragment = new ContactFragment();
+        MainFragments contactFragment=new MainFragments();
+        openFragment(contactFragment,false,"MainFragments");
 
         //Get Profile Details
         SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(MainActivity.this);
-        if(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_USER_EMAIL)==null)
+        /*if(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_USER_EMAIL)==null)
             getProfileDetails();
         else
-            initNavigationViewMenuList();
+            initNavigationViewMenuList();*/
+
+        if (preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_USERNAME) == null)
+            drawer.openDrawer(Gravity.LEFT);
+        getProfileDetails();
 
         //set LoggedIn status
         preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_IS_LOGIN,true);
-
 
     }
 
@@ -200,18 +226,26 @@ public class MainActivity extends AppCompatActivity
             }
             break;
             case 1:{
+
                 //Payment Click
                 PaymentFragment paymentFragment = new PaymentFragment();
                 openFragment(paymentFragment,true,"PaymentFragment");
+
             }
             break;
             case 2:{
-                //Calls Click
+                 MainFragments mainFragments = new MainFragments();
+                openFragment(mainFragments,true,"MainFragments");
             }
             break;
             case 3:{
                 //Contacts Click
-                getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                MainFragments mainFragments = new MainFragments();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("contacts", "contacts");
+                mainFragments.setArguments(bundle);
+                openFragment(mainFragments,true,"MainFragments");
+               // getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
             break;
             case 4:{
@@ -248,7 +282,7 @@ public class MainActivity extends AppCompatActivity
 
         ((TextView)findViewById(R.id.txt_header_username)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_FIRST_NAME)+" "+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_LAST_NAME));
         ((TextView)findViewById(R.id.txt_header_user_location)).setText(address);
-        ((TextView)findViewById(R.id.txt_header_user_contact_number)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER)+"");
+        ((TextView)findViewById(R.id.txt_header_user_contact_number)).setText("+"+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER));
 
         ImageView imageView =  findViewById(R.id.imageView);
         //Load New Image in Profile Pic
@@ -323,6 +357,7 @@ public class MainActivity extends AppCompatActivity
 
 
                             JSONObject user = jsonObject.getJSONObject("user");
+                            System.out.println("all details  "+user);
 
                             final SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(MainActivity.this);
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_USERNAME,user.getString("username"));
@@ -335,8 +370,12 @@ public class MainActivity extends AppCompatActivity
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_LAST_NAME,user.getString("last_name"));
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHOTO,user.getString("profile_photo"));
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_SESSION_TOKEN,user.getString("session_token"));
-                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHONE_NUMBER,user.getString("phone_number"));
+
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER,user.getString("pay729_number"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHONE_NUMBER,user.getString("phone_number"));
+                            JSONObject package_detail =  jsonObject.getJSONObject("package_detail");
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PACKAGE_NAME,package_detail.getString("package_name"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PACKAGE_EXPIRE_DATE,package_detail.getString("expiry_date"));
 
                             runOnUiThread(new Runnable() {
                                 @Override

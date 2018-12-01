@@ -32,6 +32,9 @@ public class RESTClient {
     public static final String MANAGE_NUMBER = "app/manage_number";
     public static final String MANAGE_NUMBERS = "app/manage_numbers";
     public static final String PROFILE = "app/profile";
+    public static final String EMAIL_CHECK = "app/email_availablity";
+    public static final String NUMBER_CHECK = "app/username_availablity";
+    public static final String SEND_OTP = "app/generate_otp";
     public static final String EDIT_PROFILE = "app/edit_profile";
     public static final String FORGOT_PASSWORD = "app/forget_password";
     public static final String RESET_PASSWORD = "app/reset_password";
@@ -76,6 +79,7 @@ public class RESTClient {
             builder.addHeader(key,header.get(key));
         }
         builder.post(RequestBody.create(mediaType, body));
+        System.out.println("-----------"+body);
         Request request = builder.build();
         Call call = client.newCall(request);
         call.enqueue(callback);

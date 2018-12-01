@@ -10,9 +10,9 @@
 
 
     <!--Pre SignIn screeen-->
-    <string name="get_a_pay">Get a pay729 number for your work calls and take payments from anywhere.</string>
+    <string name="get_a_pay">Get a POSfone number for your work calls and take payments from anywhere.</string>
     <string name="start_free_trial">START YOUR FREE TRAIL</string>
-    <string name="already_have">Already have Pay729 number?</string>
+    <string name="already_have">Already have POSfone number?</string>
     <string name="sign_in">SIGN IN</string>
     <string name="terms_of_use">Terms of Use - Privacy - FAQ</string>
 
@@ -22,7 +22,7 @@
     <string name="hint_password">Password</string>
     <string name="forgot_pwd">Forgot Password?</string>
     <string name="login">LOGIN</string>
-    <string name="dont_have">Don\'t have a Pay729 number\nEnroll your number here</string>
+    <string name="dont_have">Don\'t have a POSfone number\nEnroll your number here</string>
 
     <!--Contact screen-->
     <string name="search_contact">Search contacts</string>
@@ -34,12 +34,20 @@
     <string name="company_name">Company Name</string>
     <string name="company_address">Company Address</string>
     <string name="company_country">Country*</string>
-    <string name="state">State</string>
+    <string name="state">County/State</string>
     <string name="save_and_next">SAVE AND NEXT</string>
 
 
+    <!--stripe pay-->
+    <string name="__stripe_invalidate_card_number">The card number that you entered is invalid</string>
+    <string name="__stripe_invalidate_expirydate">The expiration date that you entered is invalid</string>
+    <string name="__stripe_invalidate_cvc">The CVC code that you entered is invalid</string>
+    <string name="__stripe_invalidate_card_detail">The card details that you entered are invalid</string>
+    <string name="__stripe_pay">PAY</string>
+
+
     <!-- Setting Screen -->
-    <string name="pay_729">Pay729 Number</string>
+    <string name="pay_729">POSfone Number</string>
     <string name="this_is">This is your secure telephone number for customer or you/your staff to call when making outbond calls to customer.</string>
     <string name="invalid_credentials">Invalid Credentials. Please enter correct values.</string>
 
@@ -48,6 +56,13 @@
     <string name="buy_with_googlepay_button_content_description">Buy with Google Pay</string>
 
     <string name="pound_symobl">\u00a3</string>
+
+    <string-array name="log_option">
+        <item>Add to contacts</item>
+        <item>Edit Number</item>
+        <item>Copy Number</item>
+
+    </string-array>
 
     <string-array name="countries_array">
         <item>Afghanistan</item>
@@ -332,5 +347,13 @@
         <item>Uttar Pradesh</item>
         <item>West Bengal</item>
     </string-array>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_some">Some</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
