@@ -64,10 +64,13 @@ public class MainActivity extends AppCompatActivity
 
         //Get Profile Details
         SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(MainActivity.this);
-        if(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_USER_EMAIL)==null)
+        /*if(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_USER_EMAIL)==null)
             getProfileDetails();
         else
-            initNavigationViewMenuList();
+            initNavigationViewMenuList();*/
+
+
+        getProfileDetails();
 
         //set LoggedIn status
         preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_IS_LOGIN,true);
@@ -337,6 +340,10 @@ public class MainActivity extends AppCompatActivity
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_SESSION_TOKEN,user.getString("session_token"));
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHONE_NUMBER,user.getString("phone_number"));
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER,user.getString("pay729_number"));
+
+                            JSONObject package_detail =  jsonObject.getJSONObject("package_detail");
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PACKAGE_NAME,package_detail.getString("package_name"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PACKAGE_EXPIRE_DATE,package_detail.getString("expiry_date"));
 
                             runOnUiThread(new Runnable() {
                                 @Override

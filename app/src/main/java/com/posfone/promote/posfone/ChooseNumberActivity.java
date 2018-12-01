@@ -10,18 +10,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.JsonObject;
 import com.posfone.promote.posfone.Utils.GeneralUtil;
 import com.posfone.promote.posfone.Utils.SharedPreferenceHandler;
 import com.posfone.promote.posfone.fragment.NumberFragment;
-import com.posfone.promote.posfone.fragment.PaymentFragment;
 import com.posfone.promote.posfone.model.CountryModel;
-import com.posfone.promote.posfone.model.PackageModel;
 import com.posfone.promote.posfone.model.TwilioNumber;
 import com.posfone.promote.posfone.rest.ApiClient;
 import com.posfone.promote.posfone.rest.RESTClient;

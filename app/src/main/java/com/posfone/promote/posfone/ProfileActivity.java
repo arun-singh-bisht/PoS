@@ -3,6 +3,7 @@ package com.posfone.promote.posfone;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.net.sip.SipManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,6 +22,7 @@ import com.posfone.promote.posfone.Utils.ImageUtil;
 import com.posfone.promote.posfone.Utils.SharedPreferenceHandler;
 import com.posfone.promote.posfone.rest.ApiClient;
 import com.posfone.promote.posfone.rest.RESTClient;
+import com.posfone.promote.posfone.sip.SipController;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -136,7 +138,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         ((TextView)findViewById(R.id.txt_user_phone)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHONE_NUMBER)+"");
         ((TextView)findViewById(R.id.txt_pay_number)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER)+"");
         ((TextView)findViewById(R.id.txt_email_address)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_USER_EMAIL)+"");
-
+        ((TextView)findViewById(R.id.txt_plan_type)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PACKAGE_NAME)+"");
+        ((TextView)findViewById(R.id.txt_plan_exire_date)).setText("Expire - "+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PACKAGE_EXPIRE_DATE)+"");
 
         //Load New Image in Profile Pic
         String profile_pic_url = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHOTO);
@@ -171,6 +174,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     {
         // Click on image button
         ImagePicker.pickImage(this, "Select your image:");
+         Log.i("onProfileImageClick","isApiSupported:"+SipManager.isApiSupported(this));
+        Log.i("onProfileImageClick","isVoipSupported:"+SipManager.isVoipSupported(this));
+
+       // SipController sipController = new SipController();
+        //sipController.initSip(this);
+        //sipController.createSipProfile(null,null,null);
     }
 
     @OnClick(R.id.btn_upgrade_plan)

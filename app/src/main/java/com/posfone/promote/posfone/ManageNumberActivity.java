@@ -14,6 +14,7 @@ import com.posfone.promote.posfone.Utils.SharedPreferenceHandler;
 import com.posfone.promote.posfone.rest.ApiClient;
 import com.posfone.promote.posfone.rest.RESTClient;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -35,6 +36,8 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.activity_manage_number);
 
         initViews();
+
+        getCallProfle();
     }
 
     private void initViews()
@@ -177,6 +180,71 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
                                     startActivity(intent);
                                 }
                             });
+
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        //-----
+                    }
+                } else {
+                    //-----------
+                }
+
+            }
+        });
+
+    }
+
+
+
+
+    private void getCallProfle() {
+
+        //Show loading dialog
+        GeneralUtil.showProgressDialog(this,null);
+
+        SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(this);
+        String userID = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
+        String token = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_TOKEN);
+
+        //Header
+        HashMap<String,String> header = new HashMap<>();
+        header.put("x-api-key", ApiClient.X_API_KEY);
+        header.put("userid", userID);
+        header.put("token", token);
+        //RequestBody
+
+        Call call = RESTClient.call_GET(RESTClient.MANAGE_NUMBER, header,  new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                GeneralUtil.dismissProgressDialog();
+            }
+
+            @ Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) {
+
+                GeneralUtil.dismissProgressDialog();
+
+                if (response.isSuccessful()) {
+                    try {
+
+                        String res = response.body().string();
+                        Log.i("onResponse",res);
+                        final JSONObject jsonObject = new JSONObject(res);
+
+                        if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
+
+                            JSONObject mypreference =  jsonObject.getJSONObject("mypreference");
+                            JSONObject in1_user_number =  mypreference.getJSONObject("in1_user_number");
+                            JSONObject out1_user_number =  mypreference.getJSONObject("out1_user_number");
+
+                            String numberForReceivingCall_country = in1_user_number.getString("country");
+                            countryCode_callReciveNumber = "+"+in1_user_number.getString("code");
+
+                            String numberFoMakingCall_country = out1_user_number.getString("country");
+                            countryCode_callMakingNumber = "+"+out1_user_number.getString("code");
 
                         }
 

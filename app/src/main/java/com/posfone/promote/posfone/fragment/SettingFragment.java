@@ -306,12 +306,14 @@ public class SettingFragment extends BaseFragment implements AdapterView.OnItemC
                             numberFoMakingCall_code = "+"+out1_user_number.getString("code");
                             numberFoMakingCall_number = out1_user_number.getString("number");
 
+                            pay729number =  jsonObject.getString("pay729numbers");
+/*
                             JSONArray pay729numbers = jsonObject.getJSONArray("pay729numbers");
                             if(pay729numbers.length()>0)
                             {
                                 JSONObject jsonObject1 = pay729numbers.getJSONObject(0);
                                 pay729number =  jsonObject1.getString("phone_number").trim();
-                            }
+                            }*/
 
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
