@@ -373,6 +373,7 @@ public class ContactFragment extends BaseFragment implements LoaderManager.Loade
                 if(size_max.contains("+44") || size_max.contains("+91") || size_med.contains("+1") || size_med.contains("44") || size_med.contains("91")|| size_min.contains("1"))
                 {
                     Intent intent = new Intent(getContext(),VoiceActivity.class);
+                    intent.setAction(VoiceActivity.ACTION_OUTGOING_CALL);
                     intent.putExtra("from_number","16617480240");
                     intent.putExtra("to_number",contact.getContactNumber());
                     intent.putExtra("to_name",contact.getContactName());

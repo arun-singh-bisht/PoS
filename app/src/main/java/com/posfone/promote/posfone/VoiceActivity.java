@@ -1,11 +1,6 @@
 package com.posfone.promote.posfone;
 
 import android.app.Notification;
-/*
-import com.twilio.twiml.TwiMLException;
-import com.twilio.twiml.VoiceResponse;
-import com.twilio.twiml.voice.Dial;
-import com.twilio.twiml.voice.Number;*/
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -42,15 +37,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.posfone.promote.posfone.Utils.GeneralUtil;
 import com.posfone.promote.posfone.Utils.SharedPreferenceHandler;
 import com.posfone.promote.posfone.Utils.SoundPoolManager;
+import com.posfone.promote.posfone.Utils.TwilioTokenManager;
 import com.posfone.promote.posfone.database.DatabaseHelper;
 import com.posfone.promote.posfone.fragment.ContactFragment;
 import com.twilio.voice.Call;
 import com.twilio.voice.CallException;
 import com.twilio.voice.CallInvite;
+import com.twilio.voice.RegistrationException;
+import com.twilio.voice.RegistrationListener;
 import com.twilio.voice.Voice;
 
 import java.text.DateFormat;
@@ -68,62 +68,84 @@ import java.util.Calendar;
 public class VoiceActivity extends AppCompatActivity  {
 
     private static final String TAG = "VoiceActivity";
+    public static final String INCOMING_CALL_INVITE = "INCOMING_CALL_INVITE";
+    public static final String INCOMING_CALL_NOTIFICATION_ID = "1";
+    public static final String ACTION_INCOMING_CALL = "ACTION_INCOMING_CALL";
+    public static final String ACTION_OUTGOING_CALL = "ACTION_OUTGOING_CALL";
+    public static final String ACTION_FCM_TOKEN = "ACTION_FCM_TOKEN";
+    private static final String TWILIO_ACCESS_TOKEN_SERVER_URL = "http://protechgenie.in/demo/accessToken.php";
+    private static final int MIC_PERMISSION_REQUEST_CODE = 1;
+    private static final int SNACKBAR_DURATION = 4000;
+
+    private DatabaseHelper mDatabaseHelper;
+    private AudioManager audioManager;
+    private SoundPoolManager soundPoolManager;
+    private NotificationManagerCompat notificationManager;
+    private VoiceBroadcastReceiver voiceBroadcastReceiver;
+    private CallInvite activeCallInvite;
+    private Call activeCall;
+    private AlertDialog alertDialog;
+    private Call.Listener callListener = callListener();
+
     private static String identity = "16617480240";
     private static String to_number = "";
-    DatabaseHelper mDatabaseHelper;
-    private static final String TWILIO_ACCESS_TOKEN_SERVER_URL = "http://protechgenie.in/demo/accessToken.php";
+    private String accessToken;
+    private String to_name;
+    private int savedAudioMode = AudioManager.MODE_INVALID;
+    private int activeCallNotificationId;
+    private boolean isReceiverRegistered = false;
+    private boolean isCallActive = false;
+    // Empty HashMap, never populated for the Quickstart
+    private HashMap<String, String> twiMLParams = new HashMap<>();
+
+
     @BindView(R.id.input)
     EditText input;
     @BindView(R.id.payemnt)
     Button payment;
     @BindView(R.id.buttonDial)
     FloatingActionButton dial;
-
-
-    private static final int MIC_PERMISSION_REQUEST_CODE = 1;
-    private static final int SNACKBAR_DURATION = 4000;
-
-    private String accessToken;
-
-    private AudioManager audioManager;
-    private int savedAudioMode = AudioManager.MODE_INVALID;
-
-    private boolean isReceiverRegistered = false;
-
-    // Empty HashMap, never populated for the Quickstart
-    HashMap<String, String> twiMLParams = new HashMap<>();
-
-    private FloatingActionButton callActionFab;
-    private ImageView hangupAction;
-    private ImageView muteAction;
-    private TextView txt_dialing;
-    public Animation animation;
-    private Chronometer chronometer;
-    private SoundPoolManager soundPoolManager;
-
-    public static final String INCOMING_CALL_INVITE = "INCOMING_CALL_INVITE";
-    public static final String INCOMING_CALL_NOTIFICATION_ID = "1";
-    public static final String ACTION_INCOMING_CALL = "ACTION_INCOMING_CALL";
-    public static final String ACTION_FCM_TOKEN = "ACTION_FCM_TOKEN";
-
+    @BindView(R.id.call_action_fab)
+    FloatingActionButton callActionFab;
+    @BindView(R.id.txt_dialing)
+    TextView txt_dialing;
+    @BindView(R.id.buttonZero)
     Button buttonplus;
-    private NotificationManagerCompat notificationManager;
-    private AlertDialog alertDialog;
-    private CallInvite activeCallInvite;
-    private Call activeCall;
-    private int activeCallNotificationId;
-    Date currentTime = Calendar.getInstance().getTime();
+    @BindView(R.id.chronometer)
+    Chronometer chronometer;
 
-    Call.Listener callListener = callListener();
-    private VoiceBroadcastReceiver voiceBroadcastReceiver;
-    private boolean isCallActive = false;
-    private String to_name;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voice);
-        buttonplus=findViewById(R.id.buttonZero);
+        ButterKnife.bind(this);
 
+        //Keyboard Disabled Here
+        input.setShowSoftInputOnFocus(false);
+        // These flags ensure that the activity can be launched when the screen is locked.
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+
+        notificationManager = NotificationManagerCompat.from(this);
+        mDatabaseHelper = new DatabaseHelper(this,"people_table");
+        callnotification();
+
+
+
+        // Call REceive
+        voiceBroadcastReceiver = new VoiceBroadcastReceiver();
+        registerReceiver();
+
+        initViews();
+
+    }
+
+    private void initViews()
+    {
         buttonplus.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -132,40 +154,92 @@ public class VoiceActivity extends AppCompatActivity  {
             }
         });
 
-        ButterKnife.bind(this);
-        System.out.println("zrunning on create------");
-        //Keyboard Disabled Here
-        input.setShowSoftInputOnFocus(false);
-        // These flags ensure that the activity can be launched when the screen is locked.
-        Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        notificationManager = NotificationManagerCompat.from(this);
-        mDatabaseHelper = new DatabaseHelper(this,"people_table");
-        callnotification();
-        identity =  getIntent().getStringExtra("from_number");
-        to_number = getIntent().getStringExtra("to_number");
-        to_name = getIntent().getStringExtra("to_name");
-        identity = "16617480241";
-        //get Current preferred selection number From Settings
-        SharedPreferenceHandler sharedPreferenceHandler=new SharedPreferenceHandler(this);
-       String caller_id= sharedPreferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_CALLER_ID);
-       String number=sharedPreferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHONE_NUMBER);
 
-       /*if(!"Pay729 Number".equals(caller_id))
-        identity="91"+number;*/
-       if(to_number!=null)
-        to_number = to_number.replace(" ","");
-       //to_number = "918209874738";
-        initViews();
-        super.onCreate(savedInstanceState);
-        // Call REceive
-        voiceBroadcastReceiver = new VoiceBroadcastReceiver();
-        registerReceiver();
+        String name=getName(to_number);
+        ((TextView)findViewById(R.id.txt_name)).setText(name);
+        ((TextView)findViewById(R.id.txt_number)).setText(to_number);
+        dial.setVisibility(View.INVISIBLE);
 
+        //Add Record in Local db for Call History
+        DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss z");
+        String time=dateFormat.format(Calendar.getInstance().getTime());
+        AddData(name,to_number,time);
+
+        Animation anim = new AlphaAnimation(0.5f, 0.7f);
+        anim.setDuration(500); //You can manage the blinking time with this parameter
+        anim.setStartOffset(20);
+        anim.setRepeatMode(Animation.REVERSE);
+        anim.setRepeatCount(Animation.INFINITE);
+        txt_dialing.startAnimation(anim);
+
+        callActionFab.setOnClickListener(callActionFabClickListener());
+        soundPoolManager = SoundPoolManager.getInstance(this);
+        audioManager=(AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setSpeakerphoneOn(false);
+        setVolumeControlStream(AudioManager.STREAM_VOICE_CALL);
+        //retrieveAccessToken();
+
+        handleIncomingCallIntent(getIntent());
 
     }
+
+
+    /*
+     * Get an access token from your Twilio access token server
+     */
+    private void retrieveAccessToken() {
+        Ion.with(this).load(TWILIO_ACCESS_TOKEN_SERVER_URL + "?identity=" + identity).asString().setCallback(new FutureCallback<String>() {
+            @Override
+            public void onCompleted(Exception e, String accessToken) {
+                if (e == null) {
+                    Log.d(TAG, "Access token: " + accessToken);
+                    //Store Access Token in preference
+                    new TwilioTokenManager(VoiceActivity.this).saveToken(accessToken);
+                    registerForCallInvites();
+                } else {
+                    showToast("Error retrieving access token. Unable to make calls");
+                }
+            }
+        });
+    }
+
+    /*
+     * Register your FCM token with Twilio to receive incoming call invites
+     *
+     * If a valid google-services.json has not been provided or the FirebaseInstanceId has not been
+     * initialized the fcmToken will be null.
+     *
+     * In the case where the FirebaseInstanceId has not yet been initialized the
+     * VoiceFirebaseInstanceIDService.onTokenRefresh should result in a LocalBroadcast to this
+     * activity which will attempt registerForCallInvites again.
+     *
+     */
+    private void registerForCallInvites() {
+        //Get FCM token for this app's user
+        final String fcmToken = FirebaseInstanceId.getInstance().getToken();
+        if (fcmToken != null) {
+            Log.i(TAG, "Registering with FCM");
+            //Get saved Twilio access token from preference
+            final TwilioTokenManager twilioTokenManager = new TwilioTokenManager(VoiceActivity.this);
+            String accessToken = twilioTokenManager.getToken();
+            //Register FCM to current Access Token
+            Voice.register(this, accessToken, Voice.RegistrationChannel.FCM, fcmToken, new RegistrationListener() {
+                @Override
+                public void onRegistered(String accessToken, String fcmToken) {
+                    Log.d(TAG, "Successfully registered FCM " + fcmToken);
+                }
+
+                @Override
+                public void onError(RegistrationException error, String accessToken, String fcmToken) {
+                    String message = String.format("Registration Error: %d, %s", error.getErrorCode(), error.getMessage());
+                    Log.e(TAG, message);
+                    GeneralUtil.showToast(VoiceActivity.this,message);
+                }
+            });
+        }
+    }
+
+
 
     private void callnotification() {
 
@@ -267,42 +341,6 @@ public class VoiceActivity extends AppCompatActivity  {
     }
 
 
-    private void initViews()
-    {
-         String name=getName(to_number);
-        ((TextView)findViewById(R.id.txt_name)).setText(name);
-        ((TextView)findViewById(R.id.txt_number)).setText(to_number);
-        DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss z");
-        String time=dateFormat.format(currentTime);
-        dial.setVisibility(View.INVISIBLE);
-            AddData(name,to_number,time);
-
-        txt_dialing = findViewById(R.id.txt_dialing);
-        Animation anim = new AlphaAnimation(0.5f, 0.7f);
-        anim.setDuration(500); //You can manage the blinking time with this parameter
-        anim.setStartOffset(20);
-        anim.setRepeatMode(Animation.REVERSE);
-        anim.setRepeatCount(Animation.INFINITE);
-        txt_dialing.startAnimation(anim);
-        callActionFab = findViewById(R.id.call_action_fab);
-        //muteAction = findViewById(R.id.icon_speaker);
-        chronometer = findViewById(R.id.chronometer);
-
-        callActionFab.setOnClickListener(callActionFabClickListener());
-        //hangupAction.setOnClickListener(hangupActionFabClickListener());
-        soundPoolManager = SoundPoolManager.getInstance(this);
-        audioManager=(AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        audioManager.setSpeakerphoneOn(false);
-        setVolumeControlStream(AudioManager.STREAM_VOICE_CALL);
-        retrieveAccessToken();
-
-    }
-
-    
-
-
-
-
     private View.OnClickListener callActionFabClickListener() {
         return new View.OnClickListener() {
             @Override
@@ -324,7 +362,10 @@ public class VoiceActivity extends AppCompatActivity  {
 
     private void makeCall()
     {
-        twiMLParams.put("to", to_number);
+
+        String accessToken = new TwilioTokenManager(VoiceActivity.this).getToken();
+        //twiMLParams.put("to", to_number);
+        twiMLParams.put("to", "Alice");
         activeCall = Voice.call(VoiceActivity.this, accessToken, twiMLParams, callListener);
         isCallActive = true;
     }
@@ -431,9 +472,6 @@ public class VoiceActivity extends AppCompatActivity  {
         }
     }
 
-
-
-
     /*
      * Reset UI elements
      */
@@ -478,24 +516,6 @@ public class VoiceActivity extends AppCompatActivity  {
 
 
 
-    /*
-     * Get an access token from your Twilio access token server
-     */
-    private void retrieveAccessToken() {
-        Ion.with(this).load(TWILIO_ACCESS_TOKEN_SERVER_URL + "?identity=" + identity).asString().setCallback(new FutureCallback<String>() {
-            @Override
-            public void onCompleted(Exception e, String accessToken) {
-                if (e == null) {
-                    Log.d(TAG, "Access token: " + accessToken);
-                    VoiceActivity.this.accessToken = accessToken;
-                    //registerForCallInvites();
-                    makeCall();
-                } else {
-                    showToast("Error retrieving access token. Unable to make calls");
-                }
-            }
-        });
-    }
 
     private void showToast(String msg)
     {
@@ -550,6 +570,16 @@ public class VoiceActivity extends AppCompatActivity  {
                         alertDialog.cancel();
                     }
                 }
+            }else if(intent.getAction().equals(ACTION_OUTGOING_CALL))
+            {
+                identity =  getIntent().getStringExtra("from_number");
+                to_number = getIntent().getStringExtra("to_number");
+                to_name = getIntent().getStringExtra("to_name");
+
+                identity = "Alice";
+                to_number = "Bob";
+
+                makeCall();
             } else if (intent.getAction().equals(ACTION_FCM_TOKEN)) {
                 retrieveAccessToken();
             }
@@ -629,294 +659,6 @@ public class VoiceActivity extends AppCompatActivity  {
         }
     }
 
-//--------------------------
-
-/*
-    private void handleIncomingCallIntent(Intent intent) {
-
-        if (intent != null && intent.getAction() != null) {
-
-            if (intent.getAction().equals(ACTION_INCOMING_CALL)) {
-
-                activeCallInvite = intent.getParcelableExtra(INCOMING_CALL_INVITE);
-
-                if (activeCallInvite != null && (activeCallInvite.getState() == CallInvite.State.PENDING)) {
-
-                    soundPoolManager.playRinging();
-
-                    alertDialog = createIncomingCallDialog(VoiceActivity.this,
-
-                            activeCallInvite,
-
-                            answerCallClickListener(),
-
-                            cancelCallClickListener());
-
-                    alertDialog.show();
-
-                    activeCallNotificationId = intent.getIntExtra(INCOMING_CALL_NOTIFICATION_ID, 0);
-
-                } else {
-
-                    if (alertDialog != null && alertDialog.isShowing()) {
-
-                        soundPoolManager.stopRinging();
-
-                        alertDialog.cancel();
-
-                    }
-
-                }
-
-            } else if (intent.getAction().equals(ACTION_FCM_TOKEN)) {
-
-                retrieveAccessToken();
-
-            }
-
-        }
-
-    }
-    private DialogInterface.OnClickListener answerCallClickListener() {
-
-        return new DialogInterface.OnClickListener() {
-
-
-
-            @Override
-
-            public void onClick(DialogInterface dialog, int which) {
-
-                soundPoolManager.stopRinging();
-
-                answer();
-
-                setCallUI();
-
-                alertDialog.dismiss();
-
-            }
-
-        };
-
-    }
-
-
-
-    private DialogInterface.OnClickListener callClickListener() {
-
-        return new DialogInterface.OnClickListener() {
-
-            @Override
-
-            public void onClick(DialogInterface dialog, int which) {
-
-                // Place a call
-
-                EditText contact = (EditText) ((AlertDialog) dialog).findViewById(R.id.contact);
-
-                twiMLParams.put("to", contact.getText().toString());
-
-                activeCall = Voice.call(VoiceActivity.this, accessToken, twiMLParams, callListener);
-
-                setCallUI();
-
-                alertDialog.dismiss();
-
-            }
-
-        };
-
-    }
-
-
-
-    private DialogInterface.OnClickListener cancelCallClickListener() {
-
-        return new DialogInterface.OnClickListener() {
-
-
-
-            @Override
-
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-                soundPoolManager.stopRinging();
-
-                if (activeCallInvite != null) {
-
-                    activeCallInvite.reject(VoiceActivity.this);
-
-                    notificationManager.cancel(activeCallNotificationId);
-
-                }
-
-                alertDialog.dismiss();
-
-            }
-
-        };
-
-    }
-
-
-
-    public static AlertDialog createIncomingCallDialog(
-
-            Context context,
-
-            CallInvite callInvite,
-
-            DialogInterface.OnClickListener answerCallClickListener,
-
-            DialogInterface.OnClickListener cancelClickListener) {
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-
-        alertDialogBuilder.setIcon(R.drawable.ic_call_black_24dp);
-
-        alertDialogBuilder.setTitle("Incoming Call");
-
-        alertDialogBuilder.setPositiveButton("Accept", answerCallClickListener);
-
-        alertDialogBuilder.setNegativeButton("Reject", cancelClickListener);
-
-        alertDialogBuilder.setMessage(callInvite.getFrom() + " is calling.");
-
-        return alertDialogBuilder.create();
-
-    }
-
-
-
-
-
-  */
-/*   * Register your FCM token with Twilio to receive incoming call invites
-
-     *
-
-     * If a valid google-services.json has not been provided or the FirebaseInstanceId has not been
-
-     * initialized the fcmToken will be null.
-
-     *
-
-     * In the case where the FirebaseInstanceId has not yet been initialized the
-
-     * VoiceFirebaseInstanceIDService.onTokenRefresh should result in a LocalBroadcast to this
-
-     * activity which will attempt registerForCallInvites again.
-
-     *
-
-     *//*
-
-
-
-    private void registerForCallInvites() {
-
-        final String fcmToken = FirebaseInstanceId.getInstance().getToken();
-
-        if (fcmToken != null) {
-
-            Log.i(TAG, "Registering with FCM");
-
-            Voice.register(this, accessToken, Voice.RegistrationChannel.FCM, fcmToken, registrationListener);
-
-        }
-
-    }
-
-
-
-    private View.OnClickListener callActionFabClickListener() {
-
-        return new View.OnClickListener() {
-
-            @Override
-
-            public void onClick(View v) {
-
-                alertDialog = createCallDialog(callClickListener(), cancelCallClickListener(), VoiceActivity.this);
-
-                alertDialog.show();
-
-            }
-
-        };
-
-    }
-
-
-
-    private View.OnClickListener hangupActionFabClickListener() {
-
-        return new View.OnClickListener() {
-
-            @Override
-
-            public void onClick(View v) {
-
-                soundPoolManager.playDisconnect();
-
-                resetUI();
-
-                disconnect();
-
-            }
-
-        };
-
-    }
-
-
-
-    private View.OnClickListener muteActionFabClickListener() {
-
-        return new View.OnClickListener() {
-
-            @Override
-
-            public void onClick(View v) {
-
-                mute();
-
-            }
-
-        };
-
-    }
-*/
-
-
-
-
-/*
-
-     * Accept an incoming Call
-
-     *//*
-
-
-    private void answer() {
-
-        activeCallInvite.accept(this, callListener);
-
-        notificationManager.cancel(activeCallNotificationId);
-
-    }
-
-*/
-
-
-    /*
-
-     * Disconnect from Call
-
-     */
-
-
 
 //-------------------------------------Operation for Dialer Input---------------------------
 @OnClick(R.id.buttonOne)
@@ -969,14 +711,6 @@ public void one() {
     }
 
 
-    /*@OnClick(R.id.buttonDelete)
-    public void delete(){
-        if(input.getText().toString().length()>=1) {
-            String newScreen = input.getText().toString().substring(0, input.getText().toString().length() - 1);
-            input.setText(newScreen);
-        }
-    }*/
-
     public void onButtonClick( EditText inputNumber, String number) {
         inputNumber.append(number);
     }
@@ -994,28 +728,5 @@ public void one() {
         }
         return name;
     }
-/*
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        // Save UI state changes to the savedInstanceState.
-        // This bundle will be passed to onCreate if the process is
-        // killed and restarted.
-        savedInstanceState.putString("Email", to_name);
-        savedInstanceState.putString("password",to_number);
-        // etc.
-    }
-
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        // Restore UI state from the savedInstanceState.
-        // This bundle has also been passed to onCreate.
-        String email_g = savedInstanceState.getString("Email");
-        String password=savedInstanceState.getString("password");
-        ((TextView)findViewById(R.id.txt_name)).setText(email_g);
-        ((TextView)findViewById(R.id.txt_number)).setText(password);
-    }
-*/
 
 }

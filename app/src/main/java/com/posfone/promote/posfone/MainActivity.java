@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -27,9 +28,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 import com.posfone.promote.posfone.Utils.CustomAlertDialog;
 import com.posfone.promote.posfone.Utils.GeneralUtil;
 import com.posfone.promote.posfone.Utils.SharedPreferenceHandler;
+import com.posfone.promote.posfone.Utils.TwilioTokenManager;
 import com.posfone.promote.posfone.adapters.NavigationViewItemAdapter;
 import com.posfone.promote.posfone.adapters.ConatactPageAdapter;
 import com.posfone.promote.posfone.fragment.ContactFragment;
@@ -40,6 +45,9 @@ import com.posfone.promote.posfone.model.Contact;
 import com.posfone.promote.posfone.rest.ApiClient;
 import com.posfone.promote.posfone.rest.RESTClient;
 import com.squareup.picasso.Picasso;
+import com.twilio.voice.RegistrationException;
+import com.twilio.voice.RegistrationListener;
+import com.twilio.voice.Voice;
 
 import org.json.JSONObject;
 
@@ -54,7 +62,8 @@ import okhttp3.Call;
 public class MainActivity extends AppCompatActivity
         implements AdapterView.OnItemClickListener {
 
-CircleImageView profile_icon;
+    private static final String TAG = "MainActivity";
+    CircleImageView profile_icon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +107,10 @@ CircleImageView profile_icon;
 
         //set LoggedIn status
         preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_IS_LOGIN,true);
+
+
+        //Get Twilio Access Token and Register this app for receiving Incoming Calls
+        retrieveAccessToken();
 
     }
 
@@ -402,5 +415,63 @@ CircleImageView profile_icon;
     }
 
 
+    //Register For Twilio Incoming Calls
+    /*
+     * Get an access token from your Twilio access token server
+     */
+    private void retrieveAccessToken() {
+
+        if(new TwilioTokenManager(MainActivity.this).isTokenValid())
+            return;
+
+        Ion.with(this).load(RESTClient.TWILIO_ACCESS_TOKEN_SERVER_URL + "?identity=" + "Alice").asString().setCallback(new FutureCallback<String>() {
+            @Override
+            public void onCompleted(Exception e, String accessToken) {
+                if (e == null) {
+                    Log.d(TAG, "Access token: " + accessToken);
+                    //Store Access Token in preference
+                    new TwilioTokenManager(MainActivity.this).saveToken(accessToken);
+                    registerForCallInvites();
+                } else {
+                    GeneralUtil.showToast(MainActivity.this,"Error retrieving access token. Unable to make calls");
+                }
+            }
+        });
+    }
+    /*
+     * Register your FCM token with Twilio to receive incoming call invites
+     *
+     * If a valid google-services.json has not been provided or the FirebaseInstanceId has not been
+     * initialized the fcmToken will be null.
+     *
+     * In the case where the FirebaseInstanceId has not yet been initialized the
+     * VoiceFirebaseInstanceIDService.onTokenRefresh should result in a LocalBroadcast to this
+     * activity which will attempt registerForCallInvites again.
+     *
+     */
+    private void registerForCallInvites() {
+        //Get FCM token for this app's user
+        final String fcmToken = FirebaseInstanceId.getInstance().getToken();
+        if (fcmToken != null) {
+            Log.i(TAG, "Registering with FCM");
+            //Get saved Twilio access token from preference
+            final TwilioTokenManager twilioTokenManager = new TwilioTokenManager(MainActivity.this);
+            String accessToken = twilioTokenManager.getToken();
+            //Register FCM to current Access Token
+            Voice.register(this, accessToken, Voice.RegistrationChannel.FCM, fcmToken, new RegistrationListener() {
+                @Override
+                public void onRegistered(String accessToken, String fcmToken) {
+                    Log.d(TAG, "Successfully registered FCM " + fcmToken);
+                }
+
+                @Override
+                public void onError(RegistrationException error, String accessToken, String fcmToken) {
+                    String message = String.format("Registration Error: %d, %s", error.getErrorCode(), error.getMessage());
+                    Log.e(TAG, message);
+                    GeneralUtil.showToast(MainActivity.this,message);
+                }
+            });
+        }
+    }
 
 }

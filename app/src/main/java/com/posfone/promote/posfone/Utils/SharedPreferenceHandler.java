@@ -31,6 +31,8 @@ public class SharedPreferenceHandler {
     public static String SP_KEY_PROFILE_PACKAGE_NAME = "package_name";
     public static String SP_KEY_PROFILE_PACKAGE_EXPIRE_DATE = "package_expire_name";
     public static String SP_KEY_NEW_PAY_729_NUMBER = null;
+    public static String SP_KEY_TWILIO_ACCESS_TOKEN = "twilio_access_token";
+    public static String SP_KEY_TWILIO_ACCESS_TOKEN_TIME = "twilio_access_token_time";
 
 
     //--------------
@@ -60,6 +62,12 @@ public class SharedPreferenceHandler {
         editor.putString(key,value).commit();
     }
 
+    public void putValue(String key,long value)
+    {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putLong(key,value).commit();
+    }
+
     public void putValue(String key,boolean value)
     {
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -76,5 +84,11 @@ public class SharedPreferenceHandler {
     {
         return sharedPreferences.getBoolean(key,false);
     }
+
+    public long getLongValue(String key)
+    {
+        return sharedPreferences.getLong(key,0);
+    }
+
 
 }

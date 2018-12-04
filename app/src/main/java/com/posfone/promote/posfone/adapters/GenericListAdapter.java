@@ -89,6 +89,7 @@ public class GenericListAdapter extends BaseAdapter {
                     String number = view1.getText().toString();
                     String name = view2.getText().toString();
                     Intent intent = new Intent(context,VoiceActivity.class);
+                    intent.setAction(VoiceActivity.ACTION_OUTGOING_CALL);
                     intent.putExtra("from_number","16617480240");
                     intent.putExtra("to_number",number);
                     intent.putExtra("to_name",name);

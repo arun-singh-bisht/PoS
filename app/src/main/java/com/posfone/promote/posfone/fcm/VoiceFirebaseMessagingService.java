@@ -29,8 +29,8 @@ import java.util.Map;
 public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "VoiceFCMService";
-    private static final String NOTIFICATION_ID_KEY = "CR2a46f6ff65bddadaccc744d4fb430ba1";
-    private static final String CALL_SID_KEY = "TKa5fa7f29b61be975321ac6f963d21bc2";
+    private static final String NOTIFICATION_ID_KEY = "NOTIFICATION_ID";
+    private static final String CALL_SID_KEY = "CALL_SID";
     private static final String VOICE_CHANNEL = "default";
 
     private NotificationManager notificationManager;
@@ -60,7 +60,7 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
                 @Override
                 public void onCallInvite(CallInvite callInvite) {
                     VoiceFirebaseMessagingService.this.notify(callInvite, notificationId);
-                    VoiceFirebaseMessagingService.this.sendCallInviteToActivity(callInvite, notificationId);
+                    //VoiceFirebaseMessagingService.this.sendCallInviteToActivity(callInvite, notificationId);
                 }
 
                 @Override

@@ -41,6 +41,8 @@ public class RESTClient {
     public static final String UPDATE_PHOTO = "app/update_photo";
     public static final String MANAGE_GATEWAY = "app/manage_gateway";
 
+    public static final String TWILIO_ACCESS_TOKEN_SERVER_URL = "http://protechgenie.in/demo/accessToken.php";
+
 
 
 
