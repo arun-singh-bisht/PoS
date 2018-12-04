@@ -42,9 +42,14 @@ public class ChooseNumberActivity extends AppCompatActivity  {
     private String redirect_from;
     private String isTrial ="1";
     private ViewPager viewPager;
-    private NumberFragment numberFragment_type_regular;
-    private NumberFragment numberFragment_type_premium;
-    private NumberFragment numberFragment_type_elite;
+    public static String country_name_search="";
+    public static String country_code_search="";
+    public static String country_iso_search="";
+
+
+    public static NumberFragment numberFragment_type_regular;
+    public static NumberFragment numberFragment_type_premium;
+    public static NumberFragment numberFragment_type_elite;
     //private PackageModel packageModel;
     List<TwilioNumber> twilioNumbers_regular = new ArrayList<>();
     List<TwilioNumber> twilioNumbers_premium = new ArrayList<>();
@@ -178,17 +183,18 @@ public class ChooseNumberActivity extends AppCompatActivity  {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if(resultCode == RESULT_OK)
-        {
+        {System.out.println("---------------------------------");
             switch (requestCode)
             {
                 case ACTION_FOR_COUNTRY:
                 {
-
                     CountryModel countryModel = new CountryModel();
                     countryModel.name = data.getStringExtra("result");
                     countryModel.iso = data.getStringExtra("selectedCountryIso");
                     countryModel.phonecode = data.getStringExtra("selectedCountryPhoneCode");
-
+                    country_name_search=data.getStringExtra("result");
+                    country_code_search=data.getStringExtra("selectedCountryPhoneCode");
+                    country_iso_search=data.getStringExtra("selectedCountryIso");
                     currenCountry.setText(countryModel.name);
                     getTwilioNumber(countryModel);
                 }
@@ -216,7 +222,8 @@ public class ChooseNumberActivity extends AppCompatActivity  {
         if(selectedCountry!=null) {
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("country", selectedCountry.getIso());
-            jsonObject.addProperty("area_code", selectedCountry.getPhonecode());
+            jsonObject.addProperty("area_code", "");
+            jsonObject.addProperty("filter","");
             body = "json=" + jsonObject.toString();
         }
 
@@ -246,9 +253,15 @@ public class ChooseNumberActivity extends AppCompatActivity  {
 
                         if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
 
-
                             final String country_name = jsonObject.getString("country_name");
                             JSONObject phone_number = jsonObject.getJSONObject("phone_number");
+                            final String country_code=jsonObject.getString("country_code");
+
+                            //-------------
+                            country_name_search=country_name;
+                            country_code_search=country_code;
+                            country_iso_search=country_code;
+                            //-----------
 
                             //Add Default Number
 
@@ -309,10 +322,14 @@ public class ChooseNumberActivity extends AppCompatActivity  {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    if(selectedCountry==null)
+                                        currenCountry.setText("Select Country");
+                                    else
                                         currenCountry.setText(country_name);
-                                        numberFragment_type_regular.setData(twilioNumbers_regular);
+                                       /* numberFragment_type_regular.setData(twilioNumbers_regular);
                                         numberFragment_type_premium.setData(twilioNumbers_premium);
-                                        numberFragment_type_elite.setData(twilioNumbers_elite);
+                                        numberFragment_type_elite.setData(twilioNumbers_elite);*/
+                                       display_numbers(twilioNumbers_regular,twilioNumbers_premium,twilioNumbers_elite );
                                 }
                             });
 
@@ -332,14 +349,19 @@ public class ChooseNumberActivity extends AppCompatActivity  {
         });
 
     }
+    //----------------------
+    public boolean isValid() {
+        return country_name_search != "" && country_code_search != "";
+    }
 
+    //----------------
 
-    public void selectTwilioNumber(String numberType,String number) throws JSONException {
+    public void selectTwilioNumber(final String numberType, final String number) throws JSONException {
 
         //Show loading dialog
         GeneralUtil.showProgressDialog(this,null);
 
-        SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(ChooseNumberActivity.this);
+        final SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(ChooseNumberActivity.this);
         String userID = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
 
         //Header
@@ -360,6 +382,7 @@ public class ChooseNumberActivity extends AppCompatActivity  {
         jsonTwillioNumber.put("twillio_nos",jsonNumberType);
 
         String body = "json="+jsonTwillioNumber.toString();
+
         Log.i("NumberFragment",body);
 
         Call call = RESTClient.call_POST(RESTClient.TWILIO_NUMBER_SELECT, header, body, new okhttp3.Callback() {
@@ -387,8 +410,11 @@ public class ChooseNumberActivity extends AppCompatActivity  {
                                 @Override
                                 public void run() {
                                     Intent intent = new Intent(ChooseNumberActivity.this, PackageActivity.class);
+                                    if("profile_screen".equals(redirect_from)){
+                                        System.out.println("new number selected-----------  "+number);
+                                    preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_NEW_PAY_729_NUMBER,numberType);}
+                                    intent.putExtra("redirect_from",redirect_from);
                                     intent.putExtra("isTrial",isTrial);
-
                                     startActivity(intent);
                                 }
                             });
@@ -407,6 +433,12 @@ public class ChooseNumberActivity extends AppCompatActivity  {
             }
         });
 
+    }
+
+    public  void display_numbers(List<TwilioNumber> twilioNumbers_regular, List<TwilioNumber> twilioNumbers_premium, List<TwilioNumber> twilioNumbers_elite){
+        numberFragment_type_regular.setData(twilioNumbers_regular);
+        numberFragment_type_premium.setData(twilioNumbers_premium);
+        numberFragment_type_elite.setData(twilioNumbers_elite);
     }
 
 }

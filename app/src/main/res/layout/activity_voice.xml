@@ -6,11 +6,14 @@
     android:orientation="vertical"
     android:background="#ffffff">
 
+<include layout="@layout/activity_dialer"/>
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/calling_detail"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
+    android:visibility="visible"
     android:paddingTop="15dp"
     android:paddingLeft="20dp"
     android:paddingBottom="20dp"
@@ -70,36 +73,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:padding="15dp"
         android:layout_marginTop="30dp"
         >
 
 
-        <ImageView
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/icon_speaker"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:src="@mipmap/ic_volume_up"
             android:tint="@color/color_search_bg_light"
+            app:backgroundTint="@color/colorPrimary"
             android:layout_toLeftOf="@+id/icon_mic"
             android:layout_marginRight="45dp"
             />
 
 
 
-        <ImageView
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/icon_mic"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:src="@mipmap/ic_mic_off"
             android:tint="@color/color_search_bg_light"
+            app:backgroundTint="@color/colorPrimary"
             android:layout_centerInParent="true"
             />
-        <ImageView
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/icon_dialpad"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:src="@mipmap/ic_dialpad"
             android:tint="@color/color_search_bg_light"
+            app:backgroundTint="@color/colorPrimary"
             android:layout_toRightOf="@+id/icon_mic"
             android:layout_marginLeft="45dp"
             />
@@ -115,6 +122,8 @@
     android:layout_height="220dp"
     android:layout_centerHorizontal="true"
     android:src="@drawable/human_dar_image"
+    android:id="@+id/calling_image"
+    android:visibility="visible"
     android:tint="#e4e2e2"
     android:layout_above="@+id/call_action_fab"
     />

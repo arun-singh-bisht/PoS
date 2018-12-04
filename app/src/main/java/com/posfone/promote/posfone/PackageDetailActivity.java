@@ -11,7 +11,7 @@ import java.util.LinkedHashMap;
 
 
 public class PackageDetailActivity extends AppCompatActivity implements View.OnClickListener {
-
+    private String redirect_from;
     private HashMap<String,String> packageModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +19,7 @@ public class PackageDetailActivity extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_package_details);
 
         initViews();
+        redirect_from=getIntent().getStringExtra("redirect_from");
     }
 
     private void initViews()
@@ -34,6 +35,7 @@ public class PackageDetailActivity extends AppCompatActivity implements View.OnC
 
         ((TextView)findViewById(R.id.txt_packageType)).setText(packageModel.get("Package Name"));
         ((TextView)findViewById(R.id.txt_packageRate)).setText("\u00a3"+packageModel.get("Subscription Charge")+" / ");
+        ((TextView)findViewById(R.id.subscription_charge)).setText("Account Subscription Charge: "+"\u00a3"+packageModel.get("Subscription Charge"));
         ((TextView)findViewById(R.id.txt_packageDuration)).setText("Per Month");
         ((TextView)findViewById(R.id.txt_package_getway)).setText(packageModel.get("gatewayName"));
 
@@ -56,6 +58,7 @@ public class PackageDetailActivity extends AppCompatActivity implements View.OnC
 
                 Intent intent = new Intent(PackageDetailActivity.this,SummeryActivity.class);
                 Bundle extras = new Bundle();
+                intent.putExtra("redirect_from",redirect_from);
                 extras.putSerializable("SelectedPackage",packageModel);
                 intent.putExtras(extras);
                 startActivity(intent);

@@ -30,6 +30,11 @@ public class SharedPreferenceHandler {
     public static String SP_KEY_PROFILE_PAY_729_NUMBER = "pay729_number";
     public static String SP_KEY_PROFILE_PACKAGE_NAME = "package_name";
     public static String SP_KEY_PROFILE_PACKAGE_EXPIRE_DATE = "package_expire_name";
+    public static String SP_KEY_NEW_PAY_729_NUMBER = null;
+
+
+    //--------------
+    public static String SP_KEY_PROFILE_CALLER_ID = "profile_caller_id";
 
 
     //

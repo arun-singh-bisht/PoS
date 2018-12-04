@@ -120,7 +120,7 @@
             android:id="@+id/txt_caller_id_preference"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Pay729 Number"
+            android:text="audioManager Number"
             android:layout_marginTop="10dp"
             android:background="@drawable/round_bg_border_highlight"
             android:paddingBottom="10dp"
@@ -134,7 +134,10 @@
         <com.posfone.promote.posfone.Utils.TitilliumWebTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/color_search_bg"
+            android:id="@+id/call_preference_text"
             android:textSize="10sp"
+            android:padding="3dp"
             android:layout_marginTop="5dp"
             android:text="Your current caller ID preference is 'My Pay729 Number'"
             />
@@ -196,8 +199,7 @@
             android:layout_height="wrap_content"
             android:textSize="10sp"
             android:layout_marginTop="5dp"
-            android:text="This is the telephone number we will put your customer payment line calls through to you on."
-            />
+            android:text="When people call you on your POSfone number we will put your calls through to this number"/>
 
 
         <!--I will Call from this -->

@@ -29,6 +29,7 @@ import okhttp3.Call;
 public class PackageActivity extends AppCompatActivity implements View.OnClickListener {
 
     private String isTrial;
+    private String redirect_from;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,14 +40,12 @@ public class PackageActivity extends AppCompatActivity implements View.OnClickLi
 
     private void initViews()
     {
+        redirect_from=getIntent().getStringExtra("redirect_from");
         isTrial = getIntent().getStringExtra("isTrial");
-
         TextView txt_title = findViewById(R.id.txt_title);
         txt_title.setText("Packages");
-
         findViewById(R.id.img_right).setVisibility(View.GONE);
         findViewById(R.id.img_left).setOnClickListener(this);
-
         GetPackageDeails();
 
     }
@@ -73,6 +72,22 @@ public class PackageActivity extends AppCompatActivity implements View.OnClickLi
         for(int i=0;i<packageModelList.size();i++)
         {
             final HashMap<String,String> packageModel = packageModelList.get(i);
+
+            // Redirecting to next Page if package is Trial
+            if(packageModelList.size()==1){
+                String name=packageModelList.get(0).get("Package Name");
+                if ("Stripe Trail".equals(name)){
+                    Intent intent = new Intent(PackageActivity.this,PackageDetailActivity.class);
+                    intent.putExtra("redirect_from",redirect_from);
+                    Bundle extras = new Bundle();
+                    extras.putSerializable("SelectedPackage",packageModel);
+                    intent.putExtras(extras);
+                    PackageActivity.this.finish();
+                    startActivity(intent);
+                }
+            }
+            //--------------------------------------------
+
             View view = getLayoutInflater().inflate(R.layout.package_details_row,null);
             TextView package_name = view.findViewById(R.id.package_name);
             TextView gateway_name = view.findViewById(R.id.gateway_name);
@@ -88,13 +103,17 @@ public class PackageActivity extends AppCompatActivity implements View.OnClickLi
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(PackageActivity.this,PackageDetailActivity.class);
+                    intent.putExtra("redirect_from",redirect_from);
                     Bundle extras = new Bundle();
                     extras.putSerializable("SelectedPackage",packageModel);
                     intent.putExtras(extras);
                     startActivity(intent);
                 }
             });
+
+
         }
+
 
     }
 
@@ -168,7 +187,9 @@ public class PackageActivity extends AppCompatActivity implements View.OnClickLi
 
                                 packageModelList.add(hashMap);
                             }
+                            if(jsonArray.length()==1){
 
+                            }
                              runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {

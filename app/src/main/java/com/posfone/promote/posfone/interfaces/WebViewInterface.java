@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
+import android.widget.Toast;
 
 import com.posfone.promote.posfone.MainActivity;
 import com.posfone.promote.posfone.ManageNumberActivity;
@@ -23,17 +24,17 @@ public class WebViewInterface {
         @JavascriptInterface
         public void showToast(String toast) {
             //Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
-            Log.i("WebViewInterface","showToast(String toast)");
+            Log.i("WebViewInterface","showAndroidToast(String toast)");
             Intent intent = new Intent(mContext,MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(intent);
             ((Activity)mContext).finish();
         }
 
-        /** Show a toast from the web page */
+       /* *//** Show a toast from the web page *//*
         @JavascriptInterface
         public void showToast() {
             //Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
             Log.i("WebViewInterface","showToast()");
-        }
+        }*/
     }

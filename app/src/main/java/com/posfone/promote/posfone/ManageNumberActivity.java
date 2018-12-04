@@ -27,14 +27,22 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
 
     private int ACTION_FOR_COUNTRY_OUTGOING_CALL = 1001;
     private int ACTION_FOR_COUNTRY_INCOMING_CALL = 1002;
-
+    private String redirect_from;
     private String countryCode_callReciveNumber;
     private String countryCode_callMakingNumber;
+    private String numberForReceivingCall_country;
+    private String numberFoMakingCall_country;
+    private String inbound_number;
+    private String outbound_number;
+    TextView inbound_country,outbound_country;
+    TextView inbound_country_number,outbound_country_number;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_number);
-
+        redirect_from=getIntent().getStringExtra("redirect_from");
         initViews();
 
         getCallProfle();
@@ -42,14 +50,18 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
 
     private void initViews()
     {
+
         TextView txt_title = findViewById(R.id.txt_title);
         txt_title.setText("Manage Number");
-
+        inbound_country=findViewById(R.id.txt_select_country_incoming_call);
+        outbound_country=findViewById(R.id.txt_select_country_outgoing_call);
+        inbound_country_number=findViewById(R.id.txt_incoming_number);
+        outbound_country_number=findViewById(R.id.txt_outgoing_number);
         findViewById(R.id.img_right).setVisibility(View.GONE);
         findViewById(R.id.img_left).setVisibility(View.GONE);
         findViewById(R.id.btn_save).setOnClickListener(this);
-        findViewById(R.id.txt_select_country_incoming_call).setOnClickListener(this);
-        findViewById(R.id.txt_select_country_outgoing_call).setOnClickListener(this);
+        inbound_country.setOnClickListener(this);
+        outbound_country.setOnClickListener(this);
 
     }
 
@@ -170,14 +182,23 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
                         if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
 
                             final String stripeurl = jsonObject.getString("stripeurl");
+                            System.out.println("--------------------"+stripeurl);
 
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Intent intent = new Intent(ManageNumberActivity.this,WebViewActivity.class);
-                                    intent.putExtra("stripeurl",stripeurl);
-                                    //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    startActivity(intent);
+                                    if("profile_screen".equals(redirect_from)){
+                                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                    else {
+                                        Intent intent = new Intent(ManageNumberActivity.this, WebViewActivity.class);
+                                        intent.putExtra("stripeurl", stripeurl);
+                                        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent);
+                                    }
                                 }
                             });
 
@@ -231,8 +252,10 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
                     try {
 
                         String res = response.body().string();
+                        System.out.println("--------------------------------------------------------------------------------");
                         Log.i("onResponse",res);
                         final JSONObject jsonObject = new JSONObject(res);
+
 
                         if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
 
@@ -240,11 +263,26 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
                             JSONObject in1_user_number =  mypreference.getJSONObject("in1_user_number");
                             JSONObject out1_user_number =  mypreference.getJSONObject("out1_user_number");
 
-                            String numberForReceivingCall_country = in1_user_number.getString("country");
+                            numberForReceivingCall_country = in1_user_number.getString("country");
                             countryCode_callReciveNumber = "+"+in1_user_number.getString("code");
+                            inbound_number = "+"+in1_user_number.getString("number");
 
-                            String numberFoMakingCall_country = out1_user_number.getString("country");
+                            numberFoMakingCall_country = out1_user_number.getString("country");
                             countryCode_callMakingNumber = "+"+out1_user_number.getString("code");
+                            outbound_number = "+"+out1_user_number.getString("number");
+
+                            if("profile_screen".equals(redirect_from)){
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        inbound_country.setText(numberForReceivingCall_country);
+                                        outbound_country.setText(numberFoMakingCall_country);
+                                        inbound_country_number.setText(inbound_number.replace("+",""));
+                                        outbound_country_number.setText(outbound_number.replace("+",""));
+                                    }
+                                });
+
+                            }
 
                         }
 

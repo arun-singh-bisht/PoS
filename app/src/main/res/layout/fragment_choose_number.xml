@@ -1,31 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    android:orientation="vertical"
-    >
-    <com.posfone.promote.posfone.Utils.TitilliumWebEditText
-        android:id="@+id/ed_search"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="1dp">
+
+        <ImageButton
+            android:id="@+id/country_code_button"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/filter_button"
+            />
+
+        <com.posfone.promote.posfone.Utils.TitilliumWebEditText
+            android:id="@+id/ed_search"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="5dp"
+            android:inputType="phone"
+            android:layout_toRightOf="@+id/country_code_button"
+            android:background="@drawable/round_bg_editview"
+            android:drawablePadding="20dp"
+            android:hint="@string/search_contact"
+            android:padding="7dp"
+            android:singleLine="true"
+            android:textSize="14dp" />
+
+        <ImageView
+            android:id="@id/search_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/ed_search"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/search_button" />
+
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/search_error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/search_contact"
-        android:background="@drawable/round_bg_editview"
-        android:padding="7dp"
-        android:drawableLeft="@drawable/search"
-        android:drawablePadding="20dp"
-        android:textSize="14dp"
-        android:singleLine="true"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:textColor="@color/error_red"
+        android:text=" Please Enter Minimum Two Digit to Search"
+        android:gravity="center"
+        android:visibility="gone"/>
+<LinearLayout
+    android:id="@+id/number_message"
+    android:layout_width="match_parent"
+    android:layout_height="25dp"
+    android:visibility="gone"
+    android:background="#696969">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#ffff"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="15sp"
+        android:text="No Numbers Found! Try Another Search.."/>
+
+</LinearLayout>
+    <LinearLayout
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="0dp"
-        />
+        android:id="@+id/code_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:padding="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Area code  -  "
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/country_code"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:inputType="number"
+            android:maxLength="6"/>
+
+    </LinearLayout>
 
     <ListView
         android:id="@+id/list_payment"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
     </ListView>
 
 </LinearLayout>

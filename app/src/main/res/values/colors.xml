@@ -3,8 +3,10 @@
     <color name="colorPrimary">#33873F</color>
     <color name="colorPrimaryDark">#296b32</color>
     <color name="colorAccent">#7b7676</color>
+    <color name="colorlightgray">#7b7676</color>
 
     <color name="color_profile_divider">#dfdddd</color>
+    <color name="error_red">#ff00</color>
 
     <!--Payment screen-->
     <color name="color_phone_number">#797777</color>
@@ -25,6 +27,7 @@
 
     <color name="color_selected_iteam">#4885ed</color>
 
+    <color name="black_overlay">#66000000</color>
 
 
 </resources>

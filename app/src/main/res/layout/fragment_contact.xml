@@ -8,24 +8,44 @@
     android:orientation="vertical"
     android:padding="15dp"
     >
-
     <com.posfone.promote.posfone.Utils.TitilliumWebEditText
         android:id="@+id/txt_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/search_contact"
+        android:singleLine="true"
         android:background="@drawable/round_bg_editview"
         android:padding="10dp"
         android:drawableLeft="@drawable/search"
         android:drawablePadding="20dp"
         android:textSize="16dp"
         />
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusableInTouchMode="true"
         android:layout_marginTop="8dp"
-        ></ListView>
+        >
+
+    </ListView>
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/add_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            app:backgroundTint="@color/colorPrimary"
+            android:clickable="true"
+            app:srcCompat="@drawable/add"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+
 
 </LinearLayout>
