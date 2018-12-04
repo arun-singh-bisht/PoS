@@ -14,15 +14,15 @@ public class CountryModel extends BaseModel {
 
     @Column(name = "iso")
     @SerializedName("iso")
-    public  String iso;
+    public String iso;
 
     @Column(name = "name")
     @SerializedName("name")
-    public  String name;
+    public String name;
 
     @Column(name = "phonecode")
     @SerializedName("phonecode")
-    public  String phonecode;
+    public String phonecode;
 
     @Column(name = "flag")
     @SerializedName("flag")

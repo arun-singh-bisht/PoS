@@ -7,8 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
-
 import com.google.gson.JsonObject;
 import com.posfone.promote.posfone.Utils.CustomAlertDialog;
 import com.posfone.promote.posfone.Utils.GeneralUtil;
@@ -24,8 +22,6 @@ import butterknife.OnClick;
 import okhttp3.Call;
 
 public class SignInActivity extends AppCompatActivity implements View.OnClickListener {
-    EditText email;
-    EditText pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +34,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     private void intiView()
     {
-        email=findViewById(R.id.input_name);
-        pass=findViewById(R.id.input_password);
         String username = getIntent().getStringExtra("username");
         String password = getIntent().getStringExtra("password");
 
@@ -51,21 +45,20 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
 
         if(username!=null) {
-            email.setText(username);
-            pass.setText(password);
+            ((EditText) findViewById(R.id.input_name)).setText(username);
+            ((EditText) findViewById(R.id.input_password)).setText(password);
             findViewById(R.id.txt_account_activation_messg).setVisibility(View.VISIBLE);
         }
 
 
-        /*Intent intent = getIntent();
+        Intent intent = getIntent();
         Uri data = intent.getData();
         if(data!=null) {
             String code = data.toString();
             String activationCode = code.substring(code.lastIndexOf('/') + 1);
-            System.out.println("------------------------------------------------------------------------------------------");
             Log.i("SignInActivity", " " + data.toString());
             accountActivation(activationCode);
-        }*/
+        }
 
     }
     @Override
@@ -100,15 +93,14 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-
-
     @OnClick(R.id.btn_login)
     public void login()
     {
         //Get Values
-
-        String username = email.getText().toString();
-        String password = pass.getText().toString();
+        EditText input_name =  findViewById(R.id.input_name);
+        EditText input_password =  findViewById(R.id.input_password);
+        String username = input_name.getText().toString();
+        String password = input_password.getText().toString();
 
         //Validate Values
         String message = null;
@@ -319,7 +311,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 try {
 
                     String res = response.body().string();
-                    System.out.println("------------------------------------------------------------------------------------------");
                     Log.i("onResponse",res);
                     final JSONObject jsonObject = new JSONObject(res);
                     final String message = jsonObject.getString("message");
@@ -356,44 +347,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
             }
         });
-
-    }
-    @Override
-    public void onResume(){
-        super.onResume();
-        Intent intent = getIntent();
-        System.out.println("Hello we entered");
-        Uri data = intent.getData();
-        if(data!=null) {
-            String code = data.toString();
-            String activationCode = code.substring(code.lastIndexOf('/') + 1);
-            System.out.println("------------------------------------------------------------------------------------------");
-            Log.i("SignInActivity", " " + data.toString());
-            accountActivation(activationCode);
-        }
-
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        // Save UI state changes to the savedInstanceState.
-        // This bundle will be passed to onCreate if the process is
-        // killed and restarted.
-        savedInstanceState.putString("Email", email.getText().toString());
-        savedInstanceState.putString("password",pass.getText().toString());
-        // etc.
-    }
-
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        // Restore UI state from the savedInstanceState.
-        // This bundle has also been passed to onCreate.
-        String email_g = savedInstanceState.getString("email");
-        String password=savedInstanceState.getString("password");
-        email.setText(email_g);
-        pass.setText(password);
 
     }
 }

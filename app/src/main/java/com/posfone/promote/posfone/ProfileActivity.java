@@ -1,18 +1,13 @@
 package com.posfone.promote.posfone;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.sip.SipManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -71,15 +66,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         initViews();
     }
 
-    @SuppressLint("HandlerLeak")
-    private void initViews() {
+    private void initViews()
+    {
+
 
 
         //Back arrow
         findViewById(R.id.img_left).setOnClickListener(this);
         findViewById(R.id.img_right).setOnClickListener(this);
 
-        handler = new Handler() {
+        handler = new Handler(){
             @Override
             public void handleMessage(Message msg) {
 
@@ -89,8 +85,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 indeterminateBar.setVisibility(View.VISIBLE);
 
                 String image_path = msg.getData().getString("image_path");
-                Log.i("handleMessage", image_path);
-                if (image_path != null && !image_path.isEmpty())
+                Log.i("handleMessage",image_path);
+                if(image_path!=null && !image_path.isEmpty())
                     Picasso.with(ProfileActivity.this)
                             .load(image_path)
                             .memoryPolicy(MemoryPolicy.NO_CACHE)
@@ -104,10 +100,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                                 @Override
                                 public void onError() {
                                     indeterminateBar.setVisibility(View.GONE);
-                                    Toast.makeText(ProfileActivity.this, "Error in Image updation.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ProfileActivity.this,"Error in Image updation.",Toast.LENGTH_SHORT).show();
                                 }
                             });
-
             }
         };
 
@@ -117,33 +112,34 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         Picasso.with(this).setLoggingEnabled(true);
     }
 
-    private void loadProfileDetails() {
+    private void loadProfileDetails()
+    {
         SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(ProfileActivity.this);
 
 
         String address = "";
-        String city = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_CITY);
-        String state = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_STATE);
-        String country = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY);
-        String postcode = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_POSTCODE);
+        String city =  preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_CITY);
+        String state =  preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_STATE);
+        String country =  preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY);
+        String postcode =  preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_POSTCODE);
 
-        if (city != null && city.length() > 0 && !city.equalsIgnoreCase("null"))
-            address = city + ",";
-        if (state != null && state.length() > 0 && !state.equalsIgnoreCase("null"))
-            address = address + "" + state + ",";
-        if (country != null && country.length() > 0 && !country.equalsIgnoreCase("null"))
-            address = address + "" + country;
-        if (postcode != null && postcode.length() > 0 && !postcode.equalsIgnoreCase("null"))
-            address = address + "," + postcode;
+        if(city!=null && city.length()>0 && !city.equalsIgnoreCase("null"))
+            address = city+",";
+        if(state!=null && state.length()>0 && !state.equalsIgnoreCase("null"))
+            address = address+""+state+",";
+        if(country!=null && country.length()>0 && !country.equalsIgnoreCase("null"))
+            address = address+""+country;
+        if(postcode!=null && postcode.length()>0 && !postcode.equalsIgnoreCase("null"))
+            address = address+","+postcode;
 
-        ((TextView) findViewById(R.id.txt_user_name)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_FIRST_NAME) + " " + preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_LAST_NAME));
-        ((TextView) findViewById(R.id.txt_user_location)).setText(address);
+        ((TextView)findViewById(R.id.txt_user_name)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_FIRST_NAME)+" "+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_LAST_NAME));
+        ((TextView)findViewById(R.id.txt_user_location)).setText(address);
 
-        ((TextView)findViewById(R.id.txt_user_phone)).setText("+"+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHONE_NUMBER));
-        ((TextView)findViewById(R.id.txt_pay_number)).setText("+"+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER));
-        ((TextView)findViewById(R.id.txt_email_address)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_USER_EMAIL));
-        ((TextView)findViewById(R.id.txt_plan_type)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PACKAGE_NAME));
-        ((TextView)findViewById(R.id.txt_plan_exire_date)).setText("Expire - "+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PACKAGE_EXPIRE_DATE));
+        ((TextView)findViewById(R.id.txt_user_phone)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHONE_NUMBER)+"");
+        ((TextView)findViewById(R.id.txt_pay_number)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER)+"");
+        ((TextView)findViewById(R.id.txt_email_address)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_USER_EMAIL)+"");
+        ((TextView)findViewById(R.id.txt_plan_type)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PACKAGE_NAME)+"");
+        ((TextView)findViewById(R.id.txt_plan_exire_date)).setText("Expire - "+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PACKAGE_EXPIRE_DATE)+"");
 
         //Load New Image in Profile Pic
         String profile_pic_url = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHOTO);
@@ -194,8 +190,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onPositiveClick() {
                 Intent intent = new Intent(ProfileActivity.this, PackageActivity.class);
-                intent.putExtra("redirect_from","profile_screen_positive_click");
+                intent.putExtra("redirect_from","profile_screen");
                 intent.putExtra("isTrial","0");
+
                 startActivity(intent);
                 finish();
             }
@@ -259,7 +256,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         //RequestBody
         RequestBody formBody = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
-                    .addFormDataPart("profile_photo", file.getName(),RequestBody.create(MediaType.parse("image/png"), file))
+                    .addFormDataPart("profile_photo", file.getName(),
+                            RequestBody.create(MediaType.parse("image/png"), file))
                     .build();
 
         Call call = RESTClient.uploadPhoto(header, formBody, this);

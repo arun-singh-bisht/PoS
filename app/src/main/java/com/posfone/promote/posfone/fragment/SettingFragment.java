@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.posfone.promote.posfone.ManageNumberActivity;
@@ -20,7 +19,6 @@ import com.posfone.promote.posfone.Utils.CustomAlertDialog;
 import com.posfone.promote.posfone.Utils.CustomSelectorDialog;
 import com.posfone.promote.posfone.Utils.GeneralUtil;
 import com.posfone.promote.posfone.Utils.SharedPreferenceHandler;
-import com.posfone.promote.posfone.Utils.TitilliumWebTextView;
 import com.posfone.promote.posfone.rest.ApiClient;
 import com.posfone.promote.posfone.rest.RESTClient;
 
@@ -49,22 +47,18 @@ public class SettingFragment extends BaseFragment implements AdapterView.OnItemC
 
     String fragmentName;
     String voicePeference;
-    String posfone_number="Your Account will show calls coming in from and going out from the POSfone number";
-    String my_number="Your Account will show calls coming in from and going out from the your mobile/telephone number";
     String callerIdPreference;
     String numberFoMakingCall_country;
     String numberFoMakingCall_code;
-    static String numberFoMakingCall_number;
+    String numberFoMakingCall_number;
     String numberForReceivingCall_country;
     String numberForReceivingCall_code;
-    static String numberForReceivingCall_number;
+    String numberForReceivingCall_number;
     String pay729number;
 
 
     @BindView(R.id.pay_number)
     TextView pay_number;
-    @BindView(R.id.call_preference_text)
-    TitilliumWebTextView preference_text;
     @BindView(R.id.tv_number_for_recv_call_country)
     TextView tv_number_for_recv_call_country;
     @BindView(R.id.tv_number_for_recv_call)
@@ -125,12 +119,10 @@ public class SettingFragment extends BaseFragment implements AdapterView.OnItemC
         else if(voicePeference.equalsIgnoreCase("female"))
             txt_voice_preference.setText("Female");
 
-        if(callerIdPreference.equalsIgnoreCase("my_pay729_number")){
-            txt_caller_id_preference.setText("POSfone Number");
-        preference_text.setText(posfone_number);}
-        else if(callerIdPreference.equalsIgnoreCase("customer_number")){
+        if(callerIdPreference.equalsIgnoreCase("my_pay729_number"))
+            txt_caller_id_preference.setText("Pay729 Number");
+        else if(callerIdPreference.equalsIgnoreCase("customer_number"))
             txt_caller_id_preference.setText("My Number");
-        preference_text.setText(my_number);}
 
     }
 
@@ -173,7 +165,7 @@ public class SettingFragment extends BaseFragment implements AdapterView.OnItemC
     {
         //VoicePreference Option Generate
         CustomSelectorDialog.Item item_1 = new CustomSelectorDialog.Item();
-        item_1.itemName ="POSfone Number";
+        item_1.itemName ="Pay729 Number";
         item_1.itemName_alias = "my_pay729_number";
         if(callerIdPreference.equalsIgnoreCase(item_1.itemName_alias))
             item_1.isSelected = true;
@@ -197,13 +189,8 @@ public class SettingFragment extends BaseFragment implements AdapterView.OnItemC
             public void onItemSelected(CustomSelectorDialog.Item item) {
                 txt_caller_id_preference.setText(item.itemName);
                 callerIdPreference = item.itemName_alias;
-                if(callerIdPreference.equals("customer_number"))
-                    preference_text.setText(my_number);
-                else
-                    preference_text.setText(my_number);
             }
         });
-
     }
 
     @OnClick(R.id.tv_number_for_recv_call_country)
@@ -319,7 +306,7 @@ public class SettingFragment extends BaseFragment implements AdapterView.OnItemC
                             numberFoMakingCall_code = "+"+out1_user_number.getString("code");
                             numberFoMakingCall_number = out1_user_number.getString("number");
 
-                            pay729number = "+"+ jsonObject.getString("pay729numbers");
+                            pay729number =  jsonObject.getString("pay729numbers");
 /*
                             JSONArray pay729numbers = jsonObject.getJSONArray("pay729numbers");
                             if(pay729numbers.length()>0)
@@ -355,7 +342,7 @@ public class SettingFragment extends BaseFragment implements AdapterView.OnItemC
         //Show loading dialog
         GeneralUtil.showProgressDialog(getActivity(),null);
 
-        final SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(getActivity());
+        SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(getActivity());
         String userID = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
 
         //Header
@@ -363,7 +350,7 @@ public class SettingFragment extends BaseFragment implements AdapterView.OnItemC
         header.put("x-api-key", ApiClient.X_API_KEY);
         header.put("userid", userID);
         //RequestBody
-        final JsonObject jsonObject = new JsonObject();
+        JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("in1c",numberForReceivingCall_code);
         jsonObject.addProperty("in1",numberForReceivingCall_number);
         jsonObject.addProperty("out1c",numberFoMakingCall_code);
@@ -386,19 +373,11 @@ public class SettingFragment extends BaseFragment implements AdapterView.OnItemC
 
                 if (response.isSuccessful()) {
                     try {
-                       String res = response.body().string();
+
+                        String res = response.body().string();
                         Log.i("onResponse",res);
                         JSONObject jsonObject = new JSONObject(res);
                         String message = jsonObject.getString("message");
-                       String preference= txt_caller_id_preference.getText().toString();
-                        String number= tv_number_for_making_call.getText().toString();
-
-
-                        SharedPreferenceHandler sharedPreferenceHandler=new SharedPreferenceHandler(getActivity());
-                        preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_CALLER_ID,preference);
-//                        Toast.makeText(getActivity(),preference,Toast.LENGTH_SHORT).show();
-                        //System.out.println(preference);
-
 
                         if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
 

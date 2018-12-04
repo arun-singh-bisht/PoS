@@ -182,7 +182,7 @@
                 android:singleLine="true"
                 android:textSize="@dimen/input_text_size_signup"
                 android:text=""
-                android:hint="Postcode/Zipcode" />
+                android:hint="Postcode" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout

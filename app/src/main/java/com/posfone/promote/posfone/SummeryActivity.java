@@ -31,7 +31,6 @@ import com.posfone.promote.posfone.googlepay.GooglePay;
 import com.posfone.promote.posfone.googlepay.GooglePayTest;
 import com.posfone.promote.posfone.rest.ApiClient;
 import com.posfone.promote.posfone.rest.RESTClient;
-import com.posfone.promote.posfone.stripe.StripeBaseActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -41,7 +40,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.internal.Utils;
 import okhttp3.Call;
 
 
@@ -50,19 +48,13 @@ public class SummeryActivity extends AppCompatActivity implements View.OnClickLi
     private HashMap<String,String> packageModel;
     private PaymentsClient mPaymentsClient;
     private View mGooglePayButton;
-    private String redirect_from;
     private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 42;
-    private String package_name="";
-    private String total="";
-    private String package_id="";
-    private String txn_id="";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summery);
-        redirect_from=getIntent().getStringExtra("redirect_from");
+
         initViews();
 
         // initialize a Google Pay API client for an environment suitable for testing
@@ -99,7 +91,6 @@ public class SummeryActivity extends AppCompatActivity implements View.OnClickLi
     private void loadPackagePricingDetails()
     {
         LinearLayout linearLayout = findViewById(R.id.packageDetailslayout);
-        //Utils.getCurrencySymbol("INR");
 
         String key_order = packageModel.get("key_order");
         String[] key_order_array = key_order.split("\\*");
@@ -113,22 +104,10 @@ public class SummeryActivity extends AppCompatActivity implements View.OnClickLi
 
             txt_item_name.setText(key_order);
             String value = packageModel.get(key_order);
-            if("Package Name".equals(key_order)){
-                package_name=value;
-                package_id=packageModel.get("packageId");
-                txn_id="12345";
-            }
-            if("Grand Total".equals(key_order)){
-                total=value;
-            }
-            System.out.println("order is     "+package_name+" - "+total);
-
             if(value.isEmpty() || value.equalsIgnoreCase("null"))
-                value = "\u00a3";
-            if(i>0)
-            txt_item_value.setText("\u00a3"+value);
-             else
-                txt_item_value.setText(value);
+                value = "-";
+            txt_item_value.setText(value);
+
             linearLayout.addView(view);
         }
     }
@@ -145,26 +124,20 @@ public class SummeryActivity extends AppCompatActivity implements View.OnClickLi
             break;
             case R.id.btn_pay:{
                 //Show Confirmation Dialog Box before confirming order
-                        System.out.println(package_id+"  ---  "+package_name);
-                        if("Stripe Trail".equals(package_name)){
-                            Intent intent=new Intent(getApplicationContext(),ManageNumberActivity.class);
-                            intent.putExtra("redirect_from", redirect_from);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                            purchaseTrialPakage();
-                            finish();
-                        }
-                        else {
-                            Intent intent = new Intent(getApplicationContext(), StripeBaseActivity.class);
-                            intent.putExtra("redirect_from", redirect_from);
-                            intent.putExtra("txn_id", txn_id);
-                            intent.putExtra("package_id", package_id);
-                            intent.putExtra("package_name", package_name);
-                            intent.putExtra("total", total);
-                            startActivity(intent);
 
-                        }
+                CustomAlertDialog.showDialog(SummeryActivity.this, "Are you sure?",R.layout.custom_dialo, new CustomAlertDialog.I_CustomAlertDialog() {
+                    @Override
+                    public void onPositiveClick() {
+                        purchaseTrialPakage();
                     }
+
+                    @Override
+                    public void onNegativeClick() {
+
+                    }
+                });
+
+            }
             break;
 
 
@@ -188,7 +161,6 @@ public class SummeryActivity extends AppCompatActivity implements View.OnClickLi
         //RequestBody
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("package_id",packageModel.get("packageId"));
-        //System.out.println("package id--------------- "+packageModel.get("packageId"));
         jsonObject.addProperty("txn_id","00");
         String body = "json="+jsonObject.toString();
 
@@ -216,18 +188,8 @@ public class SummeryActivity extends AppCompatActivity implements View.OnClickLi
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                                Intent intent = new Intent(SummeryActivity.this,ManageNumberActivity.class);
-                                                 // System.out.println(redirect_from);
-                                                if("profile_screen_positive_click".equals(redirect_from)){
-                                                    Intent myintent = new Intent(SummeryActivity.this,SignInActivity.class);
-                                                    startActivity(myintent);
-                                                    finish();
-                                                }else if("profile_screen".equals(redirect_from)){
-                                                    intent.putExtra("redirect_from","profile_screen");
-                                                    startActivity(intent);}
-                                                    else
-                                                    startActivity(intent);
-
+                                    Intent intent = new Intent(SummeryActivity.this,ManageNumberActivity.class);
+                                    startActivity(intent);
                                 }
                             });
 

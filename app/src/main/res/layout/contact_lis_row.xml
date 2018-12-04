@@ -14,23 +14,19 @@
         android:text="AD"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/color_phone_number"
         android:background="@drawable/circular_textview"
         android:gravity="center"
         />
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+
     <com.posfone.promote.posfone.Utils.TitilliumWebTextView
         android:id="@+id/contact_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Andre Doe"
         android:textSize="17sp"
-        android:textDirection="ltr"
         android:textColor="@color/color_phone_number"
-        android:gravity="left"
+        android:gravity="center"
         android:layout_marginLeft="15dp"
         />
 
@@ -39,11 +35,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Andre Doe"
-        android:textSize="12.5sp"
-        android:textColor="@color/colorPrimary"
+        android:textSize="14sp"
+        android:textColor="@color/color_phone_number"
         android:gravity="center"
         android:layout_marginLeft="15dp"
-        android:visibility="visible"
+        android:visibility="gone"
         />
-</LinearLayout>
+
 </LinearLayout>

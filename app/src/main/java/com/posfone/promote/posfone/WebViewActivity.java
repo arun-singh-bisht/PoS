@@ -1,33 +1,19 @@
 package com.posfone.promote.posfone;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.webkit.JavascriptInterface;
-import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ProgressBar;
 
 import com.posfone.promote.posfone.interfaces.WebViewInterface;
 
 public class WebViewActivity extends AppCompatActivity implements View.OnClickListener {
 
-    JavaScriptInterface  JSInterface;
+
     WebView myWebView;
-    ProgressBar progressBar;
     private class MyWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -36,55 +22,26 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
 
         initViews();
     }
 
+
     private void initViews()
     {
+
         String stripeurl = getIntent().getStringExtra("stripeurl");
         stripeurl = "https://dashboard.stripe.com/oauth/authorize?response_type=code&client_id=ca_Cc0qF3AKZqT8F2rcaXaGkfrtcy5tUxUl&scope=read_write&redirect_uri=https://accounts.protechgenie.in/stripereturn&state=eyJ1c2VyX2lkIjoyMzUsImdhdGV3YXlfaWQiOjEsInJ1cmkiOiJodHRwczpcL1wvYWNjb3VudHMucHJvdGVjaGdlbmllLmluYXBwXC9zdHJpcGVyZXNwb25zZSJ9";
         myWebView = findViewById(R.id.webview);
         WebSettings webSettings = myWebView.getSettings();
-        //JSInterface = new JavaScriptInterface(this);
-        progressBar=findViewById(R.id.progress);
-        progressBar.setMax(100);
         webSettings.setJavaScriptEnabled(true);
         myWebView.setWebViewClient(new MyWebViewClient());
-        try{
-        myWebView.addJavascriptInterface(new WebViewInterface(this), "Android");}catch (Exception e){e.printStackTrace();}
+        myWebView.addJavascriptInterface(new WebViewInterface(this), "Android");
         myWebView.loadUrl(stripeurl);
-        myWebView.setWebChromeClient(new WebChromeClient()  {
-        @Override
-        public void onProgressChanged(WebView view, int newProgress) {
-        super.onProgressChanged(view, newProgress);
-        progressBar.setProgress(newProgress);
     }
-    });
-    }
-
-    public class JavaScriptInterface {
-        Context mContext;
-
-        /** Instantiate the interface and set the context */
-        JavaScriptInterface(Context c) {
-            mContext = c;
-        }
-
-        @android.webkit.JavascriptInterface
-        public void showToast(String toast) {
-            //Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
-            Log.i("WebViewInterface","showAndroidToast(String toast)");
-            Intent intent = new Intent(mContext,MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-            mContext.startActivity(intent);
-            ((Activity)mContext).finish();
-        }
-    }
-
 
     @Override
     public void onClick(View v) {

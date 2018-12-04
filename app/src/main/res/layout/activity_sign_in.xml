@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="10"
@@ -16,9 +14,7 @@
         android:background="@color/colorPrimary"
         >
 
-        <include layout="@layout/app_bar_custom">
-
-        </include>
+        <include layout="@layout/app_bar_custom"></include>
 
         <ImageView
             android:layout_width="189dp"
@@ -67,7 +63,7 @@
                 android:singleLine="true"
                 android:textSize="@dimen/input_text_size"
                 android:text=""
-                android:hint="Email" />
+                android:hint="@string/hint_name" />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -75,8 +71,6 @@
             android:id="@+id/input_layout_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:passwordToggleEnabled="true"
-            app:passwordToggleDrawable="@drawable/password_see"
             android:layout_marginTop="@dimen/margin_between_buttons_sign_in"
             >
 
@@ -86,6 +80,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:inputType="textPassword"
+                android:drawableRight="@drawable/password_see"
                 android:drawablePadding="5dp"
                 android:text=""
                 android:textSize="@dimen/input_text_size"

@@ -119,7 +119,6 @@ public class CreatePasswordActivity extends AppCompatActivity implements View.On
 
                         String res = response.body().string();
                         Log.i("onResponse",res);
-                        System.out.println("----------"+res);
                         JSONObject jsonObject = new JSONObject(res);
                         String message = jsonObject.getString("message");
 

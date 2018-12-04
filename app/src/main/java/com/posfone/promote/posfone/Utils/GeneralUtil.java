@@ -8,9 +8,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.posfone.promote.posfone.R;
-import com.posfone.promote.posfone.SignUpActivity;
-
 import dmax.dialog.SpotsDialog;
 
 public class GeneralUtil {
@@ -52,8 +49,6 @@ public class GeneralUtil {
         if(text==null || text.isEmpty())
             return false;
         if(!android.util.Patterns.EMAIL_ADDRESS.matcher(text).matches())
-            return false;
-        if(!SignUpActivity.email_Status)
             return false;
         return true;
     }

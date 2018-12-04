@@ -1,17 +1,13 @@
 package com.posfone.promote.posfone.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.posfone.promote.posfone.R;
-import com.posfone.promote.posfone.VoiceActivity;
 import com.posfone.promote.posfone.model.BaseModel;
 import com.posfone.promote.posfone.model.PaymentModel;
 
@@ -65,39 +61,17 @@ public class GenericListAdapter extends BaseAdapter {
 
         View rowView = convertView;
         // reuse views
-       // if (rowView == null) {
+        if (rowView == null) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             rowView = inflater.inflate(layoutId, null);
             // configure view holder
 
-      //  }
+        }
 
         rowView =  initGenericView(rowView,i);
-        ImageView imageView = null;
-         try {
-             imageView=rowView.findViewById(R.id.call_button);
-         }catch (Exception e){}
 
-        if(imageView!=null) {
-            final View finalRowView = rowView;
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    TextView view1 = finalRowView.findViewById(R.id.contact_number);
-                    TextView view2 = finalRowView.findViewById(R.id.contact_name);
-                    String number = view1.getText().toString();
-                    String name = view2.getText().toString();
-                    Intent intent = new Intent(context,VoiceActivity.class);
-                    intent.putExtra("from_number","16617480240");
-                    intent.putExtra("to_number",number);
-                    intent.putExtra("to_name",name);
-                    context.startActivity(intent);
-                }
-            });
-        }
         return rowView;
-
     }
 
     public View initGenericView(View view,int position)
