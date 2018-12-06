@@ -4,13 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.posfone.promote.posfone.Utils.SharedPreferenceHandler;
 
 
 public class SplashActivity extends AppCompatActivity {
 
 
+    private final String TAG = "SplashActivity";
     private String lastCountryFlagName = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +36,8 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 },1200);
 
-
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Log.d(TAG, "Refreshed token: " + refreshedToken);
     }
 
 }

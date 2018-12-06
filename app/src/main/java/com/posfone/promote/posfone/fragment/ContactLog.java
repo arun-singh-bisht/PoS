@@ -12,6 +12,7 @@ import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +20,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+import com.posfone.promote.posfone.MainActivity;
+import com.posfone.promote.posfone.Utils.CustomAlertDialog;
+import com.posfone.promote.posfone.Utils.GeneralUtil;
+import com.posfone.promote.posfone.Utils.TwilioTokenManager;
 import com.posfone.promote.posfone.VoiceActivity;
 import com.posfone.promote.posfone.database.DatabaseHelper;
 import com.posfone.promote.posfone.Dialer;
 import com.posfone.promote.posfone.R;
 import com.posfone.promote.posfone.adapters.GenericListAdapter;
+import com.posfone.promote.posfone.rest.RESTClient;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -65,8 +73,23 @@ public class ContactLog extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getActivity(), Dialer.class);
-                startActivity(intent);
+               /* Intent intent=new Intent(getActivity(), Dialer.class);
+                startActivity(intent);*/
+
+                CustomAlertDialog.showInputDialog(getActivity(), "Make Call To", R.layout.custom_input_dialo, new CustomAlertDialog.I_CustomInputDialog() {
+                    @Override
+                    public void onPositiveClick(final String accountIdentity) {
+                        Intent intent=new Intent(getActivity(), VoiceActivity.class);
+                        intent.setAction(VoiceActivity.ACTION_OUTGOING_CALL);
+                        intent.putExtra("to_number",accountIdentity);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onNegativeClick() {
+
+                    }
+                });
 
 
             }

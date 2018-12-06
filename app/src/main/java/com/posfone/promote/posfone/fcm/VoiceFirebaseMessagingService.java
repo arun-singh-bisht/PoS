@@ -60,7 +60,7 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
                 @Override
                 public void onCallInvite(CallInvite callInvite) {
                     VoiceFirebaseMessagingService.this.notify(callInvite, notificationId);
-                    //VoiceFirebaseMessagingService.this.sendCallInviteToActivity(callInvite, notificationId);
+
                 }
 
                 @Override
@@ -106,7 +106,7 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
                                 .setSmallIcon(R.drawable.ic_call_white_24dp)
                                 .setContentTitle(getString(R.string.app_name))
                                 .setContentText(callInvite.getFrom() + " is calling.")
-                                .setAutoCancel(true)
+                                .setAutoCancel(false)
                                 .setExtras(extras)
                                 .setContentIntent(pendingIntent)
                                 .setGroup("test_app_notification")
@@ -114,7 +114,10 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
 
                 notificationManager.notify(notificationId, notificationBuilder.build());
             }
-        } else {
+
+            VoiceFirebaseMessagingService.this.sendCallInviteToActivity(callInvite, notificationId);
+
+        } else if (callInvite.getState() == CallInvite.State.CANCELED) {
             SoundPoolManager.getInstance(this).stopRinging();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 /*
@@ -130,7 +133,7 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
                     if (callSid.equals(notificationCallSid)) {
                         notificationManager.cancel(extras.getInt(NOTIFICATION_ID_KEY));
                     } else {
-                        sendCallInviteToActivity(callInvite, notificationId);
+                        //sendCallInviteToActivity(callInvite, notificationId);
                     }
                 }
             } else {
@@ -146,6 +149,7 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
                  */
                 notificationManager.cancelAll();
             }
+            sendCallInviteToActivity(callInvite, notificationId);
         }
     }
 
@@ -178,7 +182,7 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentText(text)
                 .setContentIntent(pendingIntent)
                 .setExtras(extras)
-                .setAutoCancel(true)
+                .setAutoCancel(false)
                 .build();
     }
 }

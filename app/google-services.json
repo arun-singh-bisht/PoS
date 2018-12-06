@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "9061648838",
-    "firebase_url": "https://receive-call.firebaseio.com",
-    "project_id": "receive-call",
-    "storage_bucket": "receive-call.appspot.com"
+    "project_number": "438908167495",
+    "firebase_url": "https://pos-demo-18762.firebaseio.com",
+    "project_id": "pos-demo-18762",
+    "storage_bucket": "pos-demo-18762.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:9061648838:android:c902df7bfcc9480f",
+        "mobilesdk_app_id": "1:438908167495:android:c902df7bfcc9480f",
         "android_client_info": {
           "package_name": "com.posfone.promote.posfone"
         }
       },
       "oauth_client": [
         {
-          "client_id": "9061648838-k591s6hf715botjjtpv2jugfkibke27s.apps.googleusercontent.com",
+          "client_id": "438908167495-puk2m183b7d943qu9fe1gc0aevplignm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCVzxxvvSHTdfq575QENm3lLztXYCk0QBw"
+          "current_key": "AIzaSyAmzj8n6Ozb1IpliITBK8baarjGt3k-kOY"
         }
       ],
       "services": {

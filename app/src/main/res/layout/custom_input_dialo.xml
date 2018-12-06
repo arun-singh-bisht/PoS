@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    android:paddingTop="20dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="15dp"
+    >
+
+    <TextView
+        android:id="@+id/txt_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Do you want to logot?"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        />
+
+
+    <EditText
+        android:id="@+id/edit_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:hint="Enter account name"
+        />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="right"
+        >
+
+        <TextView
+            android:id="@+id/txt_negative"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CANCEL"
+            android:textColor="@color/colorPrimary"
+            android:padding="10dp"
+            android:textSize="14sp"
+            />
+
+
+        <TextView
+            android:id="@+id/txt_positive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CONFIRM"
+            android:textColor="@color/colorPrimary"
+            android:layout_toRightOf="@+id/txt_negative"
+            android:layout_marginLeft="10dp"
+            android:padding="10dp"
+            android:textSize="14sp"
+            />
+
+
+
+    </RelativeLayout>
+
+</LinearLayout>

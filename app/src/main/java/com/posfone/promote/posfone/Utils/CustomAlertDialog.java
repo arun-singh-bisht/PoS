@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.posfone.promote.posfone.R;
@@ -17,6 +18,12 @@ public class CustomAlertDialog {
     public interface I_CustomAlertDialog
     {
         void onPositiveClick();
+        void onNegativeClick();
+    }
+
+    public interface I_CustomInputDialog
+    {
+        void onPositiveClick(String text);
         void onNegativeClick();
     }
 
@@ -99,6 +106,41 @@ public class CustomAlertDialog {
             public void onClick(View v) {
                 dialog.dismiss();
                 i_customAlertDialog.onPositiveClick();
+            }
+        });
+        dialog.show();
+    }
+
+
+    public static void showInputDialog(Activity activity, String msg,int res_id,final I_CustomInputDialog i_customInputDialog){
+        final Dialog dialog = new Dialog(activity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(res_id);
+
+        TextView text = (TextView) dialog.findViewById(R.id.txt_title);
+        text.setText(msg);
+
+        final EditText editText = dialog.findViewById(R.id.edit_name);
+
+
+        TextView txt_negative = (TextView) dialog.findViewById(R.id.txt_negative);
+        txt_negative.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                i_customInputDialog.onNegativeClick();
+            }
+        });
+        TextView txt_positive = (TextView) dialog.findViewById(R.id.txt_positive);
+        txt_positive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String s = editText.getText().toString();
+                if(s.isEmpty())
+                    return;
+                dialog.dismiss();
+                i_customInputDialog.onPositiveClick(s);
             }
         });
         dialog.show();

@@ -132,9 +132,6 @@ public class VoiceActivity extends AppCompatActivity  {
 
         notificationManager = NotificationManagerCompat.from(this);
         mDatabaseHelper = new DatabaseHelper(this,"people_table");
-        callnotification();
-
-
 
         // Call REceive
         voiceBroadcastReceiver = new VoiceBroadcastReceiver();
@@ -155,7 +152,9 @@ public class VoiceActivity extends AppCompatActivity  {
         });
 
 
-        String name=getName(to_number);
+        //String name=getName(to_number);
+        String name="N/A";
+        to_number = "N/A";
         ((TextView)findViewById(R.id.txt_name)).setText(name);
         ((TextView)findViewById(R.id.txt_number)).setText(to_number);
         dial.setVisibility(View.INVISIBLE);
@@ -362,15 +361,13 @@ public class VoiceActivity extends AppCompatActivity  {
 
     private void makeCall()
     {
-
+        Log.d(TAG,"makeCall to "+to_number);
         String accessToken = new TwilioTokenManager(VoiceActivity.this).getToken();
-        //twiMLParams.put("to", to_number);
-        twiMLParams.put("to", "Alice");
+        twiMLParams.put("to", to_number);
         activeCall = Voice.call(VoiceActivity.this, accessToken, twiMLParams, callListener);
         isCallActive = true;
+
     }
-
-
 
     private Call.Listener callListener() {
         return new Call.Listener() {
@@ -387,6 +384,7 @@ public class VoiceActivity extends AppCompatActivity  {
 
             @Override
             public void onConnected( Call call) {
+
                 setAudioFocus(true);
                 Log.d(TAG, "Connected");
                 activeCall = call;
@@ -417,6 +415,7 @@ public class VoiceActivity extends AppCompatActivity  {
                     }
                 });
                 setCallUI();
+                callnotification();
             }
 
             @Override
@@ -552,32 +551,47 @@ public class VoiceActivity extends AppCompatActivity  {
         }
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIncomingCallIntent(intent);
+    }
+
     private void handleIncomingCallIntent(Intent intent) {
         if (intent != null && intent.getAction() != null) {
             if (intent.getAction().equals(ACTION_INCOMING_CALL)){
+
                 activeCallInvite = intent.getParcelableExtra(INCOMING_CALL_INVITE);
+
                 if (activeCallInvite != null && (activeCallInvite.getState() == CallInvite.State.PENDING)) {
+                    //Incoming call pending...
                     soundPoolManager.playRinging();
+
+                    if (alertDialog != null && alertDialog.isShowing())
+                        alertDialog.cancel();
+
                     alertDialog = createIncomingCallDialog(VoiceActivity.this,
                             activeCallInvite,
                             answerCallClickListener(),
                             cancelCallClickListener());
                     alertDialog.show();
                     activeCallNotificationId = intent.getIntExtra(INCOMING_CALL_NOTIFICATION_ID, 0);
-                } else {
+
+                } else if (activeCallInvite != null && (activeCallInvite.getState() == CallInvite.State.CANCELED)) {
+                    //Incoming call Canceled by caller...
+                    soundPoolManager.stopRinging();
                     if (alertDialog != null && alertDialog.isShowing()) {
-                        soundPoolManager.stopRinging();
                         alertDialog.cancel();
                     }
+                    finish();
+                    //Open Call Logs Activity
+                    //startActivity(new Intent(VoiceActivity.this,MainActivity.class));
                 }
             }else if(intent.getAction().equals(ACTION_OUTGOING_CALL))
             {
                 identity =  getIntent().getStringExtra("from_number");
                 to_number = getIntent().getStringExtra("to_number");
                 to_name = getIntent().getStringExtra("to_name");
-
-                identity = "Alice";
-                to_number = "Bob";
 
                 makeCall();
             } else if (intent.getAction().equals(ACTION_FCM_TOKEN)) {
@@ -598,6 +612,7 @@ public class VoiceActivity extends AppCompatActivity  {
         alertDialogBuilder.setPositiveButton("Accept", answerCallClickListener);
         alertDialogBuilder.setNegativeButton("Reject", cancelClickListener);
         alertDialogBuilder.setMessage(callInvite.getFrom() + " is calling.");
+        alertDialogBuilder.setCancelable(false);
         return alertDialogBuilder.create();
     }
 
@@ -616,6 +631,7 @@ public class VoiceActivity extends AppCompatActivity  {
                     notificationManager.cancel(activeCallNotificationId);
                 }
                 alertDialog.dismiss();
+                finish();
             }
         };
     }
@@ -626,9 +642,10 @@ public class VoiceActivity extends AppCompatActivity  {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 soundPoolManager.stopRinging();
+                alertDialog.dismiss();
                 answer();
                 setCallUI();
-                alertDialog.dismiss();
+
             }
         };
     }
@@ -637,8 +654,8 @@ public class VoiceActivity extends AppCompatActivity  {
      * Accept an incoming Call
      */
     private void answer() {
-        activeCallInvite.accept(this, callListener);
         notificationManager.cancel(activeCallNotificationId);
+        activeCallInvite.accept(this, callListener);
     }
 
     private void registerReceiver() {

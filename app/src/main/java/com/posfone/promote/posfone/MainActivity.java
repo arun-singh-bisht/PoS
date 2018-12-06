@@ -112,6 +112,8 @@ public class MainActivity extends AppCompatActivity
         //Get Twilio Access Token and Register this app for receiving Incoming Calls
         retrieveAccessToken();
 
+
+
     }
 
     @Override
@@ -424,36 +426,39 @@ public class MainActivity extends AppCompatActivity
         if(new TwilioTokenManager(MainActivity.this).isTokenValid())
             return;
 
-        Ion.with(this).load(RESTClient.TWILIO_ACCESS_TOKEN_SERVER_URL + "?identity=" + "Alice").asString().setCallback(new FutureCallback<String>() {
+        CustomAlertDialog.showInputDialog(this, "User Name", R.layout.custom_input_dialo, new CustomAlertDialog.I_CustomInputDialog() {
             @Override
-            public void onCompleted(Exception e, String accessToken) {
-                if (e == null) {
-                    Log.d(TAG, "Access token: " + accessToken);
-                    //Store Access Token in preference
-                    new TwilioTokenManager(MainActivity.this).saveToken(accessToken);
-                    registerForCallInvites();
-                } else {
-                    GeneralUtil.showToast(MainActivity.this,"Error retrieving access token. Unable to make calls");
-                }
+            public void onPositiveClick(final String accountIdentity) {
+
+                Ion.with(MainActivity.this).load(RESTClient.TWILIO_ACCESS_TOKEN_SERVER_URL + "?identity=" + accountIdentity).asString().setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String accessToken) {
+                        if (e == null) {
+                            Log.d(TAG, accountIdentity+" Access token: " + accessToken);
+                            //Store Access Token in preference
+                            new TwilioTokenManager(MainActivity.this).saveToken(accessToken);
+                            registerForCallInvites();
+                        } else {
+                            GeneralUtil.showToast(MainActivity.this,"Error retrieving access token. Unable to make calls");
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onNegativeClick() {
+
             }
         });
+
+
     }
-    /*
-     * Register your FCM token with Twilio to receive incoming call invites
-     *
-     * If a valid google-services.json has not been provided or the FirebaseInstanceId has not been
-     * initialized the fcmToken will be null.
-     *
-     * In the case where the FirebaseInstanceId has not yet been initialized the
-     * VoiceFirebaseInstanceIDService.onTokenRefresh should result in a LocalBroadcast to this
-     * activity which will attempt registerForCallInvites again.
-     *
-     */
+
     private void registerForCallInvites() {
         //Get FCM token for this app's user
         final String fcmToken = FirebaseInstanceId.getInstance().getToken();
         if (fcmToken != null) {
-            Log.i(TAG, "Registering with FCM");
+            Log.i(TAG, "Registering with FCM: "+fcmToken);
             //Get saved Twilio access token from preference
             final TwilioTokenManager twilioTokenManager = new TwilioTokenManager(MainActivity.this);
             String accessToken = twilioTokenManager.getToken();
