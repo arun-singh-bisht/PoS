@@ -59,6 +59,7 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
             Voice.handleMessage(this, data, new MessageListener() {
                 @Override
                 public void onCallInvite(CallInvite callInvite) {
+                    Log.d(TAG, "onCallInvite");
                     VoiceFirebaseMessagingService.this.notify(callInvite, notificationId);
 
                 }
@@ -72,10 +73,13 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void notify(CallInvite callInvite, int notificationId) {
+        Log.d(TAG, "notify");
         String callSid = callInvite.getCallSid();
         Notification notification = null;
 
         if (callInvite.getState() == CallInvite.State.PENDING) {
+            Log.d(TAG, "notify CallInvite.State.PENDING");
+
             Intent intent = new Intent(this, VoiceActivity.class);
             intent.setAction(VoiceActivity.ACTION_INCOMING_CALL);
             intent.putExtra(VoiceActivity.INCOMING_CALL_NOTIFICATION_ID, notificationId);
@@ -92,6 +96,7 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
             extras.putString(CALL_SID_KEY, callSid);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                Log.d(TAG, "notify CallInvite.State.PENDING VERSION_CODES >= O");
                 NotificationChannel callInviteChannel = new NotificationChannel(VOICE_CHANNEL,
                         "Primary Voice Channel", NotificationManager.IMPORTANCE_DEFAULT);
                 callInviteChannel.setLightColor(Color.GREEN);
@@ -101,6 +106,7 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
                 notification = buildNotification(callInvite.getFrom() + " is calling.", pendingIntent, extras);
                 notificationManager.notify(notificationId, notification);
             } else {
+                Log.d(TAG, "notify CallInvite.State.PENDING VERSION_CODES below O");
                 NotificationCompat.Builder notificationBuilder =
                         new NotificationCompat.Builder(this)
                                 .setSmallIcon(R.drawable.ic_call_white_24dp)
@@ -115,9 +121,11 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
                 notificationManager.notify(notificationId, notificationBuilder.build());
             }
 
-            VoiceFirebaseMessagingService.this.sendCallInviteToActivity(callInvite, notificationId);
+            sendCallInviteToActivity(callInvite, notificationId);
 
         } else if (callInvite.getState() == CallInvite.State.CANCELED) {
+            Log.d(TAG, "notify CallInvite.State.CANCELED");
+
             SoundPoolManager.getInstance(this).stopRinging();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 /*
@@ -150,6 +158,12 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
                 notificationManager.cancelAll();
             }
             sendCallInviteToActivity(callInvite, notificationId);
+        }else if (callInvite.getState() == CallInvite.State.REJECTED)
+        {
+            Log.d(TAG, "notify CallInvite.State.REJECTED");
+        }else if (callInvite.getState() == CallInvite.State.ACCEPTED)
+        {
+            Log.d(TAG, "notify CallInvite.State.ACCEPTED");
         }
     }
 
@@ -157,6 +171,7 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
      * Send the CallInvite to the VoiceActivity. Start the activity if it is not running already.
      */
     private void sendCallInviteToActivity(CallInvite callInvite, int notificationId) {
+        Log.d(TAG, "sendCallInviteToActivity");
         Intent intent = new Intent(this, VoiceActivity.class);
         intent.setAction(VoiceActivity.ACTION_INCOMING_CALL);
         intent.putExtra(VoiceActivity.INCOMING_CALL_NOTIFICATION_ID, notificationId);

@@ -151,7 +151,6 @@ public class VoiceActivity extends AppCompatActivity  {
             }
         });
 
-
         //String name=getName(to_number);
         String name="N/A";
         to_number = "N/A";
@@ -182,62 +181,63 @@ public class VoiceActivity extends AppCompatActivity  {
 
     }
 
-
-    /*
-     * Get an access token from your Twilio access token server
-     */
-    private void retrieveAccessToken() {
-        Ion.with(this).load(TWILIO_ACCESS_TOKEN_SERVER_URL + "?identity=" + identity).asString().setCallback(new FutureCallback<String>() {
-            @Override
-            public void onCompleted(Exception e, String accessToken) {
-                if (e == null) {
-                    Log.d(TAG, "Access token: " + accessToken);
-                    //Store Access Token in preference
-                    new TwilioTokenManager(VoiceActivity.this).saveToken(accessToken);
-                    registerForCallInvites();
-                } else {
-                    showToast("Error retrieving access token. Unable to make calls");
-                }
-            }
-        });
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIncomingCallIntent(intent);
     }
 
-    /*
-     * Register your FCM token with Twilio to receive incoming call invites
-     *
-     * If a valid google-services.json has not been provided or the FirebaseInstanceId has not been
-     * initialized the fcmToken will be null.
-     *
-     * In the case where the FirebaseInstanceId has not yet been initialized the
-     * VoiceFirebaseInstanceIDService.onTokenRefresh should result in a LocalBroadcast to this
-     * activity which will attempt registerForCallInvites again.
-     *
-     */
-    private void registerForCallInvites() {
-        //Get FCM token for this app's user
-        final String fcmToken = FirebaseInstanceId.getInstance().getToken();
-        if (fcmToken != null) {
-            Log.i(TAG, "Registering with FCM");
-            //Get saved Twilio access token from preference
-            final TwilioTokenManager twilioTokenManager = new TwilioTokenManager(VoiceActivity.this);
-            String accessToken = twilioTokenManager.getToken();
-            //Register FCM to current Access Token
-            Voice.register(this, accessToken, Voice.RegistrationChannel.FCM, fcmToken, new RegistrationListener() {
-                @Override
-                public void onRegistered(String accessToken, String fcmToken) {
-                    Log.d(TAG, "Successfully registered FCM " + fcmToken);
-                }
+    private void handleIncomingCallIntent(Intent intent) {
+        if (intent != null && intent.getAction() != null) {
+            if (intent.getAction().equals(ACTION_INCOMING_CALL)){
 
-                @Override
-                public void onError(RegistrationException error, String accessToken, String fcmToken) {
-                    String message = String.format("Registration Error: %d, %s", error.getErrorCode(), error.getMessage());
-                    Log.e(TAG, message);
-                    GeneralUtil.showToast(VoiceActivity.this,message);
+                activeCallInvite = intent.getParcelableExtra(INCOMING_CALL_INVITE);
+
+                if (activeCallInvite != null && (activeCallInvite.getState() == CallInvite.State.PENDING)) {
+                    //Incoming call pending...
+                    soundPoolManager.playRinging();
+
+                    if (alertDialog != null && alertDialog.isShowing())
+                        alertDialog.cancel();
+
+                    alertDialog = createIncomingCallDialog(VoiceActivity.this,
+                            activeCallInvite,
+                            answerCallClickListener(),
+                            cancelCallClickListener());
+                    alertDialog.show();
+                    activeCallNotificationId = intent.getIntExtra(INCOMING_CALL_NOTIFICATION_ID, 0);
+
+                } else if (activeCallInvite != null && (activeCallInvite.getState() == CallInvite.State.CANCELED)) {
+                    //Incoming call Canceled by caller...
+                    soundPoolManager.stopRinging();
+                    if (alertDialog != null && alertDialog.isShowing()) {
+                        alertDialog.cancel();
+                    }
+
+                    /*
+                     * CallInvite.State.CANCELED will be sent by Twilio in following cases
+                     * A --calls-- B [ B will receive CallInvite.State.PENDING]
+                     * case 1: A disconnect call .[ B will receive CallInvite.State.CANCELED ]
+                     * case 2: B reject call. [ B will receive CallInvite.State.CANCELED ] (bugs in twilio API, confiremd by Twilio )
+                     * case 3: B accept call. [ B will receive CallInvite.State.CANCELED ] (bugs in twilio API, confiremd by Twilio )
+                     * */
+                    if(activeCall==null) {
+                        //case 1,2,3 is handled . if B accepted the call , do not close voice activity
+                        finish();
+                    }
                 }
-            });
+            }else if(intent.getAction().equals(ACTION_OUTGOING_CALL))
+            {
+                identity =  getIntent().getStringExtra("from_number");
+                to_number = getIntent().getStringExtra("to_number");
+                to_name = getIntent().getStringExtra("to_name");
+
+                makeCall();
+            } else if (intent.getAction().equals(ACTION_FCM_TOKEN)) {
+                retrieveAccessToken();
+            }
         }
     }
-
 
 
     private void callnotification() {
@@ -263,49 +263,6 @@ public class VoiceActivity extends AppCompatActivity  {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @OnClick(R.id.icon_speaker)
-    public void speaker() {
-        audioManager=(AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        if (audioManager.isSpeakerphoneOn()) {
-            //audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-            audioManager.setSpeakerphoneOn(false);
-             findViewById(R.id.icon_speaker).setBackgroundTintList(getResources().getColorStateList(R.color.colorPrimary));
-            audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
-        } else {
-            audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
-            findViewById(R.id.icon_speaker).setBackgroundTintList(getResources().getColorStateList(R.color.colorPrimaryDark));
-            audioManager.setSpeakerphoneOn(true);
-        }
-    }
-
-     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-     @OnClick(R.id.icon_mic)
-     public void mic(){
-
-         audioManager=(AudioManager) getSystemService(Context.AUDIO_SERVICE);
-         if (audioManager.isMicrophoneMute()) {
-             //audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-             audioManager.setMicrophoneMute(false);
-              findViewById(R.id.icon_mic).setBackgroundTintList(getResources().getColorStateList(R.color.colorPrimary));
-             audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
-         } else {
-             audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
-             findViewById(R.id.icon_mic).setBackgroundTintList(getResources().getColorStateList(R.color.colorPrimaryDark));
-             audioManager.setMicrophoneMute(true);
-         }
-
-     }
-     @OnClick(R.id.icon_dialpad)
-     public void dialpad(){
-                        findViewById(R.id.mylayout).setVisibility(View.VISIBLE);
-                        findViewById(R.id.calling_detail).setVisibility(View.INVISIBLE);
-                        findViewById(R.id.calling_image).setVisibility(View.INVISIBLE);
-                        findViewById(R.id.call_action_fab).setVisibility(View.INVISIBLE);
-                        findViewById(R.id.payemnt).setVisibility(View.VISIBLE);
-     }
-
-
     @Override
     public void onBackPressed(){
          if(findViewById(R.id.mylayout).getVisibility()==View.VISIBLE)
@@ -317,26 +274,15 @@ public class VoiceActivity extends AppCompatActivity  {
          findViewById(R.id.mylayout).setVisibility(View.INVISIBLE);
          }
          else{
-             Intent intent=new Intent(this,MainActivity.class);
+             /*Intent intent=new Intent(this,MainActivity.class);
              intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-             startActivity(intent);
+             startActivity(intent);*/
              /*soundPoolManager.playDisconnect();
              disconnect();
              resetUI();*/
             // Toast.makeText(this,"Call In Progress !!",Toast.LENGTH_SHORT).show();
         //super.onBackPressed();
          }
-    }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        registerReceiver();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        unregisterReceiver();
     }
 
 
@@ -348,7 +294,7 @@ public class VoiceActivity extends AppCompatActivity  {
                     //Disconnect call
                     soundPoolManager.playDisconnect();
                     disconnect();
-                    resetUI();
+                    //resetUI();
                 }else
                 {
                     //Connect Call
@@ -385,6 +331,7 @@ public class VoiceActivity extends AppCompatActivity  {
             @Override
             public void onConnected( Call call) {
 
+                isCallActive = true;
                 setAudioFocus(true);
                 Log.d(TAG, "Connected");
                 activeCall = call;
@@ -420,6 +367,7 @@ public class VoiceActivity extends AppCompatActivity  {
 
             @Override
             public void onDisconnected(Call call, CallException error) {
+                isCallActive = false;
                 setAudioFocus(false);
                 Log.d(TAG, "Disconnected");
                 notificationManager.cancel(1);
@@ -433,43 +381,6 @@ public class VoiceActivity extends AppCompatActivity  {
         };
     }
 
-    private void setAudioFocus(boolean setFocus) {
-        if (audioManager != null) {
-            if (setFocus) {
-                savedAudioMode = audioManager.getMode();
-                // Request audio focus before making any device switch.
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    AudioAttributes playbackAttributes = new AudioAttributes.Builder()
-                            .setUsage(AudioAttributes.USAGE_VOICE_COMMUNICATION)
-                            .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
-                            .build();
-                    AudioFocusRequest focusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT)
-                            .setAudioAttributes(playbackAttributes)
-                            .setAcceptsDelayedFocusGain(true)
-                            .setOnAudioFocusChangeListener(new AudioManager.OnAudioFocusChangeListener() {
-                                @Override
-                                public void onAudioFocusChange(int i) {
-                                }
-                            })
-                            .build();
-                    audioManager.requestAudioFocus(focusRequest);
-                } else {
-                    audioManager.requestAudioFocus(null, AudioManager.STREAM_VOICE_CALL,
-                            AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
-                }
-                /*
-                 * Start by setting MODE_IN_COMMUNICATION as default audio mode. It is
-                 * required to be in this mode when playout and/or recording starts for
-                 * best possible VoIP performance. Some devices have difficulties with speaker mode
-                 * if this is not set.
-                 */
-                audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
-            } else {
-                audioManager.setMode(savedAudioMode);
-                audioManager.abandonAudioFocus(null);
-            }
-        }
-    }
 
     /*
      * Reset UI elements
@@ -499,122 +410,17 @@ public class VoiceActivity extends AppCompatActivity  {
      */
     private void disconnect() {
         notificationManager.cancel(1);
-        finish();
         if (activeCall != null) {
             activeCall.disconnect();
             activeCall = null;
         }
-    }
-
-
-    @Override
-    public void onDestroy() {
-        soundPoolManager.release();
-        super.onDestroy();
-    }
-
-
-
-
-    private void showToast(String msg)
-    {
-        Toast.makeText(VoiceActivity.this,msg,Toast.LENGTH_SHORT).show();
-    }
-    public void AddData(String newEntry1,String newEntry2,String newEntry3) {
-
-        boolean insertData = mDatabaseHelper.addData(newEntry1,newEntry2,newEntry3);
-
-        if (insertData) {
-
-            showToast("Data Successfully Inserted!");
-
-        } else {
-
-            showToast("Something went wrong");
-
-        }
+        isCallActive = false;
+        finish();
 
     }
 
-// Reciving call here----------------------------------------
-    private class VoiceBroadcastReceiver extends BroadcastReceiver {
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (action.equals(ACTION_INCOMING_CALL)) {
-                /*
-                 * Handle the incoming call invite
-                 */
-                handleIncomingCallIntent(intent);
-            }
-        }
-    }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        handleIncomingCallIntent(intent);
-    }
-
-    private void handleIncomingCallIntent(Intent intent) {
-        if (intent != null && intent.getAction() != null) {
-            if (intent.getAction().equals(ACTION_INCOMING_CALL)){
-
-                activeCallInvite = intent.getParcelableExtra(INCOMING_CALL_INVITE);
-
-                if (activeCallInvite != null && (activeCallInvite.getState() == CallInvite.State.PENDING)) {
-                    //Incoming call pending...
-                    soundPoolManager.playRinging();
-
-                    if (alertDialog != null && alertDialog.isShowing())
-                        alertDialog.cancel();
-
-                    alertDialog = createIncomingCallDialog(VoiceActivity.this,
-                            activeCallInvite,
-                            answerCallClickListener(),
-                            cancelCallClickListener());
-                    alertDialog.show();
-                    activeCallNotificationId = intent.getIntExtra(INCOMING_CALL_NOTIFICATION_ID, 0);
-
-                } else if (activeCallInvite != null && (activeCallInvite.getState() == CallInvite.State.CANCELED)) {
-                    //Incoming call Canceled by caller...
-                    soundPoolManager.stopRinging();
-                    if (alertDialog != null && alertDialog.isShowing()) {
-                        alertDialog.cancel();
-                    }
-                    finish();
-                    //Open Call Logs Activity
-                    //startActivity(new Intent(VoiceActivity.this,MainActivity.class));
-                }
-            }else if(intent.getAction().equals(ACTION_OUTGOING_CALL))
-            {
-                identity =  getIntent().getStringExtra("from_number");
-                to_number = getIntent().getStringExtra("to_number");
-                to_name = getIntent().getStringExtra("to_name");
-
-                makeCall();
-            } else if (intent.getAction().equals(ACTION_FCM_TOKEN)) {
-                retrieveAccessToken();
-            }
-        }
-    }
-
-    //  INcoming Call Dialog
-    public static AlertDialog createIncomingCallDialog(
-            Context context,
-            CallInvite callInvite,
-            DialogInterface.OnClickListener answerCallClickListener,
-            DialogInterface.OnClickListener cancelClickListener) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        alertDialogBuilder.setIcon(R.drawable.call_icon);
-        alertDialogBuilder.setTitle("Incoming Call");
-        alertDialogBuilder.setPositiveButton("Accept", answerCallClickListener);
-        alertDialogBuilder.setNegativeButton("Reject", cancelClickListener);
-        alertDialogBuilder.setMessage(callInvite.getFrom() + " is calling.");
-        alertDialogBuilder.setCancelable(false);
-        return alertDialogBuilder.create();
-    }
 
     // Dialog Listenerss for CAll
 
@@ -657,6 +463,10 @@ public class VoiceActivity extends AppCompatActivity  {
         notificationManager.cancel(activeCallNotificationId);
         activeCallInvite.accept(this, callListener);
     }
+
+
+
+    //-----------------------------------------UI Things---------------------------------------------
 
     private void registerReceiver() {
         if (!isReceiverRegistered) {
@@ -746,4 +556,210 @@ public void one() {
         return name;
     }
 
+    /*
+     * Get an access token from your Twilio access token server
+     */
+    private void retrieveAccessToken() {
+        Ion.with(this).load(TWILIO_ACCESS_TOKEN_SERVER_URL + "?identity=" + identity).asString().setCallback(new FutureCallback<String>() {
+            @Override
+            public void onCompleted(Exception e, String accessToken) {
+                if (e == null) {
+                    Log.d(TAG, "Access token: " + accessToken);
+                    //Store Access Token in preference
+                    new TwilioTokenManager(VoiceActivity.this).saveToken(accessToken);
+                    registerForCallInvites();
+                } else {
+                    showToast("Error retrieving access token. Unable to make calls");
+                }
+            }
+        });
+    }
+
+    /*
+     * Register your FCM token with Twilio to receive incoming call invites
+     *
+     * If a valid google-services.json has not been provided or the FirebaseInstanceId has not been
+     * initialized the fcmToken will be null.
+     *
+     * In the case where the FirebaseInstanceId has not yet been initialized the
+     * VoiceFirebaseInstanceIDService.onTokenRefresh should result in a LocalBroadcast to this
+     * activity which will attempt registerForCallInvites again.
+     *
+     */
+    private void registerForCallInvites() {
+        //Get FCM token for this app's user
+        final String fcmToken = FirebaseInstanceId.getInstance().getToken();
+        if (fcmToken != null) {
+            Log.i(TAG, "Registering with FCM");
+            //Get saved Twilio access token from preference
+            final TwilioTokenManager twilioTokenManager = new TwilioTokenManager(VoiceActivity.this);
+            String accessToken = twilioTokenManager.getToken();
+            //Register FCM to current Access Token
+            Voice.register(this, accessToken, Voice.RegistrationChannel.FCM, fcmToken, new RegistrationListener() {
+                @Override
+                public void onRegistered(String accessToken, String fcmToken) {
+                    Log.d(TAG, "Successfully registered FCM " + fcmToken);
+                }
+
+                @Override
+                public void onError(RegistrationException error, String accessToken, String fcmToken) {
+                    String message = String.format("Registration Error: %d, %s", error.getErrorCode(), error.getMessage());
+                    Log.e(TAG, message);
+                    GeneralUtil.showToast(VoiceActivity.this,message);
+                }
+            });
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @OnClick(R.id.icon_speaker)
+    public void speaker() {
+        audioManager=(AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        if (audioManager.isSpeakerphoneOn()) {
+            //audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+            audioManager.setSpeakerphoneOn(false);
+            findViewById(R.id.icon_speaker).setBackgroundTintList(getResources().getColorStateList(R.color.colorPrimary));
+            audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+        } else {
+            audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+            findViewById(R.id.icon_speaker).setBackgroundTintList(getResources().getColorStateList(R.color.colorPrimaryDark));
+            audioManager.setSpeakerphoneOn(true);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @OnClick(R.id.icon_mic)
+    public void mic(){
+
+        audioManager=(AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        if (audioManager.isMicrophoneMute()) {
+            //audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+            audioManager.setMicrophoneMute(false);
+            findViewById(R.id.icon_mic).setBackgroundTintList(getResources().getColorStateList(R.color.colorPrimary));
+            audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+        } else {
+            audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+            findViewById(R.id.icon_mic).setBackgroundTintList(getResources().getColorStateList(R.color.colorPrimaryDark));
+            audioManager.setMicrophoneMute(true);
+        }
+
+    }
+    @OnClick(R.id.icon_dialpad)
+    public void dialpad(){
+        findViewById(R.id.mylayout).setVisibility(View.VISIBLE);
+        findViewById(R.id.calling_detail).setVisibility(View.INVISIBLE);
+        findViewById(R.id.calling_image).setVisibility(View.INVISIBLE);
+        findViewById(R.id.call_action_fab).setVisibility(View.INVISIBLE);
+        findViewById(R.id.payemnt).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver();
+    }
+
+    private void setAudioFocus(boolean setFocus) {
+        if (audioManager != null) {
+            if (setFocus) {
+                savedAudioMode = audioManager.getMode();
+                // Request audio focus before making any device switch.
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    AudioAttributes playbackAttributes = new AudioAttributes.Builder()
+                            .setUsage(AudioAttributes.USAGE_VOICE_COMMUNICATION)
+                            .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                            .build();
+                    AudioFocusRequest focusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT)
+                            .setAudioAttributes(playbackAttributes)
+                            .setAcceptsDelayedFocusGain(true)
+                            .setOnAudioFocusChangeListener(new AudioManager.OnAudioFocusChangeListener() {
+                                @Override
+                                public void onAudioFocusChange(int i) {
+                                }
+                            })
+                            .build();
+                    audioManager.requestAudioFocus(focusRequest);
+                } else {
+                    audioManager.requestAudioFocus(null, AudioManager.STREAM_VOICE_CALL,
+                            AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
+                }
+                /*
+                 * Start by setting MODE_IN_COMMUNICATION as default audio mode. It is
+                 * required to be in this mode when playout and/or recording starts for
+                 * best possible VoIP performance. Some devices have difficulties with speaker mode
+                 * if this is not set.
+                 */
+                audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+            } else {
+                audioManager.setMode(savedAudioMode);
+                audioManager.abandonAudioFocus(null);
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        soundPoolManager.release();
+        super.onDestroy();
+    }
+
+
+
+
+    private void showToast(String msg)
+    {
+        Toast.makeText(VoiceActivity.this,msg,Toast.LENGTH_SHORT).show();
+    }
+    public void AddData(String newEntry1,String newEntry2,String newEntry3) {
+
+        boolean insertData = mDatabaseHelper.addData(newEntry1,newEntry2,newEntry3);
+
+        if (insertData) {
+
+            showToast("Data Successfully Inserted!");
+
+        } else {
+
+            showToast("Something went wrong");
+
+        }
+
+    }
+
+    // Reciving call here----------------------------------------
+    private class VoiceBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(ACTION_INCOMING_CALL)) {
+                /*
+                 * Handle the incoming call invite
+                 */
+                handleIncomingCallIntent(intent);
+            }
+        }
+    }
+
+    //  INcoming Call Dialog
+    public static AlertDialog createIncomingCallDialog(
+            Context context,
+            CallInvite callInvite,
+            DialogInterface.OnClickListener answerCallClickListener,
+            DialogInterface.OnClickListener cancelClickListener) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setIcon(R.drawable.call_icon);
+        alertDialogBuilder.setTitle("Incoming Call");
+        alertDialogBuilder.setPositiveButton("Accept", answerCallClickListener);
+        alertDialogBuilder.setNegativeButton("Reject", cancelClickListener);
+        alertDialogBuilder.setMessage(callInvite.getFrom() + " is calling.");
+        alertDialogBuilder.setCancelable(false);
+        return alertDialogBuilder.create();
+    }
 }
