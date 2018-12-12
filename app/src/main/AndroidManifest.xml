@@ -89,9 +89,7 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden">
-
-        </activity>
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".SignUpActivity"
             android:screenOrientation="portrait"
@@ -134,8 +132,8 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
@@ -143,10 +141,7 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden" >
-
-        </activity>
-
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".SearchCountryActivity"
             android:screenOrientation="portrait"
@@ -187,11 +182,11 @@
         <activity
             android:name=".Dialer"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".stripe.StripeBaseActivity" />
         <activity android:name=".MainFragments" />
-
-        <activity android:name=".Thank_You"
+        <activity
+            android:name=".Thank_You"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
@@ -208,29 +203,27 @@
                     android:scheme="https" />
                 <!-- note that the leading "/" is required for pathPrefix -->
             </intent-filter>
-
         </activity>
 
         <!-- Call REceiver Listenere  over Hwere -->
 
+
         <!-- [START fcm_listener] -->
-        <service
-            android:name=".fcm.VoiceFirebaseMessagingService">
+        <service android:name=".fcm.VoiceFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
-
             </intent-filter>
         </service>
         <!-- [END fcm_listener] -->
         <!-- [START instanceId_listener] -->
-        <service
-            android:name=".fcm.VoiceFirebaseInstanceIDService" >
+        <service android:name=".fcm.VoiceFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
         <!-- [END instanceId_listener] -->
 
+        <activity android:name=".IncomingCallActivity"></activity>
     </application>
 
 </manifest>

@@ -94,7 +94,7 @@ public class VoiceActivity extends AppCompatActivity  {
     private int savedAudioMode = AudioManager.MODE_INVALID;
     private int activeCallNotificationId;
     private boolean isReceiverRegistered = false;
-    private boolean isCallActive = false;
+    public static boolean isCallActive = false;
     // Empty HashMap, never populated for the Quickstart
     private HashMap<String, String> twiMLParams = new HashMap<>();
 
@@ -192,8 +192,9 @@ public class VoiceActivity extends AppCompatActivity  {
             if (intent.getAction().equals(ACTION_INCOMING_CALL)){
 
                 activeCallInvite = intent.getParcelableExtra(INCOMING_CALL_INVITE);
-
-                if (activeCallInvite != null && (activeCallInvite.getState() == CallInvite.State.PENDING)) {
+                answer();
+                setCallUI();
+                if (false && activeCallInvite != null && (activeCallInvite.getState() == CallInvite.State.PENDING)) {
                     //Incoming call pending...
                     soundPoolManager.playRinging();
 
@@ -207,7 +208,7 @@ public class VoiceActivity extends AppCompatActivity  {
                     alertDialog.show();
                     activeCallNotificationId = intent.getIntExtra(INCOMING_CALL_NOTIFICATION_ID, 0);
 
-                } else if (activeCallInvite != null && (activeCallInvite.getState() == CallInvite.State.CANCELED)) {
+                } else if (false && activeCallInvite != null && (activeCallInvite.getState() == CallInvite.State.CANCELED)) {
                     //Incoming call Canceled by caller...
                     soundPoolManager.stopRinging();
                     if (alertDialog != null && alertDialog.isShowing()) {

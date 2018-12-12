@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#ffffff">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/calling_detail"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:paddingTop="55dp"
+        android:paddingLeft="20dp"
+        android:paddingBottom="35dp"
+        android:paddingRight="20dp"
+        >
+
+        <TextView
+            android:id="@+id/txt_dialing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Call from"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:alpha="0.6"
+            />
+        <TextView
+            android:id="@+id/txt_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Oppo Client"
+            android:textColor="#ffffff"
+            android:textSize="36sp"
+            android:layout_marginTop="5dp"
+            />
+
+        <TextView
+            android:id="@+id/txt_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mobile +91 XXXXXXXXXX"
+            android:textColor="#ffffff"
+            android:layout_marginTop="5dp"
+            android:textSize="18sp"
+            />
+
+    </LinearLayout>
+
+
+
+    <ImageView
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/human_dar_image"
+        android:id="@+id/calling_image"
+        android:visibility="gone"
+        android:tint="#e4e2e2"
+        android:layout_above="@+id/call_action_fab"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="80dp"
+        android:orientation="vertical"
+        android:layout_marginBottom="40dp"
+        >
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fab_decline"
+            android:src="@drawable/ic_call_white_24dp"
+            app:backgroundTint="#c13d3d"
+            app:elevation="6dp"
+            app:fabSize="normal"
+            android:visibility="visible" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Decline"
+            android:textColor="#c13d3d"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="80dp"
+        android:orientation="vertical"
+        android:layout_marginBottom="40dp"
+        >
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fab_accept"
+            android:src="@drawable/ic_call_white_24dp"
+            app:backgroundTint="@color/color_light_green"
+            app:elevation="6dp"
+            app:fabSize="normal"
+            android:visibility="visible" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Decline"
+            android:textColor="@color/color_light_green"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

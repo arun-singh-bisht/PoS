@@ -16,6 +16,7 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.posfone.promote.posfone.IncomingCallActivity;
 import com.posfone.promote.posfone.R;
 import com.posfone.promote.posfone.Utils.SoundPoolManager;
 import com.posfone.promote.posfone.VoiceActivity;
@@ -157,6 +158,7 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
                  */
                 notificationManager.cancelAll();
             }
+            if(!VoiceActivity.isCallActive)
             sendCallInviteToActivity(callInvite, notificationId);
         }else if (callInvite.getState() == CallInvite.State.REJECTED)
         {
@@ -171,8 +173,9 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
      * Send the CallInvite to the VoiceActivity. Start the activity if it is not running already.
      */
     private void sendCallInviteToActivity(CallInvite callInvite, int notificationId) {
+
         Log.d(TAG, "sendCallInviteToActivity");
-        Intent intent = new Intent(this, VoiceActivity.class);
+        Intent intent = new Intent(this, IncomingCallActivity.class);
         intent.setAction(VoiceActivity.ACTION_INCOMING_CALL);
         intent.putExtra(VoiceActivity.INCOMING_CALL_NOTIFICATION_ID, notificationId);
         intent.putExtra(VoiceActivity.INCOMING_CALL_INVITE, callInvite);
