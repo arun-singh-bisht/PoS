@@ -94,6 +94,7 @@ public class IncomingCallActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         //Kill this activity
         finish();
 
