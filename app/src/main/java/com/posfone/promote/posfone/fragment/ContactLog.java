@@ -26,7 +26,7 @@ import com.posfone.promote.posfone.MainActivity;
 import com.posfone.promote.posfone.Utils.CustomAlertDialog;
 import com.posfone.promote.posfone.Utils.GeneralUtil;
 import com.posfone.promote.posfone.Utils.TwilioTokenManager;
-import com.posfone.promote.posfone.VoiceActivity;
+import com.posfone.promote.posfone.VoiceActivity2;
 import com.posfone.promote.posfone.database.DatabaseHelper;
 import com.posfone.promote.posfone.Dialer;
 import com.posfone.promote.posfone.R;
@@ -79,8 +79,8 @@ public class ContactLog extends Fragment {
                 CustomAlertDialog.showInputDialog(getActivity(), "Make Call To", R.layout.custom_input_dialo, new CustomAlertDialog.I_CustomInputDialog() {
                     @Override
                     public void onPositiveClick(final String accountIdentity) {
-                        Intent intent=new Intent(getActivity(), VoiceActivity.class);
-                        intent.setAction(VoiceActivity.ACTION_OUTGOING_CALL);
+                        Intent intent=new Intent(getActivity(), VoiceActivity2.class);
+                        intent.setAction(VoiceActivity2.ACTION_OUTGOING_CALL);
                         intent.putExtra("to_number",accountIdentity);
                         startActivity(intent);
                     }

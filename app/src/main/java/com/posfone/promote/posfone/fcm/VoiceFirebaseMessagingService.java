@@ -19,7 +19,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.posfone.promote.posfone.IncomingCallActivity;
 import com.posfone.promote.posfone.R;
 import com.posfone.promote.posfone.Utils.SoundPoolManager;
-import com.posfone.promote.posfone.VoiceActivity;
+import com.posfone.promote.posfone.VoiceActivity2;
 import com.twilio.voice.CallInvite;
 import com.twilio.voice.MessageException;
 import com.twilio.voice.MessageListener;
@@ -61,6 +61,7 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
                 @Override
                 public void onCallInvite(CallInvite callInvite) {
                     Log.d(TAG, "onCallInvite");
+
                     VoiceFirebaseMessagingService.this.notify(callInvite, notificationId);
 
                 }
@@ -81,10 +82,10 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
         if (callInvite.getState() == CallInvite.State.PENDING) {
             Log.d(TAG, "notify CallInvite.State.PENDING");
 
-            Intent intent = new Intent(this, VoiceActivity.class);
-            intent.setAction(VoiceActivity.ACTION_INCOMING_CALL);
-            intent.putExtra(VoiceActivity.INCOMING_CALL_NOTIFICATION_ID, notificationId);
-            intent.putExtra(VoiceActivity.INCOMING_CALL_INVITE, callInvite);
+            Intent intent = new Intent(this, VoiceActivity2.class);
+            intent.setAction(VoiceActivity2.ACTION_INCOMING_CALL);
+            intent.putExtra(IncomingCallActivity.INCOMING_CALL_NOTIFICATION_ID, notificationId);
+            intent.putExtra(VoiceActivity2.INCOMING_CALL_INVITE, callInvite);
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             PendingIntent pendingIntent =
                     PendingIntent.getActivity(this, notificationId, intent, PendingIntent.FLAG_ONE_SHOT);
@@ -158,7 +159,6 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
                  */
                 notificationManager.cancelAll();
             }
-            if(!VoiceActivity.isCallActive)
             sendCallInviteToActivity(callInvite, notificationId);
         }else if (callInvite.getState() == CallInvite.State.REJECTED)
         {
@@ -176,9 +176,9 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
 
         Log.d(TAG, "sendCallInviteToActivity");
         Intent intent = new Intent(this, IncomingCallActivity.class);
-        intent.setAction(VoiceActivity.ACTION_INCOMING_CALL);
-        intent.putExtra(VoiceActivity.INCOMING_CALL_NOTIFICATION_ID, notificationId);
-        intent.putExtra(VoiceActivity.INCOMING_CALL_INVITE, callInvite);
+        intent.setAction(VoiceActivity2.ACTION_INCOMING_CALL);
+        intent.putExtra(IncomingCallActivity.INCOMING_CALL_NOTIFICATION_ID, notificationId);
+        intent.putExtra(VoiceActivity2.INCOMING_CALL_INVITE, callInvite);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         this.startActivity(intent);

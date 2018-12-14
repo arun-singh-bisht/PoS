@@ -136,12 +136,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
+
+
         <activity
-            android:name=".VoiceActivity"
+            android:name=".VoiceActivity2"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden"></activity>
+
         <activity
             android:name=".SearchCountryActivity"
             android:screenOrientation="portrait"
@@ -223,7 +226,13 @@
         </service>
         <!-- [END instanceId_listener] -->
 
-        <activity android:name=".IncomingCallActivity"></activity>
+        <service android:name=".CallConnectionService"/>
+
+        <activity android:name=".IncomingCallActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden"
+            android:launchMode="singleInstance"
+            ></activity>
     </application>
 
 </manifest>

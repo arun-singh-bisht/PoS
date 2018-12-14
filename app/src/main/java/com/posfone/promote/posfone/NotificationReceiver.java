@@ -12,7 +12,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         String message = intent.getStringExtra("toastMessage");
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
 
-        intent=new Intent(context,VoiceActivity.class);
-        context.startActivity(intent);
+        /*intent=new Intent(context,VoiceActivity.class);
+        context.startActivity(intent);*/
     }
 }

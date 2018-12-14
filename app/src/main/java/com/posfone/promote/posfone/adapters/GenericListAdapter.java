@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.posfone.promote.posfone.R;
-import com.posfone.promote.posfone.VoiceActivity;
+import com.posfone.promote.posfone.VoiceActivity2;
 import com.posfone.promote.posfone.model.BaseModel;
 import com.posfone.promote.posfone.model.PaymentModel;
 
@@ -88,8 +88,8 @@ public class GenericListAdapter extends BaseAdapter {
                     TextView view2 = finalRowView.findViewById(R.id.contact_name);
                     String number = view1.getText().toString();
                     String name = view2.getText().toString();
-                    Intent intent = new Intent(context,VoiceActivity.class);
-                    intent.setAction(VoiceActivity.ACTION_OUTGOING_CALL);
+                    Intent intent = new Intent(context,VoiceActivity2.class);
+                    intent.setAction(VoiceActivity2.ACTION_OUTGOING_CALL);
                     intent.putExtra("from_number","16617480240");
                     intent.putExtra("to_number",number);
                     intent.putExtra("to_name",name);

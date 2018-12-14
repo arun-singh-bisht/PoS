@@ -37,7 +37,7 @@ import com.posfone.promote.posfone.R;
 import com.posfone.promote.posfone.Utils.CustomAlertDialog;
 import com.posfone.promote.posfone.Utils.CustomSelectorDialog;
 import com.posfone.promote.posfone.Utils.TitilliumWebTextView;
-import com.posfone.promote.posfone.VoiceActivity;
+import com.posfone.promote.posfone.VoiceActivity2;
 import com.posfone.promote.posfone.adapters.ConatactPageAdapter;
 import com.posfone.promote.posfone.adapters.GenericListAdapter;
 import com.posfone.promote.posfone.database.DatabaseHelper;
@@ -372,8 +372,8 @@ public class ContactFragment extends BaseFragment implements LoaderManager.Loade
             public void onClick(View view) {
                 if(size_max.contains("+44") || size_max.contains("+91") || size_med.contains("+1") || size_med.contains("44") || size_med.contains("91")|| size_min.contains("1"))
                 {
-                    Intent intent = new Intent(getContext(),VoiceActivity.class);
-                    intent.setAction(VoiceActivity.ACTION_OUTGOING_CALL);
+                    Intent intent = new Intent(getContext(),VoiceActivity2.class);
+                    intent.setAction(VoiceActivity2.ACTION_OUTGOING_CALL);
                     intent.putExtra("from_number","16617480240");
                     intent.putExtra("to_number",contact.getContactNumber());
                     intent.putExtra("to_name",contact.getContactName());

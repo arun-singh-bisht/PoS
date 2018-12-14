@@ -194,8 +194,8 @@ public class Dialer extends AppCompatActivity {
     @OnClick(R.id.buttonDial)
     public void call(){
         if(number_flag){
-        Intent intent = new Intent(this,VoiceActivity.class);
-        intent.setAction(VoiceActivity.ACTION_OUTGOING_CALL);
+        Intent intent = new Intent(this,VoiceActivity2.class);
+        intent.setAction(VoiceActivity2.ACTION_OUTGOING_CALL);
         intent.putExtra("from_number","16617480240");
         intent.putExtra("to_number",input.getText().toString());
         intent.putExtra("to_name","No Name");
