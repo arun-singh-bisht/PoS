@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.telephony.TelephonyManager;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.posfone.promote.posfone.R;
-import com.posfone.promote.posfone.SignUpActivity;
+import com.posfone.promote.posfone.ui.activities.SignUpActivity;
 
 import dmax.dialog.SpotsDialog;
 
