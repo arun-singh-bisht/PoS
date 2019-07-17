@@ -17,6 +17,7 @@ import com.posfone.promote.posfone.R;
 import com.posfone.promote.posfone.Utils.GeneralUtil;
 import com.posfone.promote.posfone.data.local.models.CountryModel;
 import com.posfone.promote.posfone.data.local.sp.SharedPreferenceHandler;
+import com.posfone.promote.posfone.data.remote.models.NubmerCategoryModel;
 import com.posfone.promote.posfone.data.remote.models.TwilioNumber;
 import com.posfone.promote.posfone.data.remote.rest.ApiClient;
 import com.posfone.promote.posfone.data.remote.rest.RESTClient;
@@ -37,15 +38,16 @@ import butterknife.OnClick;
 import okhttp3.Call;
 
 
-public class ChooseNumberActivity extends AppCompatActivity  {
+public class ChooseNumberActivity extends AppCompatActivity {
 
     private final int ACTION_FOR_COUNTRY = 1001;
+    private HashMap<String,String> packageModel;
     private String redirect_from;
-    private String isTrial ="1";
+    private String isTrial = "1";
     private ViewPager viewPager;
-    public static String country_name_search="";
-    public static String country_code_search="";
-    public static String country_iso_search="";
+    public static String country_name_search = "";
+    public static String country_code_search = "";
+    public static String country_iso_search = "";
 
 
     public static NumberFragment numberFragment_type_regular;
@@ -69,21 +71,18 @@ public class ChooseNumberActivity extends AppCompatActivity  {
         initViews();
     }
 
-    private void initViews()
-    {
-        redirect_from =  getIntent().getStringExtra("redirect_from");
+    private void initViews() {
+        redirect_from = getIntent().getStringExtra("redirect_from");
+        isTrial =  getIntent().getStringExtra("isTrial");
+        packageModel = (HashMap<String, String>) getIntent().getExtras().getSerializable("SelectedPackage");
+
 
         TextView txt_title = findViewById(R.id.txt_title);
         txt_title.setText("Choose Number");
 
         //((ImageView)findViewById(R.id.img_right)).setImageResource(R.mipmap.ic_language);
         findViewById(R.id.img_right).setVisibility(View.GONE);
-        if(redirect_from!=null && redirect_from.equalsIgnoreCase("profile_screen")) {
-            findViewById(R.id.img_left).setVisibility(View.VISIBLE);
-            isTrial = "0";
-        }
-        else
-            findViewById(R.id.img_left).setVisibility(View.GONE);
+        findViewById(R.id.img_left).setVisibility(View.VISIBLE);
 
 
         viewPager = findViewById(R.id.viewpager);
@@ -94,12 +93,12 @@ public class ChooseNumberActivity extends AppCompatActivity  {
 
 
         getTwilioNumber(null);
+        //getPackages();
 
     }
 
     @OnClick(R.id.img_left)
-    public void onBackArrowClick()
-    {
+    public void onBackArrowClick() {
         finish();
     }
 
@@ -107,22 +106,21 @@ public class ChooseNumberActivity extends AppCompatActivity  {
     @Override
     public void onBackPressed() {
 
-        if(redirect_from!=null && redirect_from.equalsIgnoreCase("profile_screen"))
-        {
+        if (redirect_from != null && redirect_from.equalsIgnoreCase("profile_screen")) {
             finish();
-        }else {
-            Intent intent = new Intent(ChooseNumberActivity.this, PreSignInActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+        } else {
+           // Intent intent = new Intent(ChooseNumberActivity.this, PreSignInActivity.class);
+           // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            //startActivity(intent);
+            finish();
         }
     }
 
     @OnClick(R.id.txt_select_country)
-    public void onSelectCountryClick()
-    {
-        Intent intent = new Intent(ChooseNumberActivity.this,SearchCountryActivity.class);
-        intent.putExtra(SearchCountryActivity.TAG_TYPE,SearchCountryActivity.TAG_COUNTRY);
-        startActivityForResult(intent,ACTION_FOR_COUNTRY);
+    public void onSelectCountryClick() {
+        Intent intent = new Intent(ChooseNumberActivity.this, SearchCountryActivity.class);
+        intent.putExtra(SearchCountryActivity.TAG_TYPE, SearchCountryActivity.TAG_COUNTRY);
+        startActivityForResult(intent, ACTION_FOR_COUNTRY);
     }
 
 
@@ -157,7 +155,7 @@ public class ChooseNumberActivity extends AppCompatActivity  {
 
         @Override
         public Fragment getItem(int position) {
-            System.out.println("Fragment getItem "+position);
+            System.out.println("Fragment getItem " + position);
             return mFragmentList.get(position);
         }
 
@@ -167,14 +165,14 @@ public class ChooseNumberActivity extends AppCompatActivity  {
         }
 
         public void addFrag(Fragment fragment, String title) {
-            System.out.println("Fragment addFrag "+title);
+            System.out.println("Fragment addFrag " + title);
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            System.out.println("Fragment getPageTitle "+position);
+            System.out.println("Fragment getPageTitle " + position);
             return mFragmentTitleList.get(position);
         }
     }
@@ -183,19 +181,17 @@ public class ChooseNumberActivity extends AppCompatActivity  {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if(resultCode == RESULT_OK)
-        {System.out.println("---------------------------------");
-            switch (requestCode)
-            {
-                case ACTION_FOR_COUNTRY:
-                {
+        if (resultCode == RESULT_OK) {
+            System.out.println("---------------------------------");
+            switch (requestCode) {
+                case ACTION_FOR_COUNTRY: {
                     CountryModel countryModel = new CountryModel();
                     countryModel.name = data.getStringExtra("result");
                     countryModel.iso = data.getStringExtra("selectedCountryIso");
                     countryModel.phonecode = data.getStringExtra("selectedCountryPhoneCode");
-                    country_name_search=data.getStringExtra("result");
-                    country_code_search=data.getStringExtra("selectedCountryPhoneCode");
-                    country_iso_search=data.getStringExtra("selectedCountryIso");
+                    country_name_search = data.getStringExtra("result");
+                    country_code_search = data.getStringExtra("selectedCountryPhoneCode");
+                    country_iso_search = data.getStringExtra("selectedCountryIso");
                     currenCountry.setText(countryModel.name);
                     getTwilioNumber(countryModel);
                 }
@@ -205,30 +201,31 @@ public class ChooseNumberActivity extends AppCompatActivity  {
     }
 
 
-    private void getTwilioNumber(final CountryModel selectedCountry)
-    {
+    private void getTwilioNumber(final CountryModel selectedCountry) {
 
         //Show loading dialog
-        GeneralUtil.showProgressDialog(this,"Please wait");
+        GeneralUtil.showProgressDialog(this, "Please wait");
         SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(this);
         String userID = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
 
         //Header
-        HashMap<String,String> header = new HashMap<>();
+        HashMap<String, String> header = new HashMap<>();
         header.put("x-api-key", ApiClient.X_API_KEY);
-        if(selectedCountry==null)
-        header.put("userid", userID);
+        if (selectedCountry == null)
+            header.put("userid", userID);
         //RequestBody
         String body = "";
-        if(selectedCountry!=null) {
-            JsonObject jsonObject = new JsonObject();
+        JsonObject jsonObject = new JsonObject();
+        if (selectedCountry != null) {
+
             jsonObject.addProperty("country", selectedCountry.getIso());
             jsonObject.addProperty("area_code", "");
-            jsonObject.addProperty("filter","");
-            body = "json=" + jsonObject.toString();
+            jsonObject.addProperty("filter", "");
         }
+        jsonObject.addProperty("package_id",packageModel.get("packageId"));
+        body = "json=" + jsonObject.toString();
 
-        Log.i("getTwilioNumber",userID+" "+body);
+        Log.i("getTwilioNumber", userID + " " + body);
 
         Call call = RESTClient.call_POST(RESTClient.TWILIO_NUMBER, header, body, new okhttp3.Callback() {
             @Override
@@ -249,72 +246,66 @@ public class ChooseNumberActivity extends AppCompatActivity  {
                     try {
 
                         String res = response.body().string();
-                        Log.i("onResponse",res);
+                        Log.i("onResponse", res);
                         JSONObject jsonObject = new JSONObject(res);
 
                         if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
 
                             final String country_name = jsonObject.getString("country_name");
                             JSONObject phone_number = jsonObject.getJSONObject("phone_number");
-                            final String country_code=jsonObject.getString("country_code");
+                            final String country_code = jsonObject.getString("country_code");
 
                             //-------------
-                            country_name_search=country_name;
-                            country_code_search=country_code;
-                            country_iso_search=country_code;
+                            country_name_search = country_name;
+                            country_code_search = country_code;
+                            country_iso_search = country_code;
                             //-----------
 
                             //Add Default Number
 
-                            if(phone_number.has("default"))
-                            {
+                            if (phone_number.has("default")) {
                                 JSONArray jsonArray_default = phone_number.getJSONArray("default");
-                                for(int k = 0;k<jsonArray_default.length();k++)
-                                {
+                                for (int k = 0; k < jsonArray_default.length(); k++) {
                                     TwilioNumber twilioNumber = new TwilioNumber();
-                                    JSONObject object =  jsonArray_default.getJSONObject(k);
+                                    JSONObject object = jsonArray_default.getJSONObject(k);
                                     twilioNumber.phone_number = object.getString("phone_number");
                                     twilioNumber.friendly_number = object.getString("friendly_number");
                                     twilioNumber.voice = object.getBoolean("voice");
                                     twilioNumber.SMS = object.getBoolean("SMS");
                                     twilioNumber.MMS = object.getBoolean("MMS");
-                                    twilioNumber.type ="Regular";
+                                    twilioNumber.type = "Regular";
                                     twilioNumbers_regular.add(twilioNumber);
                                 }
                             }
 
                             //Add premium Number
-                            if(phone_number.has("premium"))
-                            {
+                            if (phone_number.has("premium")) {
                                 JSONArray jsonArray_premium = phone_number.getJSONArray("premium");
-                                for(int k = 0;k<jsonArray_premium.length();k++)
-                                {
+                                for (int k = 0; k < jsonArray_premium.length(); k++) {
                                     TwilioNumber twilioNumber = new TwilioNumber();
-                                    JSONObject object =  jsonArray_premium.getJSONObject(k);
+                                    JSONObject object = jsonArray_premium.getJSONObject(k);
                                     twilioNumber.phone_number = object.getString("phone_number");
                                     twilioNumber.friendly_number = object.getString("friendly_number");
                                     twilioNumber.voice = object.getBoolean("voice");
                                     twilioNumber.SMS = object.getBoolean("SMS");
                                     twilioNumber.MMS = object.getBoolean("MMS");
-                                    twilioNumber.type ="premium";
+                                    twilioNumber.type = "premium";
                                     twilioNumbers_premium.add(twilioNumber);
                                 }
                             }
 
                             //Add elite Number
-                            if(phone_number.has("elite"))
-                            {
+                            if (phone_number.has("elite")) {
                                 JSONArray jsonArray_elite = phone_number.getJSONArray("elite");
-                                for(int k = 0;k<jsonArray_elite.length();k++)
-                                {
+                                for (int k = 0; k < jsonArray_elite.length(); k++) {
                                     TwilioNumber twilioNumber = new TwilioNumber();
-                                    JSONObject object =  jsonArray_elite.getJSONObject(k);
+                                    JSONObject object = jsonArray_elite.getJSONObject(k);
                                     twilioNumber.phone_number = object.getString("phone_number");
                                     twilioNumber.friendly_number = object.getString("friendly_number");
                                     twilioNumber.voice = object.getBoolean("voice");
                                     twilioNumber.SMS = object.getBoolean("SMS");
                                     twilioNumber.MMS = object.getBoolean("MMS");
-                                    twilioNumber.type ="elite";
+                                    twilioNumber.type = "elite";
                                     twilioNumbers_elite.add(twilioNumber);
                                 }
                             }
@@ -323,14 +314,14 @@ public class ChooseNumberActivity extends AppCompatActivity  {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if(selectedCountry==null)
+                                    if (selectedCountry == null)
                                         currenCountry.setText("Select Country");
                                     else
                                         currenCountry.setText(country_name);
                                        /* numberFragment_type_regular.setData(twilioNumbers_regular);
                                         numberFragment_type_premium.setData(twilioNumbers_premium);
                                         numberFragment_type_elite.setData(twilioNumbers_elite);*/
-                                       display_numbers(twilioNumbers_regular,twilioNumbers_premium,twilioNumbers_elite );
+                                    display_numbers(twilioNumbers_regular, twilioNumbers_premium, twilioNumbers_elite);
                                 }
                             });
 
@@ -350,6 +341,7 @@ public class ChooseNumberActivity extends AppCompatActivity  {
         });
 
     }
+
     //----------------------
     public boolean isValid() {
         return country_name_search != "" && country_code_search != "";
@@ -360,31 +352,31 @@ public class ChooseNumberActivity extends AppCompatActivity  {
     public void selectTwilioNumber(final String numberType, final String number) throws JSONException {
 
         //Show loading dialog
-        GeneralUtil.showProgressDialog(this,null);
+        GeneralUtil.showProgressDialog(this, null);
 
         final SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(ChooseNumberActivity.this);
         String userID = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
 
         //Header
-        HashMap<String,String> header = new HashMap<>();
+        HashMap<String, String> header = new HashMap<>();
         header.put("x-api-key", ApiClient.X_API_KEY);
         header.put("userid", userID);
         //RequestBody
         JSONObject jsonNumber = new JSONObject();
-        jsonNumber.put("number",number);
+        jsonNumber.put("number", number);
 
         JSONArray jsonArrayNumber = new JSONArray();
         jsonArrayNumber.put(jsonNumber);
 
         JSONObject jsonNumberType = new JSONObject();
-        jsonNumberType.put(numberType,jsonArrayNumber);
+        jsonNumberType.put(numberType, jsonArrayNumber);
 
         JSONObject jsonTwillioNumber = new JSONObject();
-        jsonTwillioNumber.put("twillio_nos",jsonNumberType);
+        jsonTwillioNumber.put("twillio_nos", jsonNumberType);
 
-        String body = "json="+jsonTwillioNumber.toString();
+        String body = "json=" + jsonTwillioNumber.toString();
 
-        Log.i("NumberFragment",body);
+        Log.i("NumberFragment", body);
 
         Call call = RESTClient.call_POST(RESTClient.TWILIO_NUMBER_SELECT, header, body, new okhttp3.Callback() {
             @Override
@@ -402,7 +394,7 @@ public class ChooseNumberActivity extends AppCompatActivity  {
                     try {
 
                         String res = response.body().string();
-                        Log.i("onResponse",res);
+                        Log.i("onResponse", res);
                         JSONObject jsonObject = new JSONObject(res);
 
                         if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
@@ -410,12 +402,16 @@ public class ChooseNumberActivity extends AppCompatActivity  {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Intent intent = new Intent(ChooseNumberActivity.this, PackageActivity.class);
-                                    if("profile_screen".equals(redirect_from)){
-                                        System.out.println("new number selected-----------  "+number);
-                                    preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_NEW_PAY_729_NUMBER,numberType);}
-                                    intent.putExtra("redirect_from",redirect_from);
-                                    intent.putExtra("isTrial",isTrial);
+                                    Intent intent = new Intent(ChooseNumberActivity.this, SummeryActivity.class);
+                                    if ("profile_screen".equals(redirect_from)) {
+                                        System.out.println("new number selected-----------  " + number);
+                                        preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_NEW_PAY_729_NUMBER, numberType);
+                                    }
+                                    intent.putExtra("redirect_from", redirect_from);
+                                    intent.putExtra("isTrial", isTrial);
+                                    Bundle extras = new Bundle();
+                                    extras.putSerializable("SelectedPackage",packageModel);
+                                    intent.putExtras(extras);
                                     startActivity(intent);
                                 }
                             });
@@ -436,10 +432,54 @@ public class ChooseNumberActivity extends AppCompatActivity  {
 
     }
 
-    public  void display_numbers(List<TwilioNumber> twilioNumbers_regular, List<TwilioNumber> twilioNumbers_premium, List<TwilioNumber> twilioNumbers_elite){
+    public void display_numbers(List<TwilioNumber> twilioNumbers_regular, List<TwilioNumber> twilioNumbers_premium, List<TwilioNumber> twilioNumbers_elite) {
         numberFragment_type_regular.setData(twilioNumbers_regular);
         numberFragment_type_premium.setData(twilioNumbers_premium);
         numberFragment_type_elite.setData(twilioNumbers_elite);
     }
 
+
+    private void getPackages()
+    {
+        //Show loading dialog
+        GeneralUtil.showProgressDialog(this,null);
+
+        //Header
+        HashMap<String,String> header = new HashMap<>();
+        header.put("x-api-key", ApiClient.X_API_KEY);
+        //RequestBody
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("package_id",packageModel.get("packageId"));
+        String body = "json="+jsonObject.toString();
+
+        Call call = RESTClient.call_POST(RESTClient.PLANS, header,body,new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                GeneralUtil.dismissProgressDialog();
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) {
+
+                GeneralUtil.dismissProgressDialog();
+
+                if (response.isSuccessful()) {
+                    try {
+
+                        String res = response.body().string();
+                        Log.i("onResponse",res);
+                        JSONObject jsonObject = new JSONObject(res);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        //-----
+                    }
+                } else {
+                    //-----------
+                }
+
+            }
+        });
+    }
 }

@@ -14,7 +14,8 @@ import java.util.Date;
 
 public class CallReceiver extends PhoneCallReceiver {
 
-    private String merchantTwillioNumber = "+917676997124";
+    private String merchantTwillioNumber = "+919887808872";
+
     @Override
     protected void onIncomingCallStarted(final Context ctx,final String number, Date start) {
         Log.d("CallReceiver","onIncomingCallStarted: "+number);
@@ -59,7 +60,11 @@ public class CallReceiver extends PhoneCallReceiver {
 
     @Override
     protected void onIncomingCallEnded(Context ctx, String number, Date start, Date end) {
-        Log.d("CallReceiver","onIncomingCallEnded: "+number);
+        Log.d("CallReceiver","onIncomingCallEnded: "+number);if(number!=null && number.equalsIgnoreCase(merchantTwillioNumber))
+        {
+            ctx.stopService(new Intent(ctx, FloatingViewService.class));
+        }
+
     }
 
     @Override
@@ -75,7 +80,7 @@ public class CallReceiver extends PhoneCallReceiver {
     @Override
     protected void onMissedCall(Context ctx, String number, Date start) {
         Log.d("CallReceiver","onMissedCall: "+number);
-        if(number.equalsIgnoreCase(merchantTwillioNumber))
+        if(number!=null && number.equalsIgnoreCase(merchantTwillioNumber))
         {
             ctx.stopService(new Intent(ctx, FloatingViewService.class));
         }

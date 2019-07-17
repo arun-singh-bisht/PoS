@@ -43,6 +43,10 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     {
         email=findViewById(R.id.input_name);
         pass=findViewById(R.id.input_password);
+
+        email.setText("moe@mailinator.com");
+        pass.setText("Test@123");
+
         String username = getIntent().getStringExtra("username");
         String password = getIntent().getStringExtra("password");
 
@@ -251,7 +255,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                                     if(step2.equalsIgnoreCase("0") || step3.equalsIgnoreCase("0"))
                                     {
                                         //Open ChoosePlanActivity screen
-                                        intent = new Intent(SignInActivity.this,ChooseNumberActivity.class);
+                                        //intent = new Intent(SignInActivity.this,ChooseNumberActivity.class);
+                                        intent = new Intent(SignInActivity.this,PackageActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                                         startActivity(intent);
                                         finish();
@@ -362,6 +367,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         });
 
     }
+
+
     @Override
     public void onResume(){
         super.onResume();

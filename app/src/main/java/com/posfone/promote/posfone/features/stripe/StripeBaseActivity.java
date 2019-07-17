@@ -1,5 +1,6 @@
 package com.posfone.promote.posfone.features.stripe;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -49,33 +50,32 @@ import java.util.TimerTask;
 import okhttp3.Call;
 
 /**
- *
  * Created by alan Lam on 31/7/16.
  */
-public  class StripeBaseActivity extends AppCompatActivity  implements OnProgressBarListener{
+public class StripeBaseActivity extends AppCompatActivity  {
 
 
     // ----------Progress Bar
     private Timer timer;
     public View view;
-    private NumberProgressBar bnp;
+    //private NumberProgressBar bnp;
 
     private String redirect_from;
-    String name="";
-    private String package_name="";
-    private String total="";
-    private String package_id="";
-    private String txn_id="";
+    String name = "";
+    private String package_name = "";
+    private String total = "";
+    private String package_id = "";
+    private String txn_id = "";
 
     // VARIABLE
     private String mLastInput;
     private String mShopName = "PosFone";
-    private String image_url="https://picsum.photos/200/300/?random";
+    private String image_url = "https://picsum.photos/200/300/?random";
     private String mDescription = "Package Subscription";
     private String mCurrency = "GBP";
     private String mEmail = "";
 
-    private static boolean shouldAllowBack=true;
+    private static boolean shouldAllowBack = true;
 
 
     //Ui----------------------------
@@ -99,9 +99,10 @@ public  class StripeBaseActivity extends AppCompatActivity  implements OnProgres
     private Button mStripe_dialog_paybutton;
     private StripeImageView mExitButton;
 
+    private ProgressDialog dialog;
 
-//-------------------
-private Stripe mStripe;
+    //-------------------
+    private Stripe mStripe;
 
 
     @Override
@@ -109,26 +110,26 @@ private Stripe mStripe;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stripe__dialog_);
         // Progress Bar
-        bnp = (NumberProgressBar)findViewById(R.id.number_progress_bar);
+        //bnp = (NumberProgressBar) findViewById(R.id.number_progress_bar);
         timer = new Timer();
-        bnp.setOnProgressBarListener(this);
+        //bnp.setOnProgressBarListener(this);
         // Getting package Details
-        redirect_from=getIntent().getStringExtra("redirect_from");
-        package_id=getIntent().getStringExtra("package_id");
-        package_name=getIntent().getStringExtra("package_name");
-        txn_id=getIntent().getStringExtra("txn_id");
-        total=getIntent().getStringExtra("total");
+        redirect_from = getIntent().getStringExtra("redirect_from");
+        package_id = getIntent().getStringExtra("package_id");
+        package_name = getIntent().getStringExtra("package_name");
+        txn_id = getIntent().getStringExtra("txn_id");
+        total = getIntent().getStringExtra("total");
         //widgets-----------------
-        relativeLayout=findViewById(R.id.pay_layout);
+        relativeLayout = findViewById(R.id.pay_layout);
         mStripe_dialog_card_container = (LinearLayout) findViewById(R.id.stripe_dialog_card_container);
         mStripe_dialog_date_container = (LinearLayout) findViewById(R.id.stripe_dialog_date_container);
         mStripe_dialog_cvc_container = (LinearLayout) findViewById(R.id.stripe_dialog_cvc_container);
         mStripe_dialog_email_container = (LinearLayout) findViewById(R.id.stripe_dialog_email_container);
-       // mExitButton = (StripeImageView) findViewById(R.id.stripe_dialog_exit);
+        // mExitButton = (StripeImageView) findViewById(R.id.stripe_dialog_exit);
         mTitleTextView = (TextView) findViewById(R.id.stripe_dialog_txt1);
         mDescriptionTextView = (TextView) findViewById(R.id.stripe_dialog_txt2);
-        packageName=(TextView)findViewById(R.id.txt_plan_type);
-        pay_number=findViewById(R.id.txt_plan_exire_date);
+        packageName = (TextView) findViewById(R.id.txt_plan_type);
+        pay_number = findViewById(R.id.txt_plan_exire_date);
 
         mEmailTextView = (TextView) findViewById(R.id.stripe_dialog_email);
         mErrorMessage = (TextView) findViewById(R.id.stripe_dialog_error);
@@ -137,12 +138,26 @@ private Stripe mStripe;
         mCreditCard = (EditText) findViewById(R.id.stripe_dialog_card);
         mCVC = (EditText) findViewById(R.id.stripe_dialog_cvc);
         mStripe_dialog_paybutton = (Button) findViewById(R.id.stripe_dialog_paybutton);
-        selected=findViewById(R.id.btn_upgrade_plan);
+        selected = findViewById(R.id.btn_upgrade_plan);
         mStripeDialogCardIcon = (ImageView) findViewById(R.id.stripe_dialog_card_icon);
         //-----------------------------
-       // initView(savedInstanceState);
-       // init(savedInstanceState);
+        // initView(savedInstanceState);
+        // init(savedInstanceState);
         text_card();
+        //showProgress();
+    }
+
+
+    private void showProgress() {
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Please wait till process completes");
+        dialog.setCancelable(false);
+        dialog.show();
+    }
+
+    private void stopProgress() {
+        if (dialog != null && dialog.isShowing())
+            dialog.dismiss();
     }
 
     //on destroy
@@ -156,31 +171,30 @@ private Stripe mStripe;
 
     }
 
-// Test Card---------------------------------------
+    // Test Card---------------------------------------
     private void text_card() {
         try {
-            mStripe = new Stripe(this,ApiClient.mDefaultPublishKey);
-        }catch (Exception e){
+            mStripe = new Stripe(this, ApiClient.mDefaultPublishKey);
+        } catch (Exception e) {
 
         }
-        SharedPreferenceHandler sharedPreferenceHandler=new SharedPreferenceHandler(this);
-        name=sharedPreferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_USERNAME);
-        String number=sharedPreferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_NEW_PAY_729_NUMBER);
-        mEmail=sharedPreferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_USER_EMAIL);
-        String number_retain=sharedPreferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER);
+        SharedPreferenceHandler sharedPreferenceHandler = new SharedPreferenceHandler(this);
+        name = sharedPreferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_USERNAME);
+        String number = sharedPreferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_NEW_PAY_729_NUMBER);
+        mEmail = sharedPreferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_USER_EMAIL);
+        String number_retain = sharedPreferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER);
         //mShopImageView.setUrl(image_url);
         mTitleTextView.setText(mShopName);
         pay_number.setText(package_name);
-        if(number!=null){
-        selected.setText(number);
-        //sharedPreferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_NEW_PAY_729_NUMBER,null);
-        }
-        else
+        if (number != null) {
+            selected.setText(number);
+            //sharedPreferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_NEW_PAY_729_NUMBER,null);
+        } else
             selected.setText(number_retain);
         mDescriptionTextView.setText(mDescription);
         mStripe_dialog_paybutton.setText(getString(R.string.__stripe_pay) + " " + "\u00a3 " + (total));
         mStripe_dialog_paybutton.setOnClickListener(mPayClickListener);
-        if(mEmail != null && mEmail.length() > 0){
+        if (mEmail != null && mEmail.length() > 0) {
             mEmailTextView.setText(mEmail);
             mStripe_dialog_email_container.setVisibility(View.VISIBLE);
         }
@@ -189,9 +203,9 @@ private Stripe mStripe;
         mCreditCard.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
+                if (hasFocus) {
                     mStripe_dialog_card_container.setBackgroundResource(R.drawable.stripe_inputbox_background_selected_top);
-                }else{
+                } else {
                     mStripe_dialog_card_container.setBackgroundResource(android.R.color.transparent);
                 }
             }
@@ -199,9 +213,9 @@ private Stripe mStripe;
         mExpiryDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
+                if (hasFocus) {
                     mStripe_dialog_date_container.setBackgroundResource(R.drawable.stripe_inputbox_background_selected_left_bottom);
-                }else{
+                } else {
                     mStripe_dialog_date_container.setBackgroundResource(android.R.color.transparent);
                 }
             }
@@ -209,9 +223,9 @@ private Stripe mStripe;
         mCVC.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
+                if (hasFocus) {
                     mStripe_dialog_cvc_container.setBackgroundResource(R.drawable.stripe_inputbox_background_selected_right_bottom);
-                }else{
+                } else {
                     mStripe_dialog_cvc_container.setBackgroundResource(android.R.color.transparent);
                 }
             }
@@ -229,7 +243,7 @@ private Stripe mStripe;
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(mCreditCard.getText().length() > 0) {
+                if (mCreditCard.getText().length() > 0) {
                     Card mmCard = new Card(mCreditCard.getText().toString(), 0, 0, "");
                     switch (mmCard.getType()) {
                         case Card.VISA:
@@ -247,7 +261,7 @@ private Stripe mStripe;
                         default:
                             mStripeDialogCardIcon.setVisibility(View.GONE);
                     }
-                }else{
+                } else {
                     mStripeDialogCardIcon.setVisibility(View.GONE);
                 }
             }
@@ -287,8 +301,8 @@ private Stripe mStripe;
                     if (month <= 12) {
                         mExpiryDate.setText(mExpiryDate.getText().toString() + "/");
                         mExpiryDate.setSelection(mExpiryDate.getText().toString().length());
-                    }else{
-                        mExpiryDate.setText(mExpiryDate.getText().toString().substring(0,1));
+                    } else {
+                        mExpiryDate.setText(mExpiryDate.getText().toString().substring(0, 1));
                         mExpiryDate.setSelection(mExpiryDate.getText().toString().length());
                     }
                 } else if (s.length() == 2 && mLastInput.endsWith("/")) {
@@ -323,18 +337,18 @@ private Stripe mStripe;
         @Override
         public void onClick(View v) {
             mErrorMessage.setVisibility(View.GONE);
-            if(mCreditCard.getText().toString().length() <= 0){
-                anim();
+            if (mCreditCard.getText().toString().length() <= 0) {
+                //anim();
                 mCreditCard.setError(getString(R.string.__stripe_invalidate_card_number));
                 return;
             }
-            if(mCVC.getText().toString().length() <= 0){
-               anim();
+            if (mCVC.getText().toString().length() <= 0) {
+                //anim();
                 mCVC.setError(getString(R.string.__stripe_invalidate_cvc));
                 return;
             }
-            if(mExpiryDate.getText().toString().length() <= 0){
-                anim();
+            if (mExpiryDate.getText().toString().length() <= 0) {
+                //anim();
                 mExpiryDate.setError(getString(R.string.__stripe_invalidate_expirydate));
                 return;
             }
@@ -346,106 +360,115 @@ private Stripe mStripe;
                     Integer.parseInt(mmMMYY[0]),
                     Integer.parseInt(mmMMYY[1]),
                     mCVC.getText().toString());
-            if(mmCard.validateCard()) {
+            if (mmCard.validateCard()) {
                 mStripe_dialog_paybutton.setEnabled(false);
                 mStripe_dialog_paybutton.setText("Please Wait ...");
                 mStripe_dialog_paybutton.setBackgroundColor(getResources().getColor(R.color.color_phone_number));
-                shouldAllowBack=false;
-                bnp.setVisibility(View.VISIBLE);
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                bnp.incrementProgressBy(1);
-                            }
-                        });
-                    }
-                }, 2000, 100);
+                shouldAllowBack = false;
+                showProgress();
+                //bnp.setVisibility(View.VISIBLE);
+//                timer.schedule(new TimerTask() {
+//                    @Override
+//                    public void run() {
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                bnp.incrementProgressBy(1);
+//                            }
+//                        });
+//                    }
+//                }, 2000, 100);
 
                 mStripe.createToken(mmCard, ApiClient.mDefaultPublishKey, new TokenCallback() {
                     @Override
                     public void onError(Exception error) {
+                        stopProgress();
                         if (error != null && error.getMessage().length() > 0) {
                             mErrorMessage.setText(error.getLocalizedMessage());
                             mErrorMessage.setVisibility(View.VISIBLE);
                         }
                     }
+
                     @Override
                     public void onSuccess(Token token) {
-                        String cvc = mCVC.getText().toString();
+                        stopProgress();
 
+                        //String cvc = mCVC.getText().toString();
 
-                        System.out.println("Id  "+token.getId()+"  account "+token.getBankAccount()+"  created  "+token.getCard()+token.getCreated()+"  used "+token.getUsed());
+                        System.out.println("Id  " + token.getId() + "  account " + token.getBankAccount() + "  created  " + token.getCard() + token.getCreated() + "  used " + token.getUsed());
 
-                        boolean isDebitSuccess = StripePaymentService.debit(token,total,txn_id,package_name,package_id,name,selected.getText().toString());
-                        if(isDebitSuccess)
-                        {
-                            mStripe_dialog_paybutton.setText("Succesful Transaction");
-                            mStripe_dialog_paybutton.setBackgroundColor(getResources().getColor(R.color.color_light_green));
-                            System.out.println("Transaction Successful!");
-                            purchaseTrialPakage();
-                        }
-                        else
-                        {
-                            mStripe_dialog_paybutton.setText("Transaction Failed");
-                            mStripe_dialog_paybutton.setBackgroundColor(getResources().getColor(R.color.error_red));
-                            bnp.setVisibility(View.INVISIBLE);
+//                        boolean isDebitSuccess = StripePaymentService.debit(token,total,txn_id,package_name,package_id,name,selected.getText().toString());
+//                        if(isDebitSuccess)
+//                        {
+//                            mStripe_dialog_paybutton.setText("Succesful Transaction");
+//                            mStripe_dialog_paybutton.setBackgroundColor(getResources().getColor(R.color.color_light_green));
+//                            System.out.println("Transaction Successful!");
+//                            //purchaseTrialPakage();
+//                        }
+//                        else
+//                        {
+//                            mStripe_dialog_paybutton.setText("Transaction Failed");
+//                            mStripe_dialog_paybutton.setBackgroundColor(getResources().getColor(R.color.error_red));
+//                            bnp.setVisibility(View.INVISIBLE);
+//
+//                            System.out.println("Unsuccesful TRansaction ");
+//                        }
 
-                            System.out.println("Unsuccesful TRansaction ");
-                        }
+                        //Send Token ID To Server
+                        //Code here
+                        purchaseTrialPakage(token.getId());
 
                     }
                 });
-            }else if (!mmCard.validateNumber()) {
-                anim();
+            } else if (!mmCard.validateNumber()) {
+                //anim();
                 mCreditCard.setError(getString(R.string.__stripe_invalidate_card_number));
             } else if (!mmCard.validateExpiryDate()) {
-                anim();
+                //anim();
                 mExpiryDate.setError(getString(R.string.__stripe_invalidate_expirydate));
             } else if (!mmCard.validateCVC()) {
-                anim();
+                //anim();
                 mCVC.setError(getString(R.string.__stripe_invalidate_cvc));
             } else {
-                anim();
+                //anim();
                 mErrorMessage.setText(R.string.__stripe_invalidate_card_detail);
                 mErrorMessage.setVisibility(View.VISIBLE);
             }
         }
     };
 
-//----------Animation method
-    public void anim(){
-        Animation shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
-        findViewById(R.id.shake_effect).startAnimation(shake);
-    }
+    //----------Animation method
+//    public void anim() {
+//        Animation shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+//        findViewById(R.id.shake_effect).startAnimation(shake);
+//    }
 
     //--------------------------Purchase package
 
-    private void purchaseTrialPakage() {
+    private void purchaseTrialPakage(String tokenId) {
 
         //Show loading dialog
-        GeneralUtil.showProgressDialog(this,null);
+        GeneralUtil.showProgressDialog(this, null);
 
         SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(this);
         String userID = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
 
         //Header
-        HashMap<String,String> header = new HashMap<>();
+        HashMap<String, String> header = new HashMap<>();
         header.put("x-api-key", ApiClient.X_API_KEY);
         header.put("userid", userID);
-        Log.i("userid",userID);
+        Log.i("userid", userID);
         //RequestBody
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("package_id",package_id);
-        jsonObject.addProperty("txn_id",txn_id);
-        String body = "json="+jsonObject.toString();
+        jsonObject.addProperty("package_id", package_id);
+        jsonObject.addProperty("token", tokenId);
+        String body = "json=" + jsonObject.toString();
 
         Call call = RESTClient.call_POST(RESTClient.TWILIO_NUMBER_PURCHASE, header, body, new okhttp3.Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 GeneralUtil.dismissProgressDialog();
+                Log.i("onFailure", "onFailure");
             }
 
             @Override
@@ -455,29 +478,43 @@ private Stripe mStripe;
                 if (response.isSuccessful()) {
                     try {
                         String res = response.body().string();
-                        Log.i("onResponse",res);
+                        Log.i("onResponse", res);
                         JSONObject jsonObject = new JSONObject(res);
-                        final String message="Transaction Succesfull!"+"\n Do you Wish to save Your Card";
+                        final String message = "Transaction Succesfull!" + "\n Do you Wish to save Your Card";
 
                         if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
 
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    CustomAlertDialog.showDialogSingleButton(StripeBaseActivity.this, message, new CustomAlertDialog.I_CustomAlertDialog() {
+
+                                    Intent intent = new Intent(StripeBaseActivity.this, ManageNumberActivity.class);
+                                    // System.out.println(redirect_from);
+                                    if ("profile_screen_positive_click".equals(redirect_from)) {
+                                        Intent myintent = new Intent(StripeBaseActivity.this, SignInActivity.class);
+                                        startActivity(myintent);
+                                        finish();
+                                    } else if ("profile_screen".equals(redirect_from)) {
+                                        intent.putExtra("redirect_from", "profile_screen");
+                                        startActivity(intent);
+                                    } else
+                                        startActivity(intent);
+
+
+                                    /*CustomAlertDialog.showDialogSingleButton(StripeBaseActivity.this, message, new CustomAlertDialog.I_CustomAlertDialog() {
                                         @Override
                                         public void onPositiveClick() {
 
-                                            Intent intent = new Intent(StripeBaseActivity.this,ManageNumberActivity.class);
+                                            Intent intent = new Intent(StripeBaseActivity.this, ManageNumberActivity.class);
                                             // System.out.println(redirect_from);
-                                            if("profile_screen_positive_click".equals(redirect_from)){
-                                                Intent myintent = new Intent(StripeBaseActivity.this,SignInActivity.class);
+                                            if ("profile_screen_positive_click".equals(redirect_from)) {
+                                                Intent myintent = new Intent(StripeBaseActivity.this, SignInActivity.class);
                                                 startActivity(myintent);
                                                 finish();
-                                            }else if("profile_screen".equals(redirect_from)){
-                                                intent.putExtra("redirect_from","profile_screen");
-                                                startActivity(intent);}
-                                            else
+                                            } else if ("profile_screen".equals(redirect_from)) {
+                                                intent.putExtra("redirect_from", "profile_screen");
+                                                startActivity(intent);
+                                            } else
                                                 startActivity(intent);
 
                                         }
@@ -485,23 +522,23 @@ private Stripe mStripe;
                                         @Override
                                         public void onNegativeClick() {
 
-                                            Intent intent = new Intent(StripeBaseActivity.this,ManageNumberActivity.class);
+                                            Intent intent = new Intent(StripeBaseActivity.this, ManageNumberActivity.class);
                                             // System.out.println(redirect_from);
-                                            if("profile_screen_positive_click".equals(redirect_from)){
-                                                Intent myintent = new Intent(StripeBaseActivity.this,SignInActivity.class);
+                                            if ("profile_screen_positive_click".equals(redirect_from)) {
+                                                Intent myintent = new Intent(StripeBaseActivity.this, SignInActivity.class);
                                                 startActivity(myintent);
                                                 finish();
-                                            }else if("profile_screen".equals(redirect_from)){
-                                                intent.putExtra("redirect_from","profile_screen");
-                                                startActivity(intent);}
-                                            else
+                                            } else if ("profile_screen".equals(redirect_from)) {
+                                                intent.putExtra("redirect_from", "profile_screen");
+                                                startActivity(intent);
+                                            } else
                                                 startActivity(intent);
 
 
                                         }
-                                    });
+                                    });*/
 
-                                    }
+                                }
                             });
                         }
                     } catch (Exception e) {
@@ -519,23 +556,23 @@ private Stripe mStripe;
     @Override
     public void onBackPressed() {
         if (!shouldAllowBack) {
-          // create instance
+            // create instance
             Toast toast = Toast.makeText(this, "Transaction in Process", Toast.LENGTH_SHORT);
-          // set message color
-            TextView textView= (TextView) toast.getView().findViewById(android.R.id.message);
+            // set message color
+            TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);
             textView.setTextColor(getResources().getColor(R.color.cardview_light_background));
-          // set background color
+            // set background color
             toast.getView().setBackgroundColor(getResources().getColor(R.color.color_light_green));
         } else {
-             super.onBackPressed();
+            super.onBackPressed();
         }
     }
 
-    @Override
+    /*@Override
     public void onProgressChange(int current, int max) {
-        if(current == max) {
+        if (current == max) {
             //Toast.makeText(getApplicationContext(), "finished", Toast.LENGTH_SHORT).show();
             bnp.setProgress(0);
         }
-    }
+    }*/
 }

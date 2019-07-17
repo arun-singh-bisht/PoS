@@ -187,7 +187,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onPositiveClick() {
                 Intent intent = new Intent(ProfileActivity.this, PackageActivity.class);
-                intent.putExtra("redirect_from","profile_screen_positive_click");
+                intent.putExtra("redirect_from","profile_screen");
+                intent.putExtra("is_change_number","0");
                 intent.putExtra("isTrial","0");
                 startActivity(intent);
                 finish();
@@ -195,8 +196,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onNegativeClick() {
-                Intent intent = new Intent(ProfileActivity.this,ChooseNumberActivity.class);
+                /*Intent intent = new Intent(ProfileActivity.this,ChooseNumberActivity.class);
                 intent.putExtra("redirect_from","profile_screen");
+                intent.putExtra("isTrial","0");
+                startActivity(intent);
+                finish();*/
+
+                Intent intent = new Intent(ProfileActivity.this, PackageActivity.class);
+                intent.putExtra("redirect_from","profile_screen");
+                intent.putExtra("is_change_number","1");
                 intent.putExtra("isTrial","0");
                 startActivity(intent);
                 finish();

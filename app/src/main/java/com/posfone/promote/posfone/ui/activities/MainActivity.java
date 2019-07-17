@@ -2,6 +2,7 @@ package com.posfone.promote.posfone.ui.activities;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
@@ -56,16 +57,17 @@ public class MainActivity extends AppCompatActivity
 
     private static final String TAG = "MainActivity";
     CircleImageView profile_icon;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        profile_icon=findViewById(R.id.imageView);
+        profile_icon = findViewById(R.id.imageView);
         profile_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Profile Click
-                Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(intent);
             }
         });
@@ -83,8 +85,8 @@ public class MainActivity extends AppCompatActivity
         //Open Contact Fragment
 
         //ContactFragment contactFragment = new ContactFragment();
-        MainFragments contactFragment=new MainFragments();
-        openFragment(contactFragment,false,"MainFragments");
+        MainFragments contactFragment = new MainFragments();
+        openFragment(contactFragment, false, "MainFragments");
 
         //Get Profile Details
         SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(MainActivity.this);
@@ -98,7 +100,7 @@ public class MainActivity extends AppCompatActivity
         getProfileDetails();
 
         //set LoggedIn status
-        preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_IS_LOGIN,true);
+        preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_IS_LOGIN, true);
 
 
         //Get Twilio Access Token and Register this app for receiving Incoming Calls
@@ -109,9 +111,13 @@ public class MainActivity extends AppCompatActivity
 
 
     private void askPermission() {
-        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                Uri.parse("package:" + getPackageName()));
-        startActivityForResult(intent, 1001);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + getPackageName()));
+                startActivityForResult(intent, 1001);
+            }
+        }
     }
 
 
@@ -140,8 +146,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-       if(id == android.R.id.home)
-        {
+        if (id == android.R.id.home) {
             getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
 
@@ -150,17 +155,17 @@ public class MainActivity extends AppCompatActivity
 
 
     /*
-    * Prepare Navigation View's menu list
-    * */
-    public void initNavigationViewMenuList()
-    {
+     * Prepare Navigation View's menu list
+     * */
+    public void initNavigationViewMenuList() {
         final SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(MainActivity.this);
 
         //Init NAvigation Item List
-        ListView listView =  findViewById(R.id.list_menu_items);
+        ListView listView = findViewById(R.id.list_menu_items);
         listView.setOnItemClickListener(this);
 
-        List<NavigationViewItemAdapter.NavigationViewItemModel> navigationViewItemModelList = new ArrayList<NavigationViewItemAdapter.NavigationViewItemModel>() {};
+        List<NavigationViewItemAdapter.NavigationViewItemModel> navigationViewItemModelList = new ArrayList<NavigationViewItemAdapter.NavigationViewItemModel>() {
+        };
 
         //Profile
         NavigationViewItemAdapter.NavigationViewItemModel navigationViewItemModel_profile = new NavigationViewItemAdapter.NavigationViewItemModel();
@@ -189,7 +194,7 @@ public class MainActivity extends AppCompatActivity
         navigationViewItemModelList.add(navigationViewItemModel_contacts);
         navigationViewItemModelList.add(navigationViewItemModel_settings);
 
-        NavigationViewItemAdapter navigationViewItemAdapter = new NavigationViewItemAdapter(this,navigationViewItemModelList);
+        NavigationViewItemAdapter navigationViewItemAdapter = new NavigationViewItemAdapter(this, navigationViewItemModelList);
         listView.setAdapter(navigationViewItemAdapter);
 
 
@@ -198,14 +203,14 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                CustomAlertDialog.showDialog(MainActivity.this, "Are you sure?",R.layout.custom_dialo, new CustomAlertDialog.I_CustomAlertDialog() {
+                CustomAlertDialog.showDialog(MainActivity.this, "Are you sure?", R.layout.custom_dialo, new CustomAlertDialog.I_CustomAlertDialog() {
                     @Override
                     public void onPositiveClick() {
                         //Clear All SP Data
                         preferenceHandler.clearSP();
                         //Redirect user to PreSignInActivity
-                        Intent intent = new Intent(MainActivity.this,PreSignInActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                        Intent intent = new Intent(MainActivity.this, PreSignInActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     }
 
@@ -231,104 +236,98 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
-        switch (i)
-        {
-            case 0:{
+        switch (i) {
+            case 0: {
                 //Profile Click
-                Intent intent = new Intent(this,ProfileActivity.class);
+                Intent intent = new Intent(this, ProfileActivity.class);
                 startActivity(intent);
             }
             break;
-            case 1:{
+            case 1: {
 
                 //Payment Click
                 PaymentFragment paymentFragment = new PaymentFragment();
-                openFragment(paymentFragment,true,"PaymentFragment");
+                openFragment(paymentFragment, true, "PaymentFragment");
 
             }
             break;
-            case 2:{
-                 MainFragments mainFragments = new MainFragments();
-                openFragment(mainFragments,true,"MainFragments");
+            case 2: {
+                MainFragments mainFragments = new MainFragments();
+                openFragment(mainFragments, true, "MainFragments");
             }
             break;
-            case 3:{
+            case 3: {
                 //Contacts Click
                 MainFragments mainFragments = new MainFragments();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("contacts", "contacts");
                 mainFragments.setArguments(bundle);
-                openFragment(mainFragments,true,"MainFragments");
-               // getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                openFragment(mainFragments, true, "MainFragments");
+                // getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
             break;
-            case 4:{
+            case 4: {
                 //Settings Click
                 SettingFragment settingFragment = new SettingFragment();
-                openFragment(settingFragment,true,"SettingFragment");
+                openFragment(settingFragment, true, "SettingFragment");
             }
             break;
 
         }
     }
 
-    private void setProfileDetails()
-    {
+    private void setProfileDetails() {
         //Init Profile Details
         SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(MainActivity.this);
 
         String address = "";
-        String city =  preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_CITY);
-        String state =  preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_STATE);
-        String country =  preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY);
-        String postcode =  preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_POSTCODE);
+        String city = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_CITY);
+        String state = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_STATE);
+        String country = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY);
+        String postcode = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_POSTCODE);
 
 
+        if (city != null && city.length() > 0 && !city.equalsIgnoreCase("null"))
+            address = city + ",";
+        if (state != null && state.length() > 0 && !state.equalsIgnoreCase("null"))
+            address = address + "" + state + ",";
+        if (country != null && country.length() > 0 && !country.equalsIgnoreCase("null"))
+            address = address + "" + country;
+        if (postcode != null && postcode.length() > 0 && !postcode.equalsIgnoreCase("null"))
+            address = address + "," + postcode;
 
-        if(city!=null && city.length()>0 && !city.equalsIgnoreCase("null"))
-            address = city+",";
-        if(state!=null && state.length()>0 && !state.equalsIgnoreCase("null"))
-            address = address+""+state+",";
-        if(country!=null && country.length()>0 && !country.equalsIgnoreCase("null"))
-            address = address+""+country;
-        if(postcode!=null && postcode.length()>0 && !postcode.equalsIgnoreCase("null"))
-            address = address+","+postcode;
+        ((TextView) findViewById(R.id.txt_header_username)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_FIRST_NAME) + " " + preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_LAST_NAME));
+        ((TextView) findViewById(R.id.txt_header_user_location)).setText(address);
+        ((TextView) findViewById(R.id.txt_header_user_contact_number)).setText("+" + preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER));
 
-        ((TextView)findViewById(R.id.txt_header_username)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_FIRST_NAME)+" "+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_LAST_NAME));
-        ((TextView)findViewById(R.id.txt_header_user_location)).setText(address);
-        ((TextView)findViewById(R.id.txt_header_user_contact_number)).setText("+"+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER));
-
-        ImageView imageView =  findViewById(R.id.imageView);
+        ImageView imageView = findViewById(R.id.imageView);
         //Load New Image in Profile Pic
         String profile_pic_url = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHOTO);
 
-            Picasso.with(MainActivity.this)
-                    .load(profile_pic_url)
-                    .placeholder(R.drawable.blank_profile_image)
-                    .into(imageView);
+        Picasso.with(MainActivity.this)
+                .load(profile_pic_url)
+                .placeholder(R.drawable.blank_profile_image)
+                .into(imageView);
     }
 
-    private void openFragment(Fragment fragment,boolean isAddToBackStack,String TAG)
-    {
+    private void openFragment(Fragment fragment, boolean isAddToBackStack, String TAG) {
 
         getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container,fragment);
-        if(isAddToBackStack)
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        if (isAddToBackStack)
             fragmentTransaction.addToBackStack(TAG);
         fragmentTransaction.commit();
     }
 
-    public void setScreenTitle(String title)
-    {
+    public void setScreenTitle(String title) {
         TextView txt_screen_title = findViewById(R.id.txt_screen_title);
         txt_screen_title.setText(title);
     }
 
-    public void setDisplayHomeAsUpEnabled(boolean b)
-    {
+    public void setDisplayHomeAsUpEnabled(boolean b) {
         getSupportActionBar().setDisplayHomeAsUpEnabled(b);
     }
 
@@ -336,14 +335,14 @@ public class MainActivity extends AppCompatActivity
     private void getProfileDetails() {
 
         //Show loading dialog
-        GeneralUtil.showProgressDialog(this,null);
+        GeneralUtil.showProgressDialog(this, null);
 
         SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(this);
         String userID = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
         String token = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_TOKEN);
 
         //Header
-        HashMap<String,String> header = new HashMap<>();
+        HashMap<String, String> header = new HashMap<>();
         header.put("x-api-key", ApiClient.X_API_KEY);
         header.put("userid", userID);
         header.put("token", token);
@@ -364,32 +363,32 @@ public class MainActivity extends AppCompatActivity
                     try {
 
                         String res = response.body().string();
-                        Log.i("onResponse",res);
+                        Log.i("onResponse", res);
                         final JSONObject jsonObject = new JSONObject(res);
 
                         if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
 
 
                             JSONObject user = jsonObject.getJSONObject("user");
-                            System.out.println("all details  "+user);
+                            System.out.println("all details  " + user);
 
                             final SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(MainActivity.this);
-                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_USERNAME,user.getString("username"));
-                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_USER_EMAIL,user.getString("user_email"));
-                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY,user.getString("country"));
-                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_STATE,user.getString("state"));
-                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_POSTCODE,user.getString("zipcode"));
-                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_CITY,user.getString("city"));
-                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_FIRST_NAME,user.getString("first_name"));
-                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_LAST_NAME,user.getString("last_name"));
-                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHOTO,user.getString("profile_photo"));
-                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_SESSION_TOKEN,user.getString("session_token"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_USERNAME, user.getString("username"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_USER_EMAIL, user.getString("user_email"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY, user.getString("country"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_STATE, user.getString("state"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_POSTCODE, user.getString("zipcode"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_CITY, user.getString("city"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_FIRST_NAME, user.getString("first_name"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_LAST_NAME, user.getString("last_name"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHOTO, user.getString("profile_photo"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_SESSION_TOKEN, user.getString("session_token"));
 
-                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER,user.getString("pay729_number"));
-                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHONE_NUMBER,user.getString("phone_number"));
-                            JSONObject package_detail =  jsonObject.getJSONObject("package_detail");
-                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PACKAGE_NAME,package_detail.getString("package_name"));
-                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PACKAGE_EXPIRE_DATE,package_detail.getString("expiry_date"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER, user.getString("pay729_number"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHONE_NUMBER, user.getString("phone_number"));
+                            JSONObject package_detail = jsonObject.getJSONObject("package_detail");
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PACKAGE_NAME, package_detail.getString("package_name"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PACKAGE_EXPIRE_DATE, package_detail.getString("expiry_date"));
 
                             runOnUiThread(new Runnable() {
                                 @Override
@@ -422,7 +421,7 @@ public class MainActivity extends AppCompatActivity
      */
     private void retrieveAccessToken() {
 
-        if(new TwilioTokenManager(MainActivity.this).isTokenValid())
+        if (new TwilioTokenManager(MainActivity.this).isTokenValid())
             return;
 
         CustomAlertDialog.showInputDialog(this, "User Name", R.layout.custom_input_dialo, new CustomAlertDialog.I_CustomInputDialog() {
@@ -433,12 +432,12 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onCompleted(Exception e, String accessToken) {
                         if (e == null) {
-                            Log.d(TAG, accountIdentity+" Access token: " + accessToken);
+                            Log.d(TAG, accountIdentity + " Access token: " + accessToken);
                             //Store Access Token in preference
                             new TwilioTokenManager(MainActivity.this).saveToken(accessToken);
                             registerForCallInvites();
                         } else {
-                            GeneralUtil.showToast(MainActivity.this,"Error retrieving access token. Unable to make calls");
+                            GeneralUtil.showToast(MainActivity.this, "Error retrieving access token. Unable to make calls");
                         }
                     }
                 });
@@ -457,7 +456,7 @@ public class MainActivity extends AppCompatActivity
         //Get FCM token for this app's user
         final String fcmToken = FirebaseInstanceId.getInstance().getToken();
         if (fcmToken != null) {
-            Log.i(TAG, "Registering with FCM: "+fcmToken);
+            Log.i(TAG, "Registering with FCM: " + fcmToken);
             //Get saved Twilio access token from preference
             final TwilioTokenManager twilioTokenManager = new TwilioTokenManager(MainActivity.this);
             String accessToken = twilioTokenManager.getToken();
@@ -472,7 +471,7 @@ public class MainActivity extends AppCompatActivity
                 public void onError(RegistrationException error, String accessToken, String fcmToken) {
                     String message = String.format("Registration Error: %d, %s", error.getErrorCode(), error.getMessage());
                     Log.e(TAG, message);
-                    GeneralUtil.showToast(MainActivity.this,message);
+                    GeneralUtil.showToast(MainActivity.this, message);
                 }
             });
         }

@@ -355,7 +355,6 @@ public class SearchCountryActivity extends AppCompatActivity implements View.OnC
 
     }
 
-
     private void loadStateList(final List<StateModel> stateModels)
     {
         GenericListAdapter genericListAdapter = new GenericListAdapter(SearchCountryActivity.this,stateModels.size(),R.layout.number_fragment_country_row){

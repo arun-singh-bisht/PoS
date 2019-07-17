@@ -96,7 +96,7 @@
         android:id="@+id/btn_purchase"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="PURCHASE"
+        android:text="NEXT"
         android:gravity="center"
         android:textSize="@dimen/get_a_pay_text_size"
         android:background="@drawable/round_bg_textview"

@@ -187,7 +187,8 @@ public class ChoosePlanActivity extends AppCompatActivity implements View.OnClic
            pakage_item.findViewById(R.id.get_number).setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
-                   Intent intent = new Intent(ChoosePlanActivity.this, ChooseNumberActivity.class);
+                   //Intent intent = new Intent(ChoosePlanActivity.this, ChooseNumberActivity.class);
+                   Intent intent = new Intent(ChoosePlanActivity.this, PackageActivity.class);
                    //Bundle bundle = new Bundle();
                    //bundle.putParcelable("SelectedPackage",nubmerCategoryModelList.get(position));
                    //intent.putExtras(bundle);

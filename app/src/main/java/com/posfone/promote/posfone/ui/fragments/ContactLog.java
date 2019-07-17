@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 import com.posfone.promote.posfone.R;
 import com.posfone.promote.posfone.Utils.CustomAlertDialog;
-import com.posfone.promote.posfone.background.services.FloatingViewService;
 import com.posfone.promote.posfone.data.local.db.DatabaseHelper;
 import com.posfone.promote.posfone.ui.activities.Dialer;
 import com.posfone.promote.posfone.ui.activities.VoiceActivity2;

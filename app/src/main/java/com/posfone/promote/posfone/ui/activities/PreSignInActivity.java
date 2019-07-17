@@ -23,8 +23,7 @@ public class PreSignInActivity extends AppCompatActivity implements View.OnClick
         new PermissionUtils().requestForPermission(this);
     }
 
-    private void initViews()
-    {
+    private void initViews() {
         findViewById(R.id.btn_sign_in).setOnClickListener(this);
         findViewById(R.id.btn_free_trial).setOnClickListener(this);
 
@@ -33,28 +32,25 @@ public class PreSignInActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View v) {
 
-        switch (v.getId())
-        {
-            case R.id.btn_sign_in:{
+        switch (v.getId()) {
+            case R.id.btn_sign_in: {
 
                 SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(PreSignInActivity.this);
                 String userID = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
                 userID = null;
-                        if(userID==null)
-                        {
-                            startActivity(new Intent(PreSignInActivity.this,SignInActivity.class));
-                        }else
-                        {
-                            //Open ChoosePlanActivity screen
-                            Intent intent = new Intent(PreSignInActivity.this,ChoosePlanActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                            finish();
-                        }
+                if (userID == null) {
+                    startActivity(new Intent(PreSignInActivity.this, SignInActivity.class));
+                } else {
+                    //Open ChoosePlanActivity screen
+                    Intent intent = new Intent(PreSignInActivity.this, ChoosePlanActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                }
             }
             break;
-            case R.id.btn_free_trial:{
-                startActivity(new Intent(PreSignInActivity.this,SignUpActivity.class));
+            case R.id.btn_free_trial: {
+                startActivity(new Intent(PreSignInActivity.this, SignUpActivity.class));
                 //startActivity(new Intent(PreSignInActivity.this,WebViewActivity.class));
             }
             break;

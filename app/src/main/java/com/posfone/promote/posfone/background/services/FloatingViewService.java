@@ -86,9 +86,6 @@ public class FloatingViewService extends Service {
         ((TextView)mFloatingView.findViewById(R.id.text_caller_name)).setText(name);
         ((TextView)mFloatingView.findViewById(R.id.text_caller_number)).setText(number);
 
-
-
-
         return START_STICKY;
     }
 

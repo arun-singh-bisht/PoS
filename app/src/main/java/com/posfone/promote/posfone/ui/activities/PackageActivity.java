@@ -28,7 +28,8 @@ import okhttp3.Call;
 
 public class PackageActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private String isTrial;
+    private String isTrial = "0";
+    private String is_change_number;
     private String redirect_from;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,14 @@ public class PackageActivity extends AppCompatActivity implements View.OnClickLi
     private void initViews()
     {
         redirect_from=getIntent().getStringExtra("redirect_from");
-        isTrial = getIntent().getStringExtra("isTrial");
+        is_change_number = getIntent().getStringExtra("is_change_number");
+
+        if (redirect_from != null && redirect_from.equalsIgnoreCase("profile_screen")) {
+            findViewById(R.id.img_left).setVisibility(View.VISIBLE);
+            isTrial = "0";
+        } else
+            findViewById(R.id.img_left).setVisibility(View.GONE);
+
         TextView txt_title = findViewById(R.id.txt_title);
         txt_title.setText("Packages");
         findViewById(R.id.img_right).setVisibility(View.GONE);
@@ -62,6 +70,18 @@ public class PackageActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    @Override
+    public void onBackPressed() {
+
+        if (redirect_from != null && redirect_from.equalsIgnoreCase("profile_screen")) {
+            finish();
+        } else {
+            Intent intent = new Intent(PackageActivity.this, PreSignInActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+    }
+
     private void showPackageDetails(final List<HashMap<String,String>> packageModelList)
     {
         if(packageModelList==null || packageModelList.size()==0)
@@ -74,11 +94,14 @@ public class PackageActivity extends AppCompatActivity implements View.OnClickLi
             final HashMap<String,String> packageModel = packageModelList.get(i);
 
             // Redirecting to next Page if package is Trial
-            if(packageModelList.size()==1){
+            if(false && packageModelList.size()==1){
                 String name=packageModelList.get(0).get("Package Name");
                 if ("Stripe Trail".equals(name)){
                     Intent intent = new Intent(PackageActivity.this,PackageDetailActivity.class);
                     intent.putExtra("redirect_from",redirect_from);
+                    intent.putExtra("is_change_number",is_change_number);
+                    intent.putExtra("isTrial",isTrial);
+
                     Bundle extras = new Bundle();
                     extras.putSerializable("SelectedPackage",packageModel);
                     intent.putExtras(extras);
@@ -104,6 +127,7 @@ public class PackageActivity extends AppCompatActivity implements View.OnClickLi
                 public void onClick(View view) {
                     Intent intent = new Intent(PackageActivity.this,PackageDetailActivity.class);
                     intent.putExtra("redirect_from",redirect_from);
+                    intent.putExtra("is_change_number",is_change_number);
                     Bundle extras = new Bundle();
                     extras.putSerializable("SelectedPackage",packageModel);
                     intent.putExtras(extras);
