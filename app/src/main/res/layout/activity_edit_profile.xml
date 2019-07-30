@@ -181,7 +181,9 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textSize="@dimen/input_text_size_signup"
+                android:maxLength="6"
                 android:text=""
+                android:inputType="number"
                 android:hint="Postcode/Zipcode" />
         </android.support.design.widget.TextInputLayout>
 

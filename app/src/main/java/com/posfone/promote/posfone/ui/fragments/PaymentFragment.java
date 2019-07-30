@@ -11,8 +11,25 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
 import com.posfone.promote.posfone.R;
+import com.posfone.promote.posfone.Utils.GeneralUtil;
+import com.posfone.promote.posfone.data.local.models.PaymentModel;
+import com.posfone.promote.posfone.data.local.models.SubscriptionModel;
+import com.posfone.promote.posfone.data.local.sp.SharedPreferenceHandler;
+import com.posfone.promote.posfone.data.remote.rest.ApiClient;
+import com.posfone.promote.posfone.data.remote.rest.RESTClient;
 import com.posfone.promote.posfone.ui.adapters.PaymentListAdapter;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import okhttp3.Call;
 
 
 /**
@@ -23,6 +40,9 @@ public class PaymentFragment extends BaseFragment implements AdapterView.OnItemC
 
     String fragmentName;
     private View view;
+
+    List<PaymentModel> paymentModels;
+    PaymentListAdapter paymentListAdapter;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -86,10 +106,15 @@ public class PaymentFragment extends BaseFragment implements AdapterView.OnItemC
 
     private void initViews()
     {
-
-        PaymentListAdapter paymentListAdapter = new PaymentListAdapter(getActivity(),null);
+        paymentModels = new ArrayList<>();
         ListView listView =  (ListView) view.findViewById(R.id.list_payment);
         listView.setOnItemClickListener(this);
+       // listView.setAdapter(paymentListAdapter);
+    }
+
+    public void update_list(List< PaymentModel> paymentModels) {
+        paymentListAdapter = new PaymentListAdapter(getActivity(),paymentModels);
+        ListView listView =  (ListView) view.findViewById(R.id.list_item);
         listView.setAdapter(paymentListAdapter);
     }
 
@@ -104,5 +129,69 @@ public class PaymentFragment extends BaseFragment implements AdapterView.OnItemC
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
+    }
+
+    private void get_all_payment_details(){
+
+        //Show loading dialog
+        GeneralUtil.showProgressDialog(getActivity(), "Loading Data...");
+        SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(getActivity());
+        String userID = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
+
+
+        //Header
+        HashMap<String, String> header = new HashMap<>();
+        header.put("x-api-key", ApiClient.X_API_KEY);
+        header.put("userid", userID);
+        //RequestBody
+        Log.e("param",ApiClient.X_API_KEY+" -> "+userID);
+        Call call = RESTClient.call_POST(RESTClient.PAYMENT, header, "", new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                GeneralUtil.dismissProgressDialog();
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) {
+
+                GeneralUtil.dismissProgressDialog();
+                Log.e("code",String.valueOf( response.code()));
+                if (response.isSuccessful()) {
+                    try {
+                        String res = response.body().string();
+                        Log.i("onResponse", res);
+                        final JSONObject jsonObject = new JSONObject(res);
+
+                        if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
+
+                            JSONArray payment_list = jsonObject.getJSONArray("payment");
+                            Gson gson = new Gson();
+                            for(int i=0; i<payment_list.length();i++){
+                                PaymentModel object = gson.fromJson(payment_list.get(i).toString(), PaymentModel.class);
+                                paymentModels.add(object);
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        //-----
+                    }
+                } else {
+                    load_data(false, null);
+                    // Toast.makeText(getActivity(), "No Data Available", Toast.LENGTH_SHORT).show();
+                    //-----------
+                }
+            }
+        });
+    }
+
+
+    public void load_data(final boolean status, final JSONObject jsonObject) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                update_list(paymentModels);
+            }
+        });
     }
 }

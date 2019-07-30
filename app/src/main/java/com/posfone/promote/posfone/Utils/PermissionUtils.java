@@ -23,7 +23,8 @@ public class PermissionUtils {
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.CALL_PHONE,
-            Manifest.permission.SYSTEM_ALERT_WINDOW
+            Manifest.permission.SYSTEM_ALERT_WINDOW,
+            Manifest.permission.READ_CALL_LOG
     };
 
 

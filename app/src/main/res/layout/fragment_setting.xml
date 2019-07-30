@@ -142,13 +142,23 @@
             android:text="Your current caller ID preference is 'My Pay729 Number'"
             />
 
+        <!--Call me on this number-->
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Receiving inbound calls"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:layout_marginTop="22dp"
+            android:textColor="@color/color_phone_number"
+            />
 
         <!--Call me on this number-->
         <com.posfone.promote.posfone.Utils.TitilliumWebTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Call me on this Number"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="15dp"
             android:textColor="@color/color_phone_number"
             />
 
@@ -182,6 +192,8 @@
                 android:layout_marginLeft="3dp"
                 android:layout_height="wrap_content"
                 android:text="0000000000"
+                android:inputType="number"
+                android:maxLength="10"
                 android:background="@drawable/round_bg_border_highlight"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
@@ -202,15 +214,24 @@
             android:text="When people call you on your POSfone number we will put your calls through to this number"/>
 
 
+        <!--Call me on this number-->
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Making outbound calls"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:layout_marginTop="22dp"
+            android:textColor="@color/color_phone_number"
+            />
         <!--I will Call from this -->
         <com.posfone.promote.posfone.Utils.TitilliumWebTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="When i need to call my customers, i will be calling from"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="15dp"
             android:textColor="@color/color_phone_number"
             />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -241,6 +262,8 @@
                 android:layout_marginLeft="3dp"
                 android:layout_height="wrap_content"
                 android:text="0000000000"
+                android:maxLength="10"
+                android:inputType="number"
                 android:background="@drawable/round_bg_border_highlight"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
@@ -252,7 +275,6 @@
 
         </LinearLayout>
 
-
         <com.posfone.promote.posfone.Utils.TitilliumWebTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -260,6 +282,58 @@
             android:layout_marginTop="5dp"
             android:text="This is the telephone number we will put your customer payment line calls through to you on."
             />
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Outbound Security Setting"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/color_phone_number"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:weightSum="10"
+            >
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebEditText
+                android:id="@+id/security_code"
+                android:layout_width="0dp"
+                android:layout_weight="6"
+                android:layout_height="wrap_content"
+                android:hint="Security code"
+                android:maxLength="3"
+                android:inputType="textPassword"
+                android:background="@drawable/round_bg_border_highlight"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:textSize="13sp"
+                android:layout_marginRight="3dp"
+                />
+            <com.posfone.promote.posfone.Utils.TitilliumWebEditText
+                android:id="@+id/confirm_security_code"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_marginLeft="3dp"
+                android:layout_height="wrap_content"
+                android:hint="Confirm Security Code"
+                android:background="@drawable/round_bg_border_highlight"
+                android:maxLength="3"
+                android:inputType="number"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:textSize="13sp"
+                android:gravity="center"
+                />
+        </LinearLayout>
+
+
 
 
 

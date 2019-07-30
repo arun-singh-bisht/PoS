@@ -17,6 +17,7 @@ import com.posfone.promote.posfone.data.local.sp.SharedPreferenceHandler;
 import com.posfone.promote.posfone.data.remote.rest.ApiClient;
 import com.posfone.promote.posfone.data.remote.rest.RESTClient;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -407,4 +408,70 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         pass.setText(password);
 
     }
+
+  @OnClick(R.id.terms_of_service)
+    public void load_terms_of_service() {
+
+  }
+
+  public void load_webview(String url) {
+      //Show loading dialog
+      GeneralUtil.showProgressDialog(this,null);
+
+      SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(this);
+      String userID = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
+
+      //Header
+      HashMap<String,String> header = new HashMap<>();
+      header.put("x-api-key", ApiClient.X_API_KEY);
+      Call call = RESTClient.call_GET(url, header, new okhttp3.Callback() {
+          @Override
+          public void onFailure(Call call, IOException e) {
+              GeneralUtil.dismissProgressDialog();
+          }
+
+          @Override
+          public void onResponse(Call call, okhttp3.Response response) {
+
+              GeneralUtil.dismissProgressDialog();
+
+              try {
+
+                  String res = response.body().string();
+                  System.out.println("------------------------------------------------------------------------------------------");
+                  Log.i("onResponse",res);
+                  final JSONObject jsonObject = new JSONObject(res);
+                  final String message = jsonObject.getString("message");
+
+                  if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
+
+
+                      runOnUiThread(new Runnable() {
+                          @Override
+                          public void run() {
+                              Intent intent =new Intent(SignInActivity.this,WebViewActivity.class);
+                              try {
+                                  intent.putExtra("data",jsonObject.getString("data"));
+                                  startActivity(intent);
+                              } catch (JSONException e) {
+                                  e.printStackTrace();
+                              }
+                          }
+                      });
+
+                  }else
+                  {
+                      GeneralUtil.showToast(SignInActivity.this,message);
+                  }
+
+              } catch (Exception e) {
+                  e.printStackTrace();
+              } finally {
+                  //-----
+              }
+
+          }
+      });
+  }
+
 }

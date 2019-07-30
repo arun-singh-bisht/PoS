@@ -19,6 +19,7 @@
         <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/twilio_no"
             android:text="+44-257-2568"
             android:textSize="13sp"
             android:textStyle="bold"
@@ -27,6 +28,7 @@
         <com.posfone.promote.posfone.Utils.TitilliumWebTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/txn_id"
             android:text="Transaction ID: 2546"
             android:textSize="12sp"
             android:layout_marginTop="5dp"
@@ -34,6 +36,7 @@
         <com.posfone.promote.posfone.Utils.TitilliumWebTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/txn_date"
             android:text="01 July 2018 | 12:37 PM"
             android:layout_marginTop="5dp"
             android:textSize="11sp"
@@ -50,6 +53,7 @@
         <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/payment_amount"
             android:textColor="@color/color_phone_number"
             android:text="11.99 $"
             android:textSize="16sp"
@@ -68,11 +72,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#ffffff"
+            android:id="@+id/payment_status"
             android:text="Approved"
             android:textSize="8sp"
             android:background="@drawable/round_bg_textview"
             android:padding="5dp"
-
             />
 
 

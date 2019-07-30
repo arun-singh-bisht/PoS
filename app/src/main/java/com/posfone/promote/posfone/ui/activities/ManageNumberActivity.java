@@ -50,7 +50,6 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
 
     private void initViews()
     {
-
         TextView txt_title = findViewById(R.id.txt_title);
         txt_title.setText("Manage Number");
         inbound_country=findViewById(R.id.txt_select_country_incoming_call);
@@ -62,7 +61,6 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
         findViewById(R.id.btn_save).setOnClickListener(this);
         inbound_country.setOnClickListener(this);
         outbound_country.setOnClickListener(this);
-
     }
 
     @Override
@@ -93,7 +91,6 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
                 }
 
                 purchaseTrialPakage(countryCode_callReciveNumber,txt_incoming_number,countryCode_callMakingNumber,txt_outgoing_number);
-
 
             }
             break;
@@ -148,7 +145,11 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
 
         SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(this);
         String userID = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
-
+        Log.e("number",inCominNumberCountryCode+" -> "+ountGoingNumberCountryCode);
+        if (inCominNumberCountryCode.equals("+") && ountGoingNumberCountryCode.equals("+")){
+            inCominNumberCountryCode = "+44";
+            ountGoingNumberCountryCode = "+44";
+        }
         //Header
         HashMap<String,String> header = new HashMap<>();
         header.put("x-api-key", ApiClient.X_API_KEY);
@@ -270,15 +271,20 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
                             numberFoMakingCall_country = out1_user_number.getString("country");
                             countryCode_callMakingNumber = "+"+out1_user_number.getString("code");
                             outbound_number = "+"+out1_user_number.getString("number");
+                            Log.e("COUNTRYNAme",numberFoMakingCall_country);
+                                inbound_country.setText("United Kingdom");
+                                outbound_country.setText("United Kingdom");
 
                             if("profile_screen".equals(redirect_from)){
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        inbound_country.setText(numberForReceivingCall_country);
-                                        outbound_country.setText(numberFoMakingCall_country);
-                                        inbound_country_number.setText(inbound_number.replace("+",""));
-                                        outbound_country_number.setText(outbound_number.replace("+",""));
+
+                                            inbound_country.setText(numberForReceivingCall_country);
+                                            outbound_country.setText(numberFoMakingCall_country);
+
+                                        inbound_country_number.setText(inbound_number.replace("+", ""));
+                                        outbound_country_number.setText(outbound_number.replace("+", ""));
                                     }
                                 });
 

@@ -1,11 +1,15 @@
 package com.posfone.promote.posfone.ui.activities;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.net.sip.SipManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -27,7 +31,9 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -50,8 +56,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     @BindView(R.id.indeterminateBar)
     ProgressBar indeterminateBar;
-
-
+    @BindView(R.id.lable_hh_mm_ss_bundle_min)
+    TextView bundle_min;
+    @BindView(R.id.lable_hh_mm_ss_call_min)
+    TextView call_min;
+    @BindView(R.id.lable_hh_mm_ss_remaining_time)
+    TextView remaining_time;
+    final int PIC_CROP = 1;
     Handler handler;
 
     @Override
@@ -66,8 +77,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     @SuppressLint("HandlerLeak")
     private void initViews() {
-
-
+        SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(ProfileActivity.this);
+        call_min.setText( preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_CALL_MIN));
+       remaining_time.setText( preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_REMAINING_TIME));
+        bundle_min.setText( preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_BUNDLE_MIN));
         //Back arrow
         findViewById(R.id.img_left).setOnClickListener(this);
         findViewById(R.id.img_right).setOnClickListener(this);
@@ -112,8 +125,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     private void loadProfileDetails() {
         SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(ProfileActivity.this);
-
-
         String address = "";
         String city = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_CITY);
         String state = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_STATE);
@@ -145,7 +156,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 .load(profile_pic_url)
                 .placeholder(R.drawable.blank_profile_image)
                 .into(profile_image);
-
     }
 
 
@@ -229,7 +239,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 Log.i("ProfileActivity", file_path);
                 File file = new File(file_path);
 
-                //Uri uri = Uri.fromFile(file);
+                Uri uri = FileProvider.getUriForFile(this,"com.mvc.imagepicker.provider",file);
+                Log.i("ProfileActivity", uri.toString());
+                performCrop(uri);
                 //int orientation = ImageUtil.getImageRotation(ProfileActivity.this, uri);
 
                 //Log.i("ProfileActivity", "orientation "+orientation);
@@ -237,11 +249,69 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 /*if (bm != null)
                     profile_image.setImageBitmap(bm);*/
 
-                uploadProfileImage(file);
+               // uploadProfileImage(file);
+            } else if (requestCode == PIC_CROP) {
+                if (data != null) {
+                    // get the returned data
+                    Bundle extras = data.getExtras();
+                    // get the cropped bitmap
+                    Bitmap selectedBitmap = extras.getParcelable("data");
+                   // Log.e("ProfileActivityimage", getFile(selectedBitmap).getAbsolutePath());
+                    uploadProfileImage(getFile(selectedBitmap));
+                }
             }
         }catch (Exception ex)
         {
             ex.printStackTrace();
+        }
+    }
+
+    private File getFile(Bitmap bitmap)throws Exception {
+        //create a file to write bitmap data
+        SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(this);
+        String userID = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
+        File f = new File(this.getCacheDir(), "profile_image_"+userID+".png");
+        f.createNewFile();
+
+//Convert bitmap to byte array
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100 /*ignored for PNG*/, bos);
+        byte[] bitmapdata = bos.toByteArray();
+
+//write the bytes in file
+        FileOutputStream fos = new FileOutputStream(f);
+        fos.write(bitmapdata);
+        fos.flush();
+        fos.close();
+        Log.e("onupload",f.getAbsolutePath());
+        return f;
+    }
+
+    private void performCrop(Uri picUri) {
+        try {
+            Intent cropIntent = new Intent("com.android.camera.action.CROP");
+            cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            // indicate image type and Uri
+            cropIntent.setDataAndType(picUri, "image/*");
+            // set crop properties here
+            cropIntent.putExtra("crop", true);
+            // indicate aspect of desired crop
+            cropIntent.putExtra("aspectX", 1);
+            cropIntent.putExtra("aspectY", 1);
+            // indicate output X and Y
+            cropIntent.putExtra("outputX", 128);
+            cropIntent.putExtra("outputY", 128);
+            // retrieve data on return
+            cropIntent.putExtra("return-data", true);
+            // start the activity - we handle returning in onActivityResult
+            startActivityForResult(cropIntent, PIC_CROP);
+        }
+        // respond to users whose devices do not support the crop action
+        catch (ActivityNotFoundException anfe) {
+            // display an error message
+            String errorMessage = "Whoops - your device doesn't support the crop action!";
+            Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
+            toast.show();
         }
     }
 

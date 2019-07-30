@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:text="PoS"
                 android:textColor="#ffffff"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:layout_gravity="center"
                 />
 

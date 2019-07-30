@@ -111,11 +111,15 @@ public class EidtProfileActivity extends AppCompatActivity implements View.OnCli
             case R.id.input_state:{
 
                 Intent intent = new Intent(EidtProfileActivity.this,SearchCountryActivity.class);
+                SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(this);
+                if (selectedCountryPhoneCode == null)
+                    selectedCountryPhoneCode = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY_CODE);
+                    selectedCountryFlag= preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY_FLAG);
+                Log.e("Details",selectedCountry+" -> "+selectedCountryPhoneCode+" -> "+selectedCountryFlag);
                 intent.putExtra(SearchCountryActivity.TAG_TYPE,selectedCountry);
                 intent.putExtra("selectedCountryPhoneCode",selectedCountryPhoneCode);
                 intent.putExtra("selectedCountryFlag",selectedCountryFlag);
                 startActivityForResult(intent,ACTION_FOR_STATE);
-
             }
             break;
         }
@@ -177,7 +181,7 @@ public class EidtProfileActivity extends AppCompatActivity implements View.OnCli
         jsonObject.addProperty("address",input_company_address.getText().toString());
         jsonObject.addProperty("country",input_country.getText().toString());
         jsonObject.addProperty("city",input_city.getText().toString());
-        jsonObject.addProperty("postcode",input_postcode.getText().toString());
+        jsonObject.addProperty("zipcode",input_postcode.getText().toString());
         String state = input_state.getText().toString();
         if(state.equalsIgnoreCase("Please select"))
             state = "";
@@ -209,7 +213,6 @@ public class EidtProfileActivity extends AppCompatActivity implements View.OnCli
            GeneralUtil.showToast(this,message);
            return false;
        }
-
         return true;
     }
 

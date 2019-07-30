@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.posfone.promote.posfone.R;
@@ -34,6 +35,7 @@ import com.posfone.promote.posfone.data.local.sp.SharedPreferenceHandler;
 import com.posfone.promote.posfone.data.remote.rest.ApiClient;
 import com.posfone.promote.posfone.data.remote.rest.RESTClient;
 import com.posfone.promote.posfone.ui.adapters.NavigationViewItemAdapter;
+import com.posfone.promote.posfone.ui.fragments.ChangePassword;
 import com.posfone.promote.posfone.ui.fragments.MainFragments;
 import com.posfone.promote.posfone.ui.fragments.PaymentFragment;
 import com.posfone.promote.posfone.ui.fragments.SettingFragment;
@@ -104,7 +106,7 @@ public class MainActivity extends AppCompatActivity
 
 
         //Get Twilio Access Token and Register this app for receiving Incoming Calls
-        //retrieveAccessToken();
+       // retrieveAccessToken();
 
         askPermission();
     }
@@ -179,6 +181,11 @@ public class MainActivity extends AppCompatActivity
         NavigationViewItemAdapter.NavigationViewItemModel navigationViewItemModel_calls = new NavigationViewItemAdapter.NavigationViewItemModel();
         navigationViewItemModel_calls.item_name = "Calls";
         navigationViewItemModel_calls.res_icon = R.drawable.side_menu_call;
+        // Subscription
+        NavigationViewItemAdapter.NavigationViewItemModel navigationViewItemModel_subscription = new NavigationViewItemAdapter.NavigationViewItemModel();
+        navigationViewItemModel_subscription.item_name = "Subscription";
+        navigationViewItemModel_subscription.res_icon = R.drawable.subscription;
+
         //Contacts
         NavigationViewItemAdapter.NavigationViewItemModel navigationViewItemModel_contacts = new NavigationViewItemAdapter.NavigationViewItemModel();
         navigationViewItemModel_contacts.item_name = "Contacts";
@@ -187,12 +194,18 @@ public class MainActivity extends AppCompatActivity
         NavigationViewItemAdapter.NavigationViewItemModel navigationViewItemModel_settings = new NavigationViewItemAdapter.NavigationViewItemModel();
         navigationViewItemModel_settings.item_name = "Settings";
         navigationViewItemModel_settings.res_icon = R.drawable.side_menu_setting;
+        //Settings
+        NavigationViewItemAdapter.NavigationViewItemModel navigationViewItemModel_change_password = new NavigationViewItemAdapter.NavigationViewItemModel();
+        navigationViewItemModel_change_password.item_name = "Change Password";
+        navigationViewItemModel_change_password.res_icon = R.drawable.lock;
 
         navigationViewItemModelList.add(navigationViewItemModel_profile);
         navigationViewItemModelList.add(navigationViewItemModel_payment);
         navigationViewItemModelList.add(navigationViewItemModel_calls);
+        navigationViewItemModelList.add(navigationViewItemModel_subscription);
         navigationViewItemModelList.add(navigationViewItemModel_contacts);
         navigationViewItemModelList.add(navigationViewItemModel_settings);
+        navigationViewItemModelList.add(navigationViewItemModel_change_password);
 
         NavigationViewItemAdapter navigationViewItemAdapter = new NavigationViewItemAdapter(this, navigationViewItemModelList);
         listView.setAdapter(navigationViewItemAdapter);
@@ -244,48 +257,55 @@ public class MainActivity extends AppCompatActivity
             }
             break;
             case 1: {
-
                 //Payment Click
                 PaymentFragment paymentFragment = new PaymentFragment();
                 openFragment(paymentFragment, true, "PaymentFragment");
-
             }
             break;
             case 2: {
+                // Calls
                 MainFragments mainFragments = new MainFragments();
                 openFragment(mainFragments, true, "MainFragments");
             }
             break;
             case 3: {
                 //Contacts Click
+                Subscription subscription = new Subscription();
+                openFragment(subscription, true, "Subscription");
+            }
+            break;
+            case 4: {
+                //Contacts Click
                 MainFragments mainFragments = new MainFragments();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("contacts", "contacts");
                 mainFragments.setArguments(bundle);
                 openFragment(mainFragments, true, "MainFragments");
-                // getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
             break;
-            case 4: {
+            case 5: {
                 //Settings Click
                 SettingFragment settingFragment = new SettingFragment();
                 openFragment(settingFragment, true, "SettingFragment");
             }
             break;
-
+            case 6: {
+                //Change Password Click
+                ChangePassword changePassword = new ChangePassword();
+                openFragment(changePassword, true, "ChangePasswordFragment");
+            }
+            break;
         }
     }
 
     private void setProfileDetails() {
         //Init Profile Details
         SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(MainActivity.this);
-
         String address = "";
         String city = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_CITY);
         String state = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_STATE);
         String country = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY);
         String postcode = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_POSTCODE);
-
 
         if (city != null && city.length() > 0 && !city.equalsIgnoreCase("null"))
             address = city + ",";
@@ -368,7 +388,6 @@ public class MainActivity extends AppCompatActivity
 
                         if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
 
-
                             JSONObject user = jsonObject.getJSONObject("user");
                             System.out.println("all details  " + user);
 
@@ -376,6 +395,8 @@ public class MainActivity extends AppCompatActivity
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_USERNAME, user.getString("username"));
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_USER_EMAIL, user.getString("user_email"));
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY, user.getString("country"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY_CODE,user.getString("country_code"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_COUNTRY_FLAG,user.getString("country_flag"));
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_STATE, user.getString("state"));
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_POSTCODE, user.getString("zipcode"));
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_CITY, user.getString("city"));
@@ -383,6 +404,10 @@ public class MainActivity extends AppCompatActivity
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_LAST_NAME, user.getString("last_name"));
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHOTO, user.getString("profile_photo"));
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_SESSION_TOKEN, user.getString("session_token"));
+                            JSONObject call_bundle = jsonObject.getJSONObject("topup_callbundle");
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_BUNDLE_MIN,call_bundle.getString("bundle_min"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_REMAINING_TIME,call_bundle.getString("remaining_time"));
+                            preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_CALL_MIN,call_bundle.getString("call_min"));
 
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER, user.getString("pay729_number"));
                             preferenceHandler.putValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHONE_NUMBER, user.getString("phone_number"));
@@ -457,7 +482,7 @@ public class MainActivity extends AppCompatActivity
         final String fcmToken = FirebaseInstanceId.getInstance().getToken();
         if (fcmToken != null) {
             Log.i(TAG, "Registering with FCM: " + fcmToken);
-            //Get saved Twilio access token from preference
+            /*//Get saved Twilio access token from preference
             final TwilioTokenManager twilioTokenManager = new TwilioTokenManager(MainActivity.this);
             String accessToken = twilioTokenManager.getToken();
             //Register FCM to current Access Token
@@ -473,7 +498,7 @@ public class MainActivity extends AppCompatActivity
                     Log.e(TAG, message);
                     GeneralUtil.showToast(MainActivity.this, message);
                 }
-            });
+            });*/
         }
     }
 

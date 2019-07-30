@@ -61,9 +61,7 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
                 @Override
                 public void onCallInvite(CallInvite callInvite) {
                     Log.d(TAG, "onCallInvite");
-
                     VoiceFirebaseMessagingService.this.notify(callInvite, notificationId);
-
                 }
 
                 @Override

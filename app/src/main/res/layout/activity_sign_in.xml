@@ -134,6 +134,7 @@
     <com.posfone.promote.posfone.Utils.TitilliumWebTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/terms_of_service"
         android:text="@string/terms_of_use"
         android:gravity="center"
         android:textSize="@dimen/terms_of_use_text_size"

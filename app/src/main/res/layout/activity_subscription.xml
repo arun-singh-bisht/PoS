@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.Subscription">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/plan_description"
+        android:background="@color/colorPrimary">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_2dp"
+            android:paddingStart="@dimen/dimen_5dp"
+            android:paddingEnd="@dimen/dimen_5dp"
+            android:id="@+id/border"
+            android:background="@color/colorPrimaryDark"
+            android:layout_below="@+id/app_bar"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/border"
+            android:id="@+id/label_package"
+            android:textColor="#ffff"
+            android:textSize="20sp"
+            android:paddingStart="@dimen/dimen_10dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:text="Trial Testing Package"/>
+        <TextView
+            android:id="@+id/btn_active_plan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Active"
+            android:layout_below="@+id/border"
+            android:textColor="#ffffff"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/round_active_color"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textSize="12sp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/package_price"
+            android:layout_below="@+id/label_package"
+            android:textColor="#ffff"
+            android:textSize="20sp"
+            android:paddingStart="@dimen/dimen_10dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:text="R33"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dimen_10dp"
+            android:layout_below="@+id/package_price"
+            >
+            <TextView
+                android:id="@+id/btn_stop_subscription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stop Subscription"
+                android:textColor="#ffffff"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/round_deactive_color"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:textSize="12sp"
+                />
+            <TextView
+                android:id="@+id/btn_upgrade_payment_plan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Update Payment Details"
+
+                android:textColor="#ffffff"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/round_active_color"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:textSize="12sp"
+                />
+        </RelativeLayout>
+    </RelativeLayout>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/list_item"
+        android:background="#ffff"
+        android:dividerHeight="@dimen/dimen_10dp"
+        android:divider="#ffff"
+        android:layout_below="@+id/plan_description"
+        android:padding="@dimen/dimen_10dp"
+        >
+
+    </ListView>
+
+
+</RelativeLayout>

@@ -14,6 +14,8 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+
 
     <application
         android:name=".PoSFoneApplicationClass"
@@ -93,7 +95,7 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.activities.SignUpActivity"
             android:screenOrientation="portrait"
@@ -140,15 +142,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
-
-
         <activity
             android:name=".ui.activities.VoiceActivity2"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"></activity>
-
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.activities.SearchCountryActivity"
             android:screenOrientation="portrait"
@@ -172,13 +171,11 @@
                 android:resource="@xml/provider_paths"
                 tools:replace="android:resource" />
         </provider>
-
         <provider
             android:name="com.activeandroid.content.ContentProvider"
             android:authorities="${applicationId}"
             android:enabled="true"
-            android:exported="false">
-        </provider>
+            android:exported="false" />
 
         <receiver
             android:name=".Utils.SmsReceiver"
@@ -236,24 +233,24 @@
         </service>
         <!-- [END instanceId_listener] -->
 
-        <service android:name=".background.services.CallConnectionService"/>
+        <service android:name=".background.services.CallConnectionService" />
 
-        <activity android:name=".ui.activities.IncomingCallActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"
+        <activity
+            android:name=".ui.activities.IncomingCallActivity"
             android:launchMode="singleInstance"
-            ></activity>
-
-        <activity android:name=".ui.activities.IncomingCallActivity2"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.activities.IncomingCallActivity2"
             android:launchMode="singleInstance"
-            ></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
 
-        <receiver android:name=".background.receivers.CallReceiver" >
+        <receiver android:name=".background.receivers.CallReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
                 <action android:name="android.intent.action.PHONE_STATE" />
+                <action android:name="android.intent.action.ACTION_PHONE_STATE_CHANGED" />
             </intent-filter>
         </receiver>
 
@@ -262,7 +259,9 @@
             android:enabled="true"
             android:exported="false" />
 
+        <activity android:name=".ui.activities.RenewSubscription">
 
+        </activity>
     </application>
 
 </manifest>

@@ -72,7 +72,10 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="15dp"
         >
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/plan_detail">
       <TextView
           android:id="@+id/txt_plan_type"
           android:layout_width="wrap_content"
@@ -108,6 +111,131 @@
             android:paddingBottom="5dp"
             android:textSize="12sp"
             />
+</RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_70dp"
+            android:layout_below="@+id/plan_detail"
+            android:layout_marginTop="@dimen/dimen_5dp"
+            android:orientation="horizontal">
+            <android.support.v7.widget.CardView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/dimen_70dp"
+                app:cardBackgroundColor="@color/colorPrimary">
+ <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textStyle="bold"
+     android:layout_marginTop="@dimen/dimen_5dp"
+    android:textColor="#ffff"
+     android:textSize="12sp"
+    android:layout_gravity="center_horizontal"
+    android:text="Bundle Minutes"/>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dimen_20dp"
+                    android:layout_gravity="bottom|center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/lable_hh_mm_ss_bundle"
+                        android:text="HH : MM : SS"
+                        android:textSize="10sp"
+                        android:textColor="#82F299"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/lable_hh_mm_ss_bundle_min"
+                        android:text="01  :  50  :  00"
+                        android:textSize="10sp"
+                        android:layout_below="@+id/lable_hh_mm_ss_bundle"
+                        android:textColor="#ffff"/>
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/dimen_8dp"
+                android:layout_height="@dimen/dimen_70dp"
+                app:cardBackgroundColor="@color/colorPrimary">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="@dimen/dimen_5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="#ffff"
+                    android:text="Minutes Used"/>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dimen_20dp"
+                    android:layout_gravity="bottom|center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/lable_hh_mm_ss_used"
+                        android:text="HH : MM : SS"
+                        android:textSize="10sp"
+                        android:textColor="#82F299"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/lable_hh_mm_ss_call_min"
+                        android:text="01  :  50  :  00"
+                        android:textSize="10sp"
+                        android:layout_below="@+id/lable_hh_mm_ss_used"
+                        android:textColor="#ffff"/>
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/dimen_8dp"
+                android:layout_height="@dimen/dimen_70dp"
+                app:cardBackgroundColor="@color/colorPrimary">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:layout_marginTop="@dimen/dimen_5dp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="#ffff"
+                    android:text="Minutes Remaining"/>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dimen_20dp"
+                    android:layout_gravity="bottom|center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/lable_hh_mm_ss_remaining"
+                        android:textSize="10sp"
+                        android:text="HH : MM : SS"
+                        android:textColor="#82F299"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/lable_hh_mm_ss_remaining_time"
+                        android:text="01  :  50  :  00"
+                        android:textSize="10sp"
+                        android:layout_below="@+id/lable_hh_mm_ss_remaining"
+                        android:textColor="#ffff"/>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
 
     </RelativeLayout>
 
@@ -141,7 +269,7 @@
             <com.posfone.promote.posfone.Utils.TitilliumWebTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Pay729 Number"
+                android:text="POSfone Number"
                 android:textSize="@dimen/phone_text_size"
                 android:layout_gravity="center_horizontal"
                 android:textColor="#000000"

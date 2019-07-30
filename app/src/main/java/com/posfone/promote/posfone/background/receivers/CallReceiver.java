@@ -14,7 +14,7 @@ import java.util.Date;
 
 public class CallReceiver extends PhoneCallReceiver {
 
-    private String merchantTwillioNumber = "+919887808872";
+    private String merchantTwillioNumber = "+918000401810";
 
     @Override
     protected void onIncomingCallStarted(final Context ctx,final String number, Date start) {
@@ -28,6 +28,8 @@ public class CallReceiver extends PhoneCallReceiver {
                    //Get number from SP saved through FCM push
                    String savedCallerNumber = new SharedPreferenceHandler(ctx).getStringValue(SharedPreferenceHandler.SP_KEY_INCOMING_CALL_CALLER_NUMBER);
                    String contactName = "-";
+
+                   Log.d("CallerNumber","afterreceiving: "+savedCallerNumber);
                    if(savedCallerNumber!=null && !savedCallerNumber.isEmpty())
                      contactName = PhoneContactUtils.getContactName(ctx, savedCallerNumber);
                    else
@@ -42,7 +44,6 @@ public class CallReceiver extends PhoneCallReceiver {
                    } else {
                        ctx.startService(intent);
                    }
-
                }
            },1000);
 

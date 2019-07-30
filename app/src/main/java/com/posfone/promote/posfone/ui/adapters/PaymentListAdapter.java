@@ -47,8 +47,15 @@ public class PaymentListAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             rowView = inflater.inflate(R.layout.payment_list_row, null);
+            TextView twilio_number= rowView.findViewById(R.id.twilio_no);
+            TextView txn_id = rowView.findViewById(R.id.txn_id);
+            TextView txn_date = rowView.findViewById(R.id.txn_date);
+            TextView txn_amount = rowView.findViewById(R.id.payment_amount);
+            twilio_number.setText("");
+            txn_id.setText("");
+            txn_date.setText("");
+            txn_amount.setText("");
             // configure view holder
-
         }
 
         return rowView;

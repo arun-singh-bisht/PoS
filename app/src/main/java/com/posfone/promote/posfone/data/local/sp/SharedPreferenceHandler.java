@@ -17,6 +17,8 @@ public class SharedPreferenceHandler {
     public static String SP_KEY_PROFILE_USERNAME = "username";
     public static String SP_KEY_PROFILE_USER_EMAIL = "user_email";
     public static String SP_KEY_PROFILE_COUNTRY = "country";
+    public static String SP_KEY_PROFILE_COUNTRY_CODE = "country_code";
+    public static String SP_KEY_PROFILE_COUNTRY_FLAG = "country_flag";
     public static String SP_KEY_PROFILE_STATE = "state";
     public static String SP_KEY_PROFILE_CITY = "city";
     public static String SP_KEY_PROFILE_POSTCODE = "postcode";
@@ -24,6 +26,10 @@ public class SharedPreferenceHandler {
     public static String SP_KEY_PROFILE_LAST_NAME = "last_name";
     public static String SP_KEY_PROFILE_PHOTO = "profile_photo";
     public static String SP_KEY_SESSION_TOKEN = "session_token";
+    public static String SP_KEY_BUNDLE_MIN = "bundle_min";
+    public static String SP_KEY_CALL_MIN = "call_min";
+    public static String SP_KEY_REMAINING_TIME = "remaining_time";
+
     public static String SP_KEY_COMPANY_NAME = "company_name";
     public static String SP_KEY_COMPANY_ADDRESS = "company_address";
     public static String SP_KEY_PROFILE_PHONE_NUMBER = "phone_number";

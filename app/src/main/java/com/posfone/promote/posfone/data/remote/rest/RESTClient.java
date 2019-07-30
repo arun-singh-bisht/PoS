@@ -16,6 +16,7 @@ import okio.Buffer;
 public class RESTClient {
 
     public static String HOST_IP = "http://accounts.protechgenie.in/";
+    //public static String HOST_IP = "https://accounts.pay729.guru/";
 
     public static final String COUNTRY = "app/country";
     public static final String STATE = "app/state";
@@ -28,15 +29,22 @@ public class RESTClient {
     public static final String TWILIO_NUMBER = "app/twillio";
     public static final String TWILIO_NUMBER_SELECT = "app/twillio_save";
     public static final String TWILIO_NUMBER_PURCHASE = "app/payment_reponse";
+    public static final String GET_PRIVATE_PAYMENT_KEY = "app/stripeauth";
     public static final String MANAGE_NUMBER = "app/manage_number";
     public static final String MANAGE_NUMBERS = "app/manage_numbers";
     public static final String PROFILE = "app/profile";
+    public static final String SUBSCRIPTION = "app/subscription";
+    public static final String SUBSCRIPTION_INFO = "app/subscriptioninfo";
+    public static final String PAYMENT = "app/payment";
+    public static final String STOP_SUBSCRIPTION = "app/stop_subscription";
+    public static final String RENEW_SUBSCRIPTION = "app/renew_subscription";
     public static final String EMAIL_CHECK = "app/email_availablity";
     public static final String NUMBER_CHECK = "app/username_availablity";
     public static final String SEND_OTP = "app/generate_otp";
     public static final String EDIT_PROFILE = "app/edit_profile";
     public static final String FORGOT_PASSWORD = "app/forget_password";
     public static final String RESET_PASSWORD = "app/reset_password";
+    public static final String CHANGE_PASSWORD = "app/change_password";
     public static final String UPDATE_PHOTO = "app/update_photo";
     public static final String MANAGE_GATEWAY = "app/manage_gateway";
 

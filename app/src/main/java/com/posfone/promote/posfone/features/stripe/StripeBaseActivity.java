@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.daimajia.numberprogressbar.OnProgressBarListener;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.posfone.promote.posfone.R;
 import com.posfone.promote.posfone.Utils.CustomAlertDialog;
@@ -47,6 +50,9 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.Call;
 
 /**
@@ -54,10 +60,14 @@ import okhttp3.Call;
  */
 public class StripeBaseActivity extends AppCompatActivity  {
 
-
+    // Animation
+    Animation slide_down;
+    Animation slide_up;
     // ----------Progress Bar
     private Timer timer;
     public View view;
+
+    static  String PRIVATE_KEY;
     //private NumberProgressBar bnp;
 
     private String redirect_from;
@@ -66,7 +76,7 @@ public class StripeBaseActivity extends AppCompatActivity  {
     private String total = "";
     private String package_id = "";
     private String txn_id = "";
-
+    String userid;
     // VARIABLE
     private String mLastInput;
     private String mShopName = "PosFone";
@@ -79,36 +89,63 @@ public class StripeBaseActivity extends AppCompatActivity  {
 
 
     //Ui----------------------------
-    private CoordinatorLayout relativeLayout;
-    private LinearLayout mStripe_dialog_card_container;
-    private LinearLayout mStripe_dialog_date_container;
-    private LinearLayout mStripe_dialog_cvc_container;
-    private LinearLayout mStripe_dialog_email_container;
-    private EditText mCreditCard;
-    private EditText mExpiryDate;
-    private EditText mCVC;
-    private ImageView mStripeDialogCardIcon;
-    private TextView mTitleTextView;
-    private TextView mDescriptionTextView;
-    private TextView mErrorMessage;
-    private TextView packageName;
-    private TextView selected;
-    private TextView pay_number;
-    private TextView mEmailTextView;
+    public CoordinatorLayout relativeLayout;
+    @BindView(R.id.stripe_dialog_card_container)
+    public LinearLayout mStripe_dialog_card_container;
+    @BindView(R.id.stripe_dialog_date_container)
+    public LinearLayout mStripe_dialog_date_container;
+    @BindView(R.id.stripe_dialog_cvc_container)
+    public LinearLayout mStripe_dialog_cvc_container;
+    @BindView(R.id.stripe_dialog_email_container)
+    public LinearLayout mStripe_dialog_email_container;
+    @BindView(R.id.stripe_dialog_card)
+    public EditText mCreditCard;
+    @BindView(R.id.stripe_dialog_date)
+    public EditText mExpiryDate;
+    @BindView(R.id.stripe_dialog_cvc)
+    public EditText mCVC;
+    @BindView(R.id.stripe_dialog_card_icon)
+    public ImageView mStripeDialogCardIcon;
+    @BindView(R.id.stripe_dialog_txt1)
+    public TextView mTitleTextView;
+    @BindView(R.id.stripe_dialog_txt2)
+    public TextView mDescriptionTextView;
+    @BindView(R.id.stripe_dialog_error)
+    public TextView mErrorMessage;
+    @BindView(R.id.txt_plan_type)
+    public TextView packageName;
+    @BindView(R.id.btn_upgrade_plan)
+    public TextView selected;
+    @BindView(R.id.txt_plan_exire_date)
+    public TextView pay_number;
+    @BindView(R.id.stripe_dialog_email)
+    public TextView mEmailTextView;
+   // @BindView()
     public CircleImageView mShopImageView;
-    private Button mStripe_dialog_paybutton;
-    private StripeImageView mExitButton;
+    @BindView(R.id.stripe_dialog_paybutton)
+    public Button mStripe_dialog_paybutton;
+    public StripeImageView mExitButton;
+  //  @BindView()
+    public ProgressDialog dialog;
+    @BindView(R.id.top_show_hide)
+    LinearLayout top_show_hide;
+    @BindView(R.id.current_card)
+    LinearLayout current_card;
+    @BindView(R.id.add_card_view)
+    CardView add_card_view;
+    @BindView(R.id.below)
+    FrameLayout add_card_creadential;
 
-    private ProgressDialog dialog;
 
     //-------------------
-    private Stripe mStripe;
+    public Stripe mStripe;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stripe__dialog_);
+        ButterKnife.bind(this);
         // Progress Bar
         //bnp = (NumberProgressBar) findViewById(R.id.number_progress_bar);
         timer = new Timer();
@@ -120,30 +157,17 @@ public class StripeBaseActivity extends AppCompatActivity  {
         txn_id = getIntent().getStringExtra("txn_id");
         total = getIntent().getStringExtra("total");
         //widgets-----------------
+        add_card_creadential.setVisibility(View.INVISIBLE);
         relativeLayout = findViewById(R.id.pay_layout);
-        mStripe_dialog_card_container = (LinearLayout) findViewById(R.id.stripe_dialog_card_container);
-        mStripe_dialog_date_container = (LinearLayout) findViewById(R.id.stripe_dialog_date_container);
-        mStripe_dialog_cvc_container = (LinearLayout) findViewById(R.id.stripe_dialog_cvc_container);
-        mStripe_dialog_email_container = (LinearLayout) findViewById(R.id.stripe_dialog_email_container);
-        // mExitButton = (StripeImageView) findViewById(R.id.stripe_dialog_exit);
-        mTitleTextView = (TextView) findViewById(R.id.stripe_dialog_txt1);
-        mDescriptionTextView = (TextView) findViewById(R.id.stripe_dialog_txt2);
-        packageName = (TextView) findViewById(R.id.txt_plan_type);
-        pay_number = findViewById(R.id.txt_plan_exire_date);
-
-        mEmailTextView = (TextView) findViewById(R.id.stripe_dialog_email);
-        mErrorMessage = (TextView) findViewById(R.id.stripe_dialog_error);
-        //mShopImageView = findViewById(R.id.stripe__logo);
-        mExpiryDate = (EditText) findViewById(R.id.stripe_dialog_date);
-        mCreditCard = (EditText) findViewById(R.id.stripe_dialog_card);
-        mCVC = (EditText) findViewById(R.id.stripe_dialog_cvc);
-        mStripe_dialog_paybutton = (Button) findViewById(R.id.stripe_dialog_paybutton);
-        selected = findViewById(R.id.btn_upgrade_plan);
-        mStripeDialogCardIcon = (ImageView) findViewById(R.id.stripe_dialog_card_icon);
         //-----------------------------
-        // initView(savedInstanceState);
-        // init(savedInstanceState);
+        //Load animation
+        slide_down  = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.slide_down);
+
+        slide_up = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.slide_up);
         text_card();
+        get_private_key();
         //showProgress();
     }
 
@@ -164,11 +188,34 @@ public class StripeBaseActivity extends AppCompatActivity  {
     @Override
 
     protected void onDestroy() {
-
         super.onDestroy();
-
         timer.cancel();
+    }
 
+
+
+    @OnClick(R.id.current_card)
+    public void anim() {
+        // Start animation
+        add_card_creadential.clearAnimation();
+        top_show_hide.setVisibility(View.VISIBLE);
+        add_card_creadential.setVisibility(View.GONE);
+       // top_show_hide.startAnimation(saved_card_anim && top_show_hide.getAnimation() !=null ?slide_down:slide_up);
+        if (top_show_hide.getAnimation() ==null)
+        top_show_hide.startAnimation(slide_down);
+
+    }
+
+    @OnClick(R.id.add_card_view)
+    public void show_anim() {
+
+        // Start animation
+        top_show_hide.clearAnimation();
+        top_show_hide.setVisibility(View.GONE);
+        add_card_creadential.setVisibility(View.VISIBLE);
+      //  add_card_creadential.startAnimation(new_card_anim && add_card_creadential.getAnimation()!=null ?slide_up:slide_down);
+        if(add_card_creadential.getAnimation()==null)
+        add_card_creadential.startAnimation(slide_down);
     }
 
     // Test Card---------------------------------------
@@ -181,6 +228,7 @@ public class StripeBaseActivity extends AppCompatActivity  {
         SharedPreferenceHandler sharedPreferenceHandler = new SharedPreferenceHandler(this);
         name = sharedPreferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_USERNAME);
         String number = sharedPreferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_NEW_PAY_729_NUMBER);
+        userid = sharedPreferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
         mEmail = sharedPreferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_USER_EMAIL);
         String number_retain = sharedPreferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER);
         //mShopImageView.setUrl(image_url);
@@ -379,7 +427,7 @@ public class StripeBaseActivity extends AppCompatActivity  {
 //                    }
 //                }, 2000, 100);
 
-                mStripe.createToken(mmCard, ApiClient.mDefaultPublishKey, new TokenCallback() {
+                mStripe.createToken(mmCard, PRIVATE_KEY, new TokenCallback() {
                     @Override
                     public void onError(Exception error) {
                         stopProgress();
@@ -416,7 +464,12 @@ public class StripeBaseActivity extends AppCompatActivity  {
 
                         //Send Token ID To Server
                         //Code here
+                        Gson gson = new Gson();
+                        String json = gson.toJson(token);
+                        System.out.println("token id -> "+token.getId()+"  ->   "+package_id +"  json-> "+json );
                         purchaseTrialPakage(token.getId());
+
+                      //   initiate_payment(token, package_id);
 
                     }
                 });
@@ -443,6 +496,65 @@ public class StripeBaseActivity extends AppCompatActivity  {
 //        findViewById(R.id.shake_effect).startAnimation(shake);
 //    }
 
+
+    /*private boolean initiate_payment(Token token, String package_id) {
+        HashMap<String, String> header = new HashMap<>();
+        header.put("x-api-key", ApiClient.X_API_KEY);
+        String body = "json=" + "";
+        Call call = RESTClient.call_POST(RESTClient.INITIATE_PAYMENT, header,body, new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                GeneralUtil.dismissProgressDialog();
+                Log.i("onFailure", "onFailure");
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) {
+                if (response.isSuccessful()) {
+                    try {
+                        String res = response.body().string();
+                        System.out.println();
+                        JSONObject jsonObject = new JSONObject(res);
+                        PRIVATE_KEY = jsonObject.getString("key");
+                        Log.i("onResponse stripe", PRIVATE_KEY);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+    }*/
+    /*  Get private key for payment */
+
+    private void get_private_key() {
+        HashMap<String, String> header = new HashMap<>();
+        header.put("x-api-key", ApiClient.X_API_KEY);
+        String body = "json=" + "";
+        Call call = RESTClient.call_GET(RESTClient.GET_PRIVATE_PAYMENT_KEY, header, new okhttp3.Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        GeneralUtil.dismissProgressDialog();
+                        Log.i("onFailure", "onFailure");
+                    }
+
+                    @Override
+                    public void onResponse(Call call, okhttp3.Response response) {
+                        if (response.isSuccessful()) {
+                            try {
+                                String res = response.body().string();
+                                System.out.println();
+                                JSONObject jsonObject = new JSONObject(res);
+                                PRIVATE_KEY = jsonObject.getString("key");
+                                Log.i("onResponse stripe", PRIVATE_KEY);
+                            } catch (Exception e) {
+                            e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+
+    }
     //--------------------------Purchase package
 
     private void purchaseTrialPakage(String tokenId) {
@@ -478,7 +590,7 @@ public class StripeBaseActivity extends AppCompatActivity  {
                 if (response.isSuccessful()) {
                     try {
                         String res = response.body().string();
-                        Log.i("onResponse", res);
+                        Log.e("error response", res);
                         JSONObject jsonObject = new JSONObject(res);
                         final String message = "Transaction Succesfull!" + "\n Do you Wish to save Your Card";
 

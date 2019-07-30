@@ -75,6 +75,10 @@ public class SettingFragment extends BaseFragment implements AdapterView.OnItemC
     TextView txt_voice_preference;
     @BindView(R.id.txt_caller_id_preference)
     TextView txt_caller_id_preference;
+    @BindView(R.id.security_code)
+    EditText security_code;
+    @BindView(R.id.confirm_security_code)
+    EditText confirm_security_code;
 
 
     private View view;
@@ -91,7 +95,6 @@ public class SettingFragment extends BaseFragment implements AdapterView.OnItemC
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         Log.i("PaymentFragment",fragmentName+"Fragment onCreateView");
-
         view = inflater.inflate(R.layout.fragment_setting, container, false);
         ButterKnife.bind(this,view);
         getCallProfle();
@@ -317,6 +320,9 @@ public class SettingFragment extends BaseFragment implements AdapterView.OnItemC
                             numberFoMakingCall_number = out1_user_number.getString("number");
 
                             pay729number = "+"+ jsonObject.getString("pay729numbers");
+                            /** Test code by rajat  **/
+                            final  SharedPreferenceHandler handler = new SharedPreferenceHandler(getActivity());
+                            handler.putValue(SharedPreferenceHandler.SP_KEY_INCOMING_CALL_CALLER_NUMBER, pay729number);
 /*
                             JSONArray pay729numbers = jsonObject.getJSONArray("pay729numbers");
                             if(pay729numbers.length()>0)

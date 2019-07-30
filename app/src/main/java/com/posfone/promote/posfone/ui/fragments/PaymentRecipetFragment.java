@@ -25,7 +25,6 @@ public class PaymentRecipetFragment extends BaseFragment {
         setHasOptionsMenu(true);
         //Bundle bundle = this.getArguments();
         //fragmentName = bundle.getString("fragmentName");
-
         Log.i("PaymentFragment",fragmentName+"Fragment onCreate");
     }
 
@@ -35,9 +34,7 @@ public class PaymentRecipetFragment extends BaseFragment {
         // Inflate the layout for this fragment
         Log.i("PaymentFragment",fragmentName+"Fragment onCreateView");
 
-
         view = inflater.inflate(R.layout.fragment_payment_recipet, container, false);
-
         //initViews();
         return view;
     }

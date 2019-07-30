@@ -59,30 +59,88 @@
                     android:textSize="12sp" />
 
             </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/saved_card"
+                android:orientation="vertical"
+                android:layout_below="@+id/top"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="@dimen/action_bar_title_size"
+                android:layout_marginEnd="20dp"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_40dp"
+                    android:id="@+id/current_card"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic__visa"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/dimen_20dp"
+                        android:text="************"
+                        android:textSize="15sp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="1234"
+                        android:textSize="15sp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/top_show_hide"
+                    android:background="#ffff">
+                    <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                        android:id="@+id/btn_next"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Pay Now"
+                        android:gravity="center"
+                        android:layout_margin="@dimen/dimen_10dp"
+
+                        android:textSize="@dimen/get_a_pay_text_size"
+                        android:background="@drawable/round_bg_textview"
+                        android:textColor="#ffffff"
+                        android:padding="@dimen/sign_in_button_padding"
+                        android:layout_marginTop="30dp"
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
 
 
             <android.support.v7.widget.CardView
                 android:id="@+id/add_card_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/top"
+                android:layout_below="@+id/saved_card"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="@dimen/action_bar_title_size"
                 android:layout_marginEnd="20dp"
-                android:background="@color/color_profile_divider"
+
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/color_profile_divider"
+                    android:id="@+id/add_new_card"
                     android:orientation="horizontal"
                     android:padding="5dp">
 
                     <ImageView
                         android:layout_width="35dp"
                         android:layout_height="35dp"
+                        android:id="@+id/img_flag"
                         android:layout_marginStart="@dimen/action_bar_title_size"
                         android:src="@drawable/plus_sign" />
 
@@ -92,7 +150,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="@dimen/action_bar_icon_size"
                         android:gravity="center"
-                        android:text="Add Card"
+                        android:text="Add New Card"
                         android:textColor="@color/colorPrimary"
                         android:textSize="15sp"
                         android:textStyle="bold" />

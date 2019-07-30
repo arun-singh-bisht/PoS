@@ -23,6 +23,7 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
     JavaScriptInterface  JSInterface;
     WebView myWebView;
     ProgressBar progressBar;
+    String data;
     private class MyWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -34,7 +35,7 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
-
+       data =  getIntent().getStringExtra("data");
         initViews();
     }
 
@@ -51,7 +52,11 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
         myWebView.setWebViewClient(new MyWebViewClient());
         try{
         myWebView.addJavascriptInterface(new WebViewInterface(this), "Android");}catch (Exception e){e.printStackTrace();}
-        myWebView.loadUrl(stripeurl);
+
+        if (data != null)
+        myWebView.loadData(data, "text/html", "UTF-8");
+        else
+            myWebView.loadUrl(stripeurl);
         myWebView.setWebChromeClient(new WebChromeClient()  {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {

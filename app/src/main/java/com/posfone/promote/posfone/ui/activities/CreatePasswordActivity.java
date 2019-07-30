@@ -69,6 +69,14 @@ public class CreatePasswordActivity extends AppCompatActivity implements View.On
         }
     }
 
+    @Override
+    public void onResume() {
+       // Log.i("PaymentFragment",fragmentName+"Fragment onResume");
+        super.onResume();
+
+        setTitle("Change Password");
+    }
+
 
     @OnClick(R.id.btn_update)
     public void updatePassword()
