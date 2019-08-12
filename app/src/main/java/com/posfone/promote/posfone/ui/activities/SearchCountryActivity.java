@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -170,6 +171,7 @@ public class SearchCountryActivity extends AppCompatActivity implements View.OnC
 
                         String res = response.body().string();
                         JSONObject jsonObject = new JSONObject(res);
+                        Log.e("onCountry",res);
 
                         if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
 

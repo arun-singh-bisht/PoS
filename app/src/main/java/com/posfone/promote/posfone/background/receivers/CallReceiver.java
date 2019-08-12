@@ -65,7 +65,6 @@ public class CallReceiver extends PhoneCallReceiver {
         {
             ctx.stopService(new Intent(ctx, FloatingViewService.class));
         }
-
     }
 
     @Override

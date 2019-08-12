@@ -1,5 +1,6 @@
 package com.posfone.promote.posfone.ui.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -26,21 +27,31 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.posfone.promote.posfone.R;
+import com.posfone.promote.posfone.Utils.GeneralUtil;
 import com.posfone.promote.posfone.Utils.TitilliumWebTextView;
 import com.posfone.promote.posfone.data.local.db.DatabaseHelper;
 import com.posfone.promote.posfone.data.local.models.Contact;
+import com.posfone.promote.posfone.data.local.sp.SharedPreferenceHandler;
+import com.posfone.promote.posfone.data.remote.rest.ApiClient;
+import com.posfone.promote.posfone.data.remote.rest.RESTClient;
 import com.posfone.promote.posfone.ui.activities.Dialer;
 import com.posfone.promote.posfone.ui.activities.VoiceActivity2;
 import com.posfone.promote.posfone.ui.adapters.ConatactPageAdapter;
 import com.posfone.promote.posfone.ui.adapters.GenericListAdapter;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 
 /**
@@ -361,6 +372,7 @@ public class ContactFragment extends BaseFragment implements LoaderManager.Loade
             public void onClick(View view) {
                 if(size_max.contains("+44") || size_max.contains("+91") || size_med.contains("+1") || size_med.contains("44") || size_med.contains("91")|| size_min.contains("1"))
                 {
+                    make_call(contact.getContactNumber());
                     /*Intent intent = new Intent(getContext(),VoiceActivity2.class);
                     intent.setAction(VoiceActivity2.ACTION_OUTGOING_CALL);
                     intent.putExtra("from_number","16617480240");
@@ -368,9 +380,11 @@ public class ContactFragment extends BaseFragment implements LoaderManager.Loade
                     intent.putExtra("to_name",contact.getContactName());
                     startActivity(intent);*/
                     Intent intent = new Intent(Intent.ACTION_CALL);
-                    String merchantTwilioNumber = "+917676997124";
+                   // String merchantTwilioNumber = "+917676997124";
+                     String merchantTwilioNumber = contact.getContactNumber();
                     intent.setData(Uri.parse("tel:" + merchantTwilioNumber));
                     startActivity(intent);
+
                 }
                 else {
                     Intent intent = new Intent(getContext(),Dialer.class);
@@ -420,6 +434,81 @@ public class ContactFragment extends BaseFragment implements LoaderManager.Loade
         });*/
 
     }
+
+
+
+    /** On Placing call **/
+    public void make_call(String to_number){
+        //Show loading dialog
+        //GeneralUtil.showProgressDialog(this,null);
+
+        SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(getActivity());
+        String userID = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
+
+        //Header
+        HashMap<String,String> header = new HashMap<>();
+        header.put("x-api-key", ApiClient.X_API_KEY);
+        header.put("userid", userID);
+        //RequestBody
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("customer_no",to_number.replace("+","%2B"));
+        String body = "json="+jsonObject.toString();
+
+        Call call = RESTClient.call_POST(RESTClient.MAKE_CALL, header, body, new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                GeneralUtil.dismissProgressDialog();
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) {
+
+                // GeneralUtil.dismissProgressDialog();
+                Log.d("Call_Failed","Make call Api failed to get any response");
+
+                try {
+
+                    String res = response.body().string();
+                    System.out.println("------------------------------------------------------------------------------------------");
+                    Log.i("onResponse",res);
+                    final JSONObject jsonObject = new JSONObject(res);
+                    final String message = jsonObject.getString("message");
+
+                    if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
+                        System.out.println("success");
+                        Log.d("Call_Api","response_returned succesfully... "+res);
+
+                    }else
+                    {
+                        Log.d("Call_Api","response_failed... "+res);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    //-----
+                }
+
+            }
+        });
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        super.onActivityResult(requestCode,resultCode,data);
+        Log.d("Call_Api ",requestCode+" - "+resultCode);
+        if (requestCode == 11) {
+            // Make sure the request was successful
+            if (resultCode == Activity.RESULT_OK) {
+                // The user pressed ok
+            }else{
+                // The user pressed cancel
+            }
+        }
+    }
+
 
     private void showToast(String msg)
     {

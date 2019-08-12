@@ -75,7 +75,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
                 <data
-                    android:host="accounts.protechgenie.in"
+                    android:host="accounts.pay729.guru"
                     android:pathPrefix="/reset_password"
                     android:scheme="https" />
                 <!-- note that the leading "/" is required for pathPrefix -->
@@ -208,7 +208,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
                 <data
-                    android:host="accounts.protechgenie.in"
+
+                    android:host="accounts.pay729.guru"
                     android:pathPrefix="/activate"
                     android:scheme="https" />
                 <!-- note that the leading "/" is required for pathPrefix -->

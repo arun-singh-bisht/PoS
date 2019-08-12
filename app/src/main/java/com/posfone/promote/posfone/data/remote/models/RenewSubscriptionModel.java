@@ -1,11 +1,16 @@
 package com.posfone.promote.posfone.data.remote.models;
 
+import com.posfone.promote.posfone.data.local.models.Charge;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class RenewSubscriptionModel {
      String package_gateway;
      String   call_bundle;
      String package_contract;
     String package_pay729_number;
-   // String charge;
+   public  ArrayList<Charge> charge;
     String due_sub_date;
     String total_sub_date;
     String total_monthly_cost;
@@ -13,16 +18,13 @@ public class RenewSubscriptionModel {
     String vat;
     String total_chargeable_amount;
 
-/*
-    public String getCharge() {
+    public ArrayList<Charge> getCharge() {
         return charge;
     }
 
-    public void setCharge(String charge) {
+    public void setCharge(ArrayList<Charge> charge) {
         this.charge = charge;
     }
-*/
-
 
     public String getDue_sub_date() {
         return due_sub_date;
@@ -109,9 +111,5 @@ public class RenewSubscriptionModel {
 }
 
 
-    class Charge{
-        String Subscription_Charge;
-        String  Gateway_Charge;
-        String User_License;
-    }
+
 

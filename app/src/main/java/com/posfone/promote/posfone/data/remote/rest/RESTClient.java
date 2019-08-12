@@ -15,13 +15,17 @@ import okio.Buffer;
 
 public class RESTClient {
 
-    public static String HOST_IP = "http://accounts.protechgenie.in/";
-    //public static String HOST_IP = "https://accounts.pay729.guru/";
+    /** TEST SERVER URL **/
+   // public static final String HOST_IP = "http://accounts.protechgenie.in/";
+    /** LIVE SERVER URL **/
+    public static final String HOST_IP = "https://accounts.pay729.guru/";
 
     public static final String COUNTRY = "app/country";
     public static final String STATE = "app/state";
     public static final String SIGN_UP = "app/signup";
     public static final String ACCOUNT_ACTIVATION = "app/activate";
+    public static final String MAKE_CALL = "app/makecall";
+    public static final String CALL_DONE = "app/calldone";
     public static final String LOGIN = "app/login";
     public static final String DEVICE_REGISTRATION = "app/device_registration";
     public static final String PLANS = "app/numberCat";

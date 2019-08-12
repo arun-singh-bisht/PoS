@@ -254,78 +254,14 @@
                 android:background="@color/color_profile_divider"
                 />
 
+<LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:id="@+id/charges_layout"
+       android:orientation="vertical">
+          <!--adding dynamic view inside-->
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                >
-
-                <com.posfone.promote.posfone.Utils.TitilliumWebTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Subscription Charge"
-                    android:textSize="13sp"
-                    android:id="@+id/s_c"
-                    />
-                <TextView
-                    android:layout_width="@dimen/dimen_40dp"
-                    android:layout_height="@dimen/dimen_15dp"
-                    android:background="@drawable/bdge"
-                    android:text="Monthly"
-                    android:padding="@dimen/dimen_2dp"
-                    android:textSize="10sp"
-                    android:textColor="#ffff"
-                    android:layout_marginStart="@dimen/dimen_5dp"
-                    android:layout_toRightOf="@+id/s_c"
-                    />
-
-                <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="11.22 $"
-                    android:id="@+id/subscription_charge"
-                    android:textColor="@color/color_phone_number"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:layout_alignParentRight="true"
-                    />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                >
-
-                <com.posfone.promote.posfone.Utils.TitilliumWebTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Gateway Charge"
-                    android:textSize="13sp"
-                    android:id="@+id/g_c"
-                    />
-                <TextView
-                    android:layout_width="@dimen/dimen_40dp"
-                    android:layout_height="@dimen/dimen_15dp"
-                    android:background="@drawable/bdge"
-                    android:text="Monthly"
-                    android:padding="@dimen/dimen_2dp"
-                    android:textSize="10sp"
-                    android:textColor="#ffff"
-                    android:layout_marginStart="@dimen/dimen_5dp"
-                    android:layout_toRightOf="@+id/g_c"
-                    />
-                <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="11.22 $"
-                    android:id="@+id/gateway_charge"
-                    android:textColor="@color/color_phone_number"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:layout_alignParentRight="true"
-                    />
-            </RelativeLayout>
+</LinearLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -376,41 +312,7 @@
                     />
             </RelativeLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                >
 
-                <com.posfone.promote.posfone.Utils.TitilliumWebTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/u_l"
-                    android:text="User License"
-                    android:textSize="13sp"
-                    />
-                <TextView
-                    android:layout_width="@dimen/dimen_40dp"
-                    android:layout_height="@dimen/dimen_15dp"
-                    android:background="@drawable/bdge"
-                    android:text="Monthly"
-                    android:padding="@dimen/dimen_2dp"
-                    android:textSize="10sp"
-                    android:textColor="#ffff"
-                    android:layout_marginStart="@dimen/dimen_5dp"
-                    android:layout_toRightOf="@+id/u_l"
-                    />
-                <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="11.22 $"
-                    android:id="@+id/user_license"
-                    android:textColor="@color/color_phone_number"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:layout_alignParentRight="true"
-                    />
-            </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
