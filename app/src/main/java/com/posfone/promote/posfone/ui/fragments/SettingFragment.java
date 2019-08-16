@@ -1,6 +1,7 @@
 package com.posfone.promote.posfone.ui.fragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -56,6 +57,7 @@ public class SettingFragment extends BaseFragment implements AdapterView.OnItemC
     String numberForReceivingCall_code;
     static String numberForReceivingCall_number;
     String pay729number;
+    String security_pin;
 
 
     @BindView(R.id.pay_number)
@@ -114,11 +116,13 @@ public class SettingFragment extends BaseFragment implements AdapterView.OnItemC
 
     private void initViews()
     {
-        pay_number.setText(pay729number+"");
+        pay_number.setText(pay729number);
         tv_number_for_recv_call_country.setText(numberForReceivingCall_country+"");
         tv_number_for_recv_call.setText(numberForReceivingCall_number);
         tv_number_for_making_call_country.setText(numberFoMakingCall_country+"");
         tv_number_for_making_call.setText(numberFoMakingCall_number);
+        security_code.setText(security_pin);
+        confirm_security_code.setText(security_pin);
 
         if(voicePeference.equalsIgnoreCase("male"))
             txt_voice_preference.setText("Male");
@@ -238,6 +242,14 @@ public class SettingFragment extends BaseFragment implements AdapterView.OnItemC
             GeneralUtil.showToast(getActivity(), "Please enter number from which you want to make call.");
             return;
         }
+        else if (security_code.getText().toString().equals("") || security_code.getText() == null || security_code.getText().toString().length() != 3){
+            GeneralUtil.showToast(getActivity(), "Please Enter 3 digit security code.");
+        return;
+        }
+        else if (!security_code.getText().toString().equals(confirm_security_code.getText().toString())){
+            GeneralUtil.showToast(getActivity(),"Confirm security code does not match.");
+        return;
+        }
 
         saveSetting();
     }
@@ -250,12 +262,12 @@ public class SettingFragment extends BaseFragment implements AdapterView.OnItemC
             String selectedCountryCode = data.getStringExtra("selectedCountryCode");
             if(requestCode == ACTION_FOR_COUNTRY_INCOMING_CALL)
             {
-                numberForReceivingCall_code = "+"+selectedCountryCode;
+                numberForReceivingCall_code = selectedCountryCode;
                 tv_number_for_recv_call_country.setText(country_name);
 
             }else if(requestCode == ACTION_FOR_COUNTRY_OUTGOING_CALL)
             {
-                numberFoMakingCall_code = "+"+selectedCountryCode;
+                numberFoMakingCall_code = selectedCountryCode;
                 tv_number_for_making_call_country.setText(country_name);
             }
             Log.i("onActivityResult",selectedCountryCode);
@@ -310,16 +322,18 @@ public class SettingFragment extends BaseFragment implements AdapterView.OnItemC
 
                             JSONObject in1_user_number =  mypreference.getJSONObject("in1_user_number");
                             numberForReceivingCall_country = in1_user_number.getString("country");
-                            numberForReceivingCall_code = "+"+in1_user_number.getString("code");
+                            numberForReceivingCall_code = in1_user_number.getString("code");
                             numberForReceivingCall_number = in1_user_number.getString("number");
 
 
                             JSONObject out1_user_number =  mypreference.getJSONObject("out1_user_number");
                             numberFoMakingCall_country = out1_user_number.getString("country");
-                            numberFoMakingCall_code = "+"+out1_user_number.getString("code");
+                            numberFoMakingCall_code = out1_user_number.getString("code");
                             numberFoMakingCall_number = out1_user_number.getString("number");
 
-                            pay729number = "+"+ jsonObject.getString("pay729numbers");
+                            pay729number = jsonObject.getString("pay729numbers");
+                            // uncomment when security pin added
+                          //  security_pin =  jsonObject.getString("security_pin");
                             /** Test code by rajat  **/
                             final  SharedPreferenceHandler handler = new SharedPreferenceHandler(getActivity());
                             handler.putValue(SharedPreferenceHandler.SP_KEY_INCOMING_CALL_CALLER_NUMBER, pay729number);
@@ -367,12 +381,13 @@ public class SettingFragment extends BaseFragment implements AdapterView.OnItemC
         header.put("userid", userID);
         //RequestBody
         final JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("in1c",numberForReceivingCall_code);
-        jsonObject.addProperty("in1",numberForReceivingCall_number);
-        jsonObject.addProperty("out1c",numberFoMakingCall_code);
-        jsonObject.addProperty("out1",numberFoMakingCall_number);
+        jsonObject.addProperty("in1c", Uri.encode( numberForReceivingCall_code));
+        jsonObject.addProperty("in1",Uri.encode( numberForReceivingCall_number));
+        jsonObject.addProperty("out1c",Uri.encode( numberFoMakingCall_code));
+        jsonObject.addProperty("out1",Uri.encode( numberFoMakingCall_number));
         jsonObject.addProperty("voice_preference",voicePeference.toLowerCase());
         jsonObject.addProperty("caller_id_preference",callerIdPreference);
+        jsonObject.addProperty("security_pin",security_code.getText().toString());
 
         String body = "json="+jsonObject.toString();
 

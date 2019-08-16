@@ -1,11 +1,13 @@
 package com.posfone.promote.posfone.ui.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.JsonObject;
@@ -20,6 +22,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.HashMap;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import okhttp3.Call;
 
 
@@ -36,18 +40,38 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
     private String outbound_number;
     TextView inbound_country,outbound_country;
     TextView inbound_country_number,outbound_country_number;
+    @BindView(R.id.security_code)
+    EditText security_code;
+    @BindView(R.id.confirm_security_code)
+    EditText confirm_security_code;
 
-
+    @BindView(R.id.security_layout)
+    LinearLayout security_layout;
+    @BindView(R.id.security_label)
+    TextView security_label;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_number);
         redirect_from=getIntent().getStringExtra("redirect_from");
+        ButterKnife.bind(this);
         initViews();
-
+        get_security_pin_visibility();
         getCallProfle();
     }
 
+    private boolean get_security_pin_visibility(){
+
+        if (redirect_from == null){
+            security_layout.setVisibility(View.VISIBLE);
+            security_label.setVisibility(View.VISIBLE);
+            return true;
+        } else {
+            security_layout.setVisibility(View.GONE);
+            security_label.setVisibility(View.GONE);
+            return false;
+        }
+    }
     private void initViews()
     {
         TextView txt_title = findViewById(R.id.txt_title);
@@ -83,7 +107,14 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
                 else if(!GeneralUtil.validatePhoneNumberEditText(this,R.id.txt_outgoing_number))
                     messg = "Enter valid outgoing number.";
 
+                // code added to check first time security pin visibility
+                if (get_security_pin_visibility()) {
 
+                    if (security_code.getText().toString().equals("") || security_code.getText() == null || security_code.getText().toString().length() != 3)
+                        messg = "Please Enter 3 digit security code.";
+                    else if (!security_code.getText().toString().equals(confirm_security_code.getText().toString()))
+                        messg = "Confirm security code does not match.";
+                }
                 if(messg!=null)
                 {
                     GeneralUtil.showToast(ManageNumberActivity.this,messg);
@@ -156,10 +187,12 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
         header.put("userid", userID);
         //RequestBody
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("in1c","+"+inCominNumberCountryCode);
-        jsonObject.addProperty("in1",inCominNumber);
-        jsonObject.addProperty("out1c","+"+ountGoingNumberCountryCode);
-        jsonObject.addProperty("out1",outGoingNumber);
+        jsonObject.addProperty("in1c", Uri.encode( inCominNumberCountryCode));
+        jsonObject.addProperty("in1",Uri.encode( inCominNumber));
+        jsonObject.addProperty("out1c",Uri.encode( ountGoingNumberCountryCode));
+        jsonObject.addProperty("out1",Uri.encode( outGoingNumber));
+        if (get_security_pin_visibility())
+        jsonObject.addProperty("security_pin",security_code.getText().toString());
         String body = "json="+jsonObject.toString();
 
         Call call = RESTClient.call_POST(RESTClient.MANAGE_NUMBER, header, body, new okhttp3.Callback() {
@@ -226,11 +259,9 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
 
         //Show loading dialog
         GeneralUtil.showProgressDialog(this,null);
-
         SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(this);
         String userID = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
         String token = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_TOKEN);
-
         //Header
         HashMap<String,String> header = new HashMap<>();
         header.put("x-api-key", ApiClient.X_API_KEY);
@@ -265,12 +296,12 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
                             JSONObject out1_user_number =  mypreference.getJSONObject("out1_user_number");
 
                             numberForReceivingCall_country = in1_user_number.getString("country");
-                            countryCode_callReciveNumber = "+"+in1_user_number.getString("code");
-                            inbound_number = "+"+in1_user_number.getString("number");
+                            countryCode_callReciveNumber = in1_user_number.getString("code");
+                            inbound_number = in1_user_number.getString("number");
 
                             numberFoMakingCall_country = out1_user_number.getString("country");
-                            countryCode_callMakingNumber = "+"+out1_user_number.getString("code");
-                            outbound_number = "+"+out1_user_number.getString("number");
+                            countryCode_callMakingNumber = out1_user_number.getString("code");
+                            outbound_number = out1_user_number.getString("number");
                             Log.e("COUNTRYNAme",numberFoMakingCall_country);
                                 inbound_country.setText("United Kingdom");
                                 outbound_country.setText("United Kingdom");

@@ -143,8 +143,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         ((TextView) findViewById(R.id.txt_user_name)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_FIRST_NAME) + " " + preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_LAST_NAME));
         ((TextView) findViewById(R.id.txt_user_location)).setText(address);
 
-        ((TextView)findViewById(R.id.txt_user_phone)).setText("+"+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHONE_NUMBER));
-        ((TextView)findViewById(R.id.txt_pay_number)).setText("+"+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER));
+        ((TextView)findViewById(R.id.txt_user_phone)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PHONE_NUMBER));
+        ((TextView)findViewById(R.id.txt_pay_number)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER));
         ((TextView)findViewById(R.id.txt_email_address)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_USER_EMAIL));
         ((TextView)findViewById(R.id.txt_plan_type)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PACKAGE_NAME));
         ((TextView)findViewById(R.id.txt_plan_exire_date)).setText("Expire - "+preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PACKAGE_EXPIRE_DATE));

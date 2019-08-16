@@ -69,7 +69,7 @@ public class ContactFragment extends BaseFragment implements LoaderManager.Loade
     GenericListAdapter genericListAdapter;
     ArrayList<Contact> alContacts;
     public static ArrayList<Contact> searchContacts;
-
+    String savedCallerNumber;
     static String search_value;
 
 
@@ -154,6 +154,7 @@ public class ContactFragment extends BaseFragment implements LoaderManager.Loade
         mDatabaseHelper.deleteContacts();
         ButterKnife.bind(this,view);
 
+         savedCallerNumber = new SharedPreferenceHandler(getActivity()).getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER);
 
         initViews();
         return view;
@@ -380,8 +381,8 @@ public class ContactFragment extends BaseFragment implements LoaderManager.Loade
                     intent.putExtra("to_name",contact.getContactName());
                     startActivity(intent);*/
                     Intent intent = new Intent(Intent.ACTION_CALL);
-                   // String merchantTwilioNumber = "+917676997124";
-                     String merchantTwilioNumber = contact.getContactNumber();
+                   // String merchantTwilioNumber = "0008000401810";
+                     String merchantTwilioNumber = savedCallerNumber;
                     intent.setData(Uri.parse("tel:" + merchantTwilioNumber));
                     startActivity(intent);
 

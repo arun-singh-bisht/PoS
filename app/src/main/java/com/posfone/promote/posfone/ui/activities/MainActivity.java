@@ -318,7 +318,7 @@ public class MainActivity extends AppCompatActivity
 
         ((TextView) findViewById(R.id.txt_header_username)).setText(preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_FIRST_NAME) + " " + preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_LAST_NAME));
         ((TextView) findViewById(R.id.txt_header_user_location)).setText(address);
-        ((TextView) findViewById(R.id.txt_header_user_contact_number)).setText("+" + preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER));
+        ((TextView) findViewById(R.id.txt_header_user_contact_number)).setText( preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER));
 
         ImageView imageView = findViewById(R.id.imageView);
         //Load New Image in Profile Pic

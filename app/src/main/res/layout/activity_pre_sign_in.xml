@@ -92,13 +92,33 @@
 
     </LinearLayout>
 
-    <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/terms_of_use"
+        android:orientation="horizontal"
         android:gravity="center"
-        android:textSize="@dimen/terms_of_use_text_size"
-        android:layout_marginBottom="10dp"
-        />
+        android:layout_marginBottom="10dp">
+
+
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/terms_of_service"
+            android:text="@string/terms_of_service"
+
+            android:textSize="@dimen/terms_of_use_text_size"
+
+            />
+        <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/terms_of_privacy"
+            android:text="@string/terms_of_privacy"
+            android:textSize="@dimen/terms_of_use_text_size"
+
+            />
+    </LinearLayout>
+
 
 </LinearLayout>

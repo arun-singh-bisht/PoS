@@ -15,6 +15,8 @@
     <string name="already_have">Already have POSfone number?</string>
     <string name="sign_in">SIGN IN</string>
     <string name="terms_of_use">Terms of Use - Privacy - FAQ</string>
+    <string name="terms_of_service">Terms of Use - </string>
+    <string name="terms_of_privacy"> Privacy </string>
 
     <!--Sign In Screen-->
     <string name="activate_link_text">An activation link has been delivered to your registered email.Activate your account before login.</string>
@@ -51,6 +53,12 @@
     <string name="this_is">This is your secure telephone number for customer or you/your staff to call when making outbond calls to customer.</string>
     <string name="invalid_credentials">Invalid Credentials. Please enter correct values.</string>
 
+    <!--Delete Account-->
+    <string name="instruction1">1. Once you delete your account you will not be able to login again using current credentials.</string>
+    <string name="instruction2">2. Your pay729 number will not be accessible to you and your customers and the same number can be assigned to other merchant in future.</string>
+    <string name="instruction3">3. Your account will only be deleted if approved by partner or pay729. </string>
+    <string name="delete_account">Yes, Proceed With Account Deletion!</string>
+    <string name="donot_delete_account">No, Take Me Back to Home Screen</string>
 
     <string name="googlepay_button_content_description">Google Pay</string>
     <string name="buy_with_googlepay_button_content_description">Buy with Google Pay</string>

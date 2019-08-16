@@ -9,6 +9,8 @@ import com.posfone.promote.posfone.R;
 import com.posfone.promote.posfone.Utils.PermissionUtils;
 import com.posfone.promote.posfone.data.local.sp.SharedPreferenceHandler;
 
+import butterknife.OnClick;
+
 
 public class PreSignInActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -55,5 +57,22 @@ public class PreSignInActivity extends AppCompatActivity implements View.OnClick
             }
             break;
         }
+    }
+
+
+
+    @OnClick(R.id.terms_of_service)
+    public void load_terms_of_service() {
+        load_webview("https://gmonelabs.pay729.guru/terms_conditions");
+    }
+    @OnClick(R.id.terms_of_privacy)
+    public void load_terms_of_privacy() {
+        load_webview("https://gmonelabs.pay729.guru/privacy_policy");
+    }
+
+    public void load_webview(String url) {
+        Intent intent =new Intent(PreSignInActivity.this,WebViewActivity.class);
+        intent.putExtra("data",url);
+        startActivity(intent);
     }
 }

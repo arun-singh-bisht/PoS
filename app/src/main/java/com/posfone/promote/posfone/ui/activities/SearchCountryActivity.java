@@ -190,7 +190,6 @@ public class SearchCountryActivity extends AppCompatActivity implements View.OnC
                                     countryModel.phonecode =  country.getString("phonecode");
                                     countryModel.flag = country.getString("flag");
                                     countryModel.save();
-
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {

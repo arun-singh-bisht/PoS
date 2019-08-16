@@ -14,30 +14,32 @@ import java.util.Date;
 
 public class CallReceiver extends PhoneCallReceiver {
 
-    private String merchantTwillioNumber = "+918000401810";
+    private static String merchantTwillioNumber;
 
     @Override
     protected void onIncomingCallStarted(final Context ctx,final String number, Date start) {
         Log.d("CallReceiver","onIncomingCallStarted: "+number);
-        if(number.equalsIgnoreCase(merchantTwillioNumber)) {
+       // if(number.equalsIgnoreCase(merchantTwillioNumber)) {
 
             new Handler().postDelayed(new Runnable() {
                @Override
                public void run() {
 
                    //Get number from SP saved through FCM push
-                   String savedCallerNumber = new SharedPreferenceHandler(ctx).getStringValue(SharedPreferenceHandler.SP_KEY_INCOMING_CALL_CALLER_NUMBER);
+                   String savedCallerNumber = new SharedPreferenceHandler(ctx).getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER);
                    String contactName = "-";
 
-                   Log.d("CallerNumber","afterreceiving: "+savedCallerNumber);
-                   if(savedCallerNumber!=null && !savedCallerNumber.isEmpty())
-                     contactName = PhoneContactUtils.getContactName(ctx, savedCallerNumber);
+                   if(number.equalsIgnoreCase(savedCallerNumber)) {
+                       merchantTwillioNumber = savedCallerNumber;
+                       Log.d("CallerNumber", "afterreceiving: " + savedCallerNumber);
+                   if (savedCallerNumber != null && !savedCallerNumber.isEmpty())
+                       contactName = PhoneContactUtils.getContactName(ctx, savedCallerNumber);
                    else
                        savedCallerNumber = "-";
 
                    Intent intent = new Intent(ctx, FloatingViewService.class);
-                   intent.putExtra("name",contactName);
-                   intent.putExtra("number",savedCallerNumber);
+                   intent.putExtra("name", contactName);
+                   intent.putExtra("number", savedCallerNumber);
 
                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                        ctx.startForegroundService(intent);
@@ -45,10 +47,12 @@ public class CallReceiver extends PhoneCallReceiver {
                        ctx.startService(intent);
                    }
                }
+               }
            },1000);
 
-        }
+   //     }
     }
+
 
     @Override
     protected void onIncomingCallAnswered(Context ctx, String number, Date start) {
@@ -79,7 +83,7 @@ public class CallReceiver extends PhoneCallReceiver {
 
     @Override
     protected void onMissedCall(Context ctx, String number, Date start) {
-        Log.d("CallReceiver","onMissedCall: "+number);
+        Log.d("CallReceiver","onMissedCall: "+number+" incoming number: "+merchantTwillioNumber);
         if(number!=null && number.equalsIgnoreCase(merchantTwillioNumber))
         {
             ctx.stopService(new Intent(ctx, FloatingViewService.class));

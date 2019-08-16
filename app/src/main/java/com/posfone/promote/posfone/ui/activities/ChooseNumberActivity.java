@@ -1,6 +1,7 @@
 package com.posfone.promote.posfone.ui.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -369,7 +370,7 @@ public class ChooseNumberActivity extends AppCompatActivity {
         jsonArrayNumber.put(jsonNumber);
 
         JSONObject jsonNumberType = new JSONObject();
-        jsonNumberType.put(numberType, jsonArrayNumber);
+        jsonNumberType.put(Uri.encode( numberType), jsonArrayNumber);
 
         JSONObject jsonTwillioNumber = new JSONObject();
         jsonTwillioNumber.put("twillio_nos", jsonNumberType);

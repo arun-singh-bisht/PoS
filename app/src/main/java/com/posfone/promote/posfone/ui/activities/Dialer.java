@@ -52,7 +52,7 @@ public class Dialer extends AppCompatActivity {
     Button buttonplus;
     boolean number_flag;
     private NotificationManagerCompat notificationManager;
-
+    String savedCallerNumber;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +64,7 @@ public class Dialer extends AppCompatActivity {
         final int height=Math.round(24*density);
         input=findViewById(R.id.input);
         input.setShowSoftInputOnFocus(false);
-
+        savedCallerNumber = new SharedPreferenceHandler(this).getStringValue(SharedPreferenceHandler.SP_KEY_PROFILE_PAY_729_NUMBER);
 
         drawable_u.setBounds(0,0,width,height);
         if(input.isInTouchMode()){
@@ -215,8 +215,8 @@ public class Dialer extends AppCompatActivity {
             //-----------------
             //Dial callee number through default dialer app
             Intent intent = new Intent(Intent.ACTION_CALL);
-            //String merchantTwilioNumber = "+917676997124";
-            String merchantTwilioNumber = input.getText().toString();
+            //String merchantTwilioNumber = "0008000401810";
+            String merchantTwilioNumber = savedCallerNumber;
             intent.setData(Uri.parse("tel:" + merchantTwilioNumber));
             startActivityForResult(intent,11);
             finish();

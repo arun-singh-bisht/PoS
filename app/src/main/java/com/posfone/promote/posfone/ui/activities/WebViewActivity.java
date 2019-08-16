@@ -45,7 +45,7 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
         stripeurl = "https://dashboard.stripe.com/oauth/authorize?response_type=code&client_id=ca_Cc0qF3AKZqT8F2rcaXaGkfrtcy5tUxUl&scope=read_write&redirect_uri=https://accounts.protechgenie.in/stripereturn&state=eyJ1c2VyX2lkIjoyMzUsImdhdGV3YXlfaWQiOjEsInJ1cmkiOiJodHRwczpcL1wvYWNjb3VudHMucHJvdGVjaGdlbmllLmluYXBwXC9zdHJpcGVyZXNwb25zZSJ9";
         myWebView = findViewById(R.id.webview);
         WebSettings webSettings = myWebView.getSettings();
-        //JSInterface = new JavaScriptInterface(this);
+        JSInterface = new JavaScriptInterface(this);
         progressBar=findViewById(R.id.progress);
         progressBar.setMax(100);
         webSettings.setJavaScriptEnabled(true);
@@ -53,10 +53,10 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
         try{
         myWebView.addJavascriptInterface(new WebViewInterface(this), "Android");}catch (Exception e){e.printStackTrace();}
 
-        if (data != null)
+        /*if (data != null)
         myWebView.loadData(data, "text/html", "UTF-8");
-        else
-            myWebView.loadUrl(stripeurl);
+        else*/
+            myWebView.loadUrl(data);
         myWebView.setWebChromeClient(new WebChromeClient()  {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
