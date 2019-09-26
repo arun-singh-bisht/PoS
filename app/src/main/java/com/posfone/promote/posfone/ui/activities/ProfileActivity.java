@@ -224,6 +224,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
+
+    @OnClick(R.id.txt_see_other_bundles)
+    public void onSeeOtherBundles()
+    {
+        Intent intent = new Intent(ProfileActivity.this, BundlesListActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 

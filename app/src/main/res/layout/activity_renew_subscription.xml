@@ -37,7 +37,7 @@
                 android:textColor="#ffffff"
                 android:id="@+id/package_name"
                 android:textSize="16sp"
-                android:text="Trial package"
+                android:text="-"
                 />
             <com.posfone.promote.posfone.Utils.TitilliumWebTextView
                 android:layout_width="wrap_content"
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="#ffffff"
                 android:id="@+id/due_sub_date"
-                android:text="21 July 2018 | 2:13 PM"
+                android:text="-"
                 android:textSize="12sp"
                 android:layout_marginTop="5dp"
                 />
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="#ffffff"
                 android:id="@+id/total_chargeable_amount"
-                android:text="11.46 $"
+                android:text="0 $"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 />
@@ -118,7 +118,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/package_pay729_number"
-                android:text="+44-254-9876"
+                android:text="-------------"
                 android:textColor="@color/color_phone_number"
                 android:textSize="15sp"
                 android:textStyle="bold"
@@ -141,7 +141,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/package_gateway"
-                    android:text="11.22 $"
+                    android:text="0 $"
                     android:textColor="@color/color_phone_number"
                     android:textSize="13sp"
                     android:textStyle="bold"
@@ -166,7 +166,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/call_bundle"
-                    android:text="11.22 $"
+                    android:text="0 $"
                     android:textColor="@color/color_phone_number"
                     android:textSize="13sp"
                     android:textStyle="bold"
@@ -202,7 +202,7 @@
                 <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="11.22 $"
+                    android:text="0 $"
                     android:id="@+id/package_contract"
                     android:textColor="@color/color_phone_number"
                     android:textSize="13sp"
@@ -239,7 +239,7 @@
                 <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="11.22 $"
+                    android:text="0 $"
                     android:id="@+id/total_sub_due"
                     android:textColor="@color/color_phone_number"
                     android:textSize="13sp"
@@ -278,7 +278,7 @@
                 <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="11.22 $"
+                    android:text="0 $"
                     android:id="@+id/total_monthly_cost"
                     android:textColor="@color/color_phone_number"
                     android:textSize="13sp"
@@ -303,7 +303,7 @@
                 <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="11.22 $"
+                    android:text="0 $"
                     android:id="@+id/total_sub_cost_till_date"
                     android:textColor="@color/color_phone_number"
                     android:textSize="13sp"
@@ -329,7 +329,7 @@
                 <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="11.22 $"
+                    android:text="0 $"
                     android:id="@+id/vat"
                     android:textColor="@color/color_phone_number"
                     android:textSize="13sp"
@@ -361,7 +361,7 @@
                 <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="11.22 $"
+                    android:text="0 $"
                     android:id="@+id/total_amount"
                     android:textColor="@color/color_phone_number"
                     android:textSize="13sp"

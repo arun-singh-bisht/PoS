@@ -60,16 +60,19 @@ public class RenewSubscription extends AppCompatActivity {
     TextView package_contract;
     @BindView(R.id.total_sub_due)
     TextView total_sub_due;
-   // @BindView(R.id.subscription_charge)
-   // TextView subscription_charge;
-   // @BindView(R.id.gateway_charge)
-   // TextView gateway_charge;
+    @BindView(R.id.package_pay729_number)
+    TextView package_pay729_number;
+
+    // @BindView(R.id.subscription_charge)
+    // TextView subscription_charge;
+    // @BindView(R.id.gateway_charge)
+    // TextView gateway_charge;
     @BindView(R.id.total_monthly_cost)
     TextView total_monthly_cost;
     @BindView(R.id.total_sub_cost_till_date)
     TextView total_sub_cost_till_date;
-   // @BindView(R.id.user_license)
-   // TextView user_license;
+    // @BindView(R.id.user_license)
+    // TextView user_license;
     @BindView(R.id.total_amount)
     TextView total;
     @BindView(R.id.vat)
@@ -80,47 +83,48 @@ public class RenewSubscription extends AppCompatActivity {
     TextView title;
     @BindView(R.id.charges_layout)
     LinearLayout charges_layout;
-  //  @BindView(R.id.charges_relative_layout)
-   // RelativeLayout charges_relative_layout;
+    //  @BindView(R.id.charges_relative_layout)
+    // RelativeLayout charges_relative_layout;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_renew_subscription);
-         package_id= getIntent().getStringExtra("package_id");
-         package_name_returned = getIntent().getStringExtra("package_name");
+        package_id = getIntent().getStringExtra("package_id");
+        package_name_returned = getIntent().getStringExtra("package_name");
         SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(this);
-        userid= preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
+        userid = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
         ButterKnife.bind(this);
         title.setText("Renew Subscription");
         img_right.setVisibility(View.INVISIBLE);
         getSupportActionBar().hide();
-        get_renew_details(userid,package_id);
+        get_renew_details(userid, package_id);
     }
 
     @OnClick(R.id.img_left)
-    public void back(){
+    public void back() {
         finish();
     }
 
     private void get_renew_details(String userid, String package_id) {
+        GeneralUtil.showProgressDialog(this,"Loading...");
         //Header
         HashMap<String, String> header = new HashMap<>();
         header.put("x-api-key", ApiClient.X_API_KEY);
-       // header.put("userid", userID);
+        // header.put("userid", userID);
         //RequestBody
         //RequestBody
         JSONObject object = new JSONObject();
         try {
-            object.put("user_id","326");
-            object.put("package_id",package_id);
+            object.put("user_id", "326");
+            object.put("package_id", package_id);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        String body = "json="+object.toString();
-        Log.e("param",package_id+" -> "+"326");
+        String body = "json=" + object.toString();
+        Log.e("param", package_id + " -> " + "326");
         Call call = RESTClient.call_POST(RESTClient.SUBSCRIPTION_INFO, header, body, new okhttp3.Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -131,7 +135,7 @@ public class RenewSubscription extends AppCompatActivity {
             public void onResponse(Call call, Response response) {
 
                 GeneralUtil.dismissProgressDialog();
-                Log.e("code",String.valueOf( response.code()));
+                Log.e("code", String.valueOf(response.code()));
                 if (response.isSuccessful()) {
                     try {
                         String res = response.body().string();
@@ -141,11 +145,43 @@ public class RenewSubscription extends AppCompatActivity {
                         if (jsonObject.has("success") && jsonObject.getString("success").equalsIgnoreCase("1")) {
 
                             JSONObject data = jsonObject.getJSONObject("data");
-                            Gson gson = new Gson();
-                            Log.i("onResponse", data.toString());
-                            RenewSubscriptionModel object = gson.fromJson(data.toString(), RenewSubscriptionModel.class);
-                            Log.e("model",object.getCharge().get(0).getName());
-                            load_data(true, object);
+//                            Gson gson = new Gson();
+//                            Log.i("onResponse", data.toString());
+//                            RenewSubscriptionModel object = gson.fromJson(data.toString(), RenewSubscriptionModel.class);
+//                            Log.e("model", object.getCharge().get(0).getName());
+
+                            String call_bundle = data.getString("call_bundle");
+                            String due_sub_date = data.getString("due_sub_date");
+                            String package_contract = data.getString("package_contract");
+                            String package_gateway = data.getString("package_gateway");
+                            String package_pay729_number = data.getString("package_pay729_number");
+                            String total_chargeable_amount = data.getString("total_chargeable_amount");
+                            String total_monthly_cost = data.getString("total_monthly_cost");
+                            String total_sub_cost_till_date = data.getString("total_sub_cost_till_date");
+                            String total_sub_date = data.getString("total_sub_date");
+                            String vat = data.getString("vat");
+
+                            JSONObject charge = data.getJSONObject("charge");
+                            String gateway_charge = charge.getString("Gateway Charge");
+                            String subscription_charge = charge.getString("Subscription Charge");
+                            String user_license = charge.getString("User License");
+
+                            RenewSubscriptionModel renewSubscriptionModel = new RenewSubscriptionModel();
+                            renewSubscriptionModel.setCall_bundle(call_bundle);
+                            renewSubscriptionModel.setDue_sub_date(due_sub_date);
+                            renewSubscriptionModel.setPackage_contract(package_contract);
+                            renewSubscriptionModel.setPackage_gateway(package_gateway);
+                            renewSubscriptionModel.setPackage_pay729_number(package_pay729_number);
+                            renewSubscriptionModel.setTotal_chargeable_amount(total_chargeable_amount);
+                            renewSubscriptionModel.setTotal_monthly_cost(total_monthly_cost);
+                            renewSubscriptionModel.setTotal_sub_cost_till_date(total_sub_cost_till_date);
+                            renewSubscriptionModel.setTotal_sub_date(total_sub_date);
+                            renewSubscriptionModel.setVat(vat);
+
+//                            Charge charge1 = new Charge();
+//                            charge1.setAmount();
+//                            charge1.setName();
+                            load_data(true, renewSubscriptionModel);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -154,14 +190,14 @@ public class RenewSubscription extends AppCompatActivity {
                     }
                 } else {
                     try {
-                    String res = response.body().string();
-                    Log.e("renew", res);
-                    final JSONObject jsonObject = new JSONObject(res);
+                        String res = response.body().string();
+                        Log.e("renew", res);
+                        final JSONObject jsonObject = new JSONObject(res);
                         Toast.makeText(RenewSubscription.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-                    load_data(false, null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+                        load_data(false, null);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     // Toast.makeText(getActivity(), "No Data Available", Toast.LENGTH_SHORT).show();
                     //-----------
                 }
@@ -169,36 +205,37 @@ public class RenewSubscription extends AppCompatActivity {
         });
     }
 
-    private void load_data(final boolean status,final  RenewSubscriptionModel subscriptionModel){
-      runOnUiThread(new Runnable() {
-          @Override
-          public void run() {
-              if (status) {
-                  set_charges(subscriptionModel.getCharge());
-                  package_name.setText(package_name_returned);
-                  due_sub_date.setText(subscriptionModel.getDue_sub_date());
-                  total_chargeable_amount.setText("£ "+subscriptionModel.getTotal_chargeable_amount());
-                  package_gateway.setText(subscriptionModel.getPackage_gateway());
-                  call_bundle.setText(subscriptionModel.getCall_bundle());
-                  package_contract.setText(subscriptionModel.getPackage_contract());
-                  total_sub_due.setText(subscriptionModel.getTotal_sub_date());
-                //  subscription_charge.setText("£ "+"0.00");
-                //  gateway_charge.setText("£ "+"0.00");
-                  total_monthly_cost.setText("£ "+subscriptionModel.getTotal_monthly_cost());
-                  total_sub_cost_till_date.setText("£ "+subscriptionModel.getTotal_sub_cost_till_date());
-                //  user_license.setText("£ "+"0.00");
-                  total.setText("£ "+subscriptionModel.getTotal_chargeable_amount());
-                  vat.setText("£ "+subscriptionModel.getVat());
-              }
-          }
-      });
+    private void load_data(final boolean status, final RenewSubscriptionModel subscriptionModel) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (status) {
+                    //set_charges(subscriptionModel.getCharge());
+                    package_pay729_number.setText(subscriptionModel.getPackage_pay729_number());
+                    package_name.setText(package_name_returned);
+                    due_sub_date.setText(subscriptionModel.getDue_sub_date());
+                    total_chargeable_amount.setText("£ " + subscriptionModel.getTotal_chargeable_amount());
+                    package_gateway.setText(subscriptionModel.getPackage_gateway());
+                    call_bundle.setText(subscriptionModel.getCall_bundle());
+                    package_contract.setText(subscriptionModel.getPackage_contract());
+                    total_sub_due.setText(subscriptionModel.getTotal_sub_date());
+                    //  subscription_charge.setText("£ "+"0.00");
+                    //  gateway_charge.setText("£ "+"0.00");
+                    total_monthly_cost.setText("£ " + subscriptionModel.getTotal_monthly_cost());
+                    total_sub_cost_till_date.setText("£ " + subscriptionModel.getTotal_sub_cost_till_date());
+                    //  user_license.setText("£ "+"0.00");
+                    total.setText("£ " + subscriptionModel.getTotal_chargeable_amount());
+                    vat.setText("£ " + subscriptionModel.getVat());
+                }
+            }
+        });
 
     }
 
 
     public void set_charges(ArrayList<Charge> charges) {
-        Log.e("set_charges","setting....");
-        for (int i=0;i<charges.size();i++) {
+        Log.e("set_charges", "setting....");
+        for (int i = 0; i < charges.size(); i++) {
             RelativeLayout relativeLayout = new RelativeLayout(this);
             relativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
                     RelativeLayout.LayoutParams.WRAP_CONTENT));
@@ -216,7 +253,7 @@ public class RenewSubscription extends AppCompatActivity {
                     40));
             label_tag.setText(charges.get(i).getType());
             label_tag.setBackground(ContextCompat.getDrawable(this, R.drawable.bdge));
-            label_tag.setPadding(2,2,2,2);
+            label_tag.setPadding(2, 2, 2, 2);
             label_tag.setTextSize(10);
             label_tag.setTextColor(ContextCompat.getColor(this, R.color.color_search_bg_light));
             RelativeLayout.LayoutParams layoutParams_tag = (RelativeLayout.LayoutParams) label_tag.getLayoutParams();
@@ -232,12 +269,12 @@ public class RenewSubscription extends AppCompatActivity {
             label_amount.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) label_amount.getLayoutParams();
             layoutParams.addRule(ALIGN_PARENT_RIGHT);
-            label_amount.setText("£ "+charges.get(i).getAmount());
+            label_amount.setText("£ " + charges.get(i).getAmount());
             relativeLayout.addView(label);
             relativeLayout.addView(label_tag);
             relativeLayout.addView(label_amount);
-            layoutParams_relative.setMargins(0,40,0,0);
-            charges_layout.addView(relativeLayout,i);
+            layoutParams_relative.setMargins(0, 40, 0, 0);
+            charges_layout.addView(relativeLayout, i);
         }
     }
 }

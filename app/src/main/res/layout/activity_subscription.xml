@@ -5,111 +5,114 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.activities.Subscription">
+
     <RelativeLayout
+        android:id="@+id/plan_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/plan_description"
         android:background="@color/colorPrimary">
 
         <View
+            android:id="@+id/border"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_2dp"
-            android:paddingStart="@dimen/dimen_5dp"
-            android:paddingEnd="@dimen/dimen_5dp"
-            android:id="@+id/border"
+            android:layout_below="@+id/app_bar"
             android:background="@color/colorPrimaryDark"
-            android:layout_below="@+id/app_bar"/>
+            android:paddingStart="@dimen/dimen_5dp"
+            android:paddingEnd="@dimen/dimen_5dp" />
+
         <TextView
+            android:id="@+id/label_package"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/border"
-            android:id="@+id/label_package"
-            android:textColor="#ffff"
-            android:textSize="20sp"
-            android:paddingStart="@dimen/dimen_10dp"
             android:layout_marginTop="@dimen/dimen_10dp"
-            android:text="Trial Testing Package"/>
+            android:paddingStart="@dimen/dimen_10dp"
+            android:text="Trial Testing Package"
+            android:textColor="#ffff"
+            android:textSize="20sp" />
+
         <TextView
             android:id="@+id/btn_active_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Active"
             android:layout_below="@+id/border"
-            android:textColor="#ffffff"
-            android:layout_marginEnd="@dimen/dimen_10dp"
-            android:layout_marginTop="@dimen/dimen_10dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_marginEnd="@dimen/dimen_10dp"
             android:background="@drawable/round_active_color"
             android:paddingLeft="15dp"
-            android:paddingRight="15dp"
             android:paddingTop="5dp"
+            android:paddingRight="15dp"
             android:paddingBottom="5dp"
-            android:textSize="12sp"
-            />
+            android:text="Active"
+            android:textColor="#ffffff"
+            android:textSize="12sp" />
+
         <TextView
+            android:id="@+id/package_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/package_price"
             android:layout_below="@+id/label_package"
-            android:textColor="#ffff"
-            android:textSize="20sp"
-            android:paddingStart="@dimen/dimen_10dp"
             android:layout_marginTop="@dimen/dimen_10dp"
-            android:text="R33"/>
+            android:paddingStart="@dimen/dimen_10dp"
+            android:text="R33"
+            android:textColor="#ffff"
+            android:textSize="20sp" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dimen_10dp"
             android:layout_below="@+id/package_price"
-            >
+            android:layout_marginBottom="@dimen/dimen_10dp">
+
             <TextView
                 android:id="@+id/btn_stop_subscription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Stop Subscription"
-                android:textColor="#ffffff"
-                android:layout_marginStart="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
                 android:background="@drawable/round_deactive_color"
                 android:paddingLeft="15dp"
-                android:paddingRight="15dp"
                 android:paddingTop="10dp"
+                android:paddingRight="15dp"
                 android:paddingBottom="10dp"
-                android:textSize="12sp"
-                />
+                android:text="Stop Subscription"
+                android:textColor="#ffffff"
+                android:textSize="12sp" />
+
             <TextView
                 android:id="@+id/btn_upgrade_payment_plan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Update Payment Details"
-
-                android:textColor="#ffffff"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_alignParentRight="true"
+
                 android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
                 android:background="@drawable/round_active_color"
                 android:paddingLeft="15dp"
-                android:paddingRight="15dp"
                 android:paddingTop="10dp"
+                android:paddingRight="15dp"
                 android:paddingBottom="10dp"
-                android:textSize="12sp"
-                />
+                android:text="Update Payment Details"
+                android:textColor="#ffffff"
+                android:textSize="12sp" />
         </RelativeLayout>
     </RelativeLayout>
+
     <ListView
+        android:id="@+id/list_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/list_item"
-        android:background="#ffff"
-        android:dividerHeight="@dimen/dimen_10dp"
-        android:divider="#ffff"
         android:layout_below="@+id/plan_description"
-        android:padding="@dimen/dimen_10dp"
-        >
+        android:background="#ffff"
+        android:divider="#ffff"
+        android:dividerHeight="@dimen/dimen_10dp"
+        android:padding="@dimen/dimen_10dp">
 
     </ListView>
 

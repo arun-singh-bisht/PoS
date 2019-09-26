@@ -47,8 +47,10 @@ public class PackageActivity extends AppCompatActivity implements View.OnClickLi
         if (redirect_from != null && redirect_from.equalsIgnoreCase("profile_screen")) {
             findViewById(R.id.img_left).setVisibility(View.VISIBLE);
             isTrial = "0";
-        } else
+        } else {
             findViewById(R.id.img_left).setVisibility(View.GONE);
+            isTrial = "1";
+        }
 
         TextView txt_title = findViewById(R.id.txt_title);
         txt_title.setText("Packages");

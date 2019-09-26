@@ -55,8 +55,9 @@ public class SubscriptionListAdapter  extends BaseAdapter {
             TextView due_date = rowView.findViewById(R.id.due_date);
             TextView payment_date = rowView.findViewById(R.id.payment_date);
             package_name.setText(subscriptionModelList.get(i).getPackage_name());
-            if(!subscriptionModelList.get(i).getStatus().equals("Success"))
-                status_btn.setBackground(rowView.getResources().getDrawable(R.drawable.round_inactive_color));
+            if(!subscriptionModelList.get(i).getStatus().equals("Success")) {
+                //status_btn.setBackground(rowView.getResources().getDrawable(R.drawable.round_inactive_color));
+            }
             status_btn.setText(subscriptionModelList.get(i).getStatus());
             start_date.setText(subscriptionModelList.get(i).getStart_date());
             txn_id.setText(subscriptionModelList.get(i).getTransaction_id());

@@ -1,149 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dimen_140dp"
-    app:cardCornerRadius="10dp"
-
+    android:layout_height="wrap_content"
     android:layout_margin="@dimen/dimen_10dp"
-    >
+    app:cardCornerRadius="5dp">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_profile_divider"
         android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/dimen_10dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp">
 
             <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:id="@+id/package_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/package_name"
+                android:paddingStart="@dimen/dimen_10dp"
                 android:text="Trial Test Package"
                 android:textSize="20sp"
-                android:paddingStart="@dimen/dimen_10dp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/btn_active_plan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Success"
-                android:textColor="#ffffff"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
                 android:background="@drawable/round_bg_textview"
                 android:paddingLeft="15dp"
-                android:paddingRight="15dp"
                 android:paddingTop="5dp"
+                android:paddingRight="15dp"
                 android:paddingBottom="5dp"
-                android:textSize="12sp"
-                />
+                android:text="Success"
+                android:textColor="#ffffff"
+                android:textSize="12sp" />
         </RelativeLayout>
 
         <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+            android:id="@+id/txn_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txn_id"
+            android:paddingStart="@dimen/dimen_10dp"
             android:text="txn_3463636hjh345346"
             android:textColor="@color/colorPrimaryDark"
-            android:paddingStart="@dimen/dimen_10dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <com.posfone.promote.posfone.Utils.TitilliumWebTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="package Update on Paytia"
-            android:paddingStart="@dimen/dimen_10dp"
             android:layout_marginBottom="@dimen/dimen_10dp"
-            android:textStyle="bold"/>
+            android:paddingStart="@dimen/dimen_10dp"
+            android:text="package Update on Paytia"
+            android:textStyle="bold" />
+
         <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:paddingStart="@dimen/dimen_5dp"
-            android:paddingEnd="@dimen/dimen_5dp"
             android:id="@+id/border"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
             android:background="@color/colorPrimaryDark"
-            />
-        <RelativeLayout
+            android:paddingStart="@dimen/dimen_5dp"
+            android:paddingEnd="@dimen/dimen_5dp" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_5dp">
+            android:orientation="horizontal"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:weightSum="3">
+
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/make_right"
-                android:layout_alignParentStart="true"
-                android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textSize="11sp"
-                android:text="Start Date:"
-                android:paddingStart="@dimen/dimen_10dp"
-                android:textStyle="bold"/>
+                android:gravity="center"
+                android:orientation="vertical">
 
-            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/start_date"
-                android:textSize="10sp"
-                android:text="20/07/2019"
-                android:paddingStart="@dimen/dimen_2dp"
-                />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/make_right"
-                android:orientation="horizontal">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="11sp"
-                    android:text="Due Date:"
-                    android:paddingStart="@dimen/dimen_5dp"
-                    android:textStyle="bold"/>
-
-                <com.posfone.promote.posfone.Utils.TitilliumWebTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="10sp"
-                    android:id="@+id/due_date"
-                    android:text="20/07/2019"
-                    android:paddingStart="@dimen/dimen_2dp"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/dimen_10dp"
-                android:layout_alignParentEnd="true"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="11sp"
-                    android:text="Payment Date:"
                     android:paddingStart="@dimen/dimen_10dp"
-                    android:textStyle="bold"/>
+                    android:text="Start Date:"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
 
                 <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                    android:id="@+id/start_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="10sp"
-                    android:id="@+id/payment_date"
-                    android:text="20/07/2019"
                     android:paddingStart="@dimen/dimen_2dp"
-                    />
+                    android:text="20/07/2019"
+                    android:textSize="10sp" />
             </LinearLayout>
-        </RelativeLayout>
-    </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/dimen_5dp"
+                    android:text="Due Date:"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+                <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                    android:id="@+id/due_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/dimen_2dp"
+                    android:text="20/07/2019"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/dimen_10dp"
+                    android:text="Payment Date:"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+                <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                    android:id="@+id/payment_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/dimen_2dp"
+                    android:text="20/07/2019"
+                    android:textSize="10sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 
 
 </android.support.v7.widget.CardView>

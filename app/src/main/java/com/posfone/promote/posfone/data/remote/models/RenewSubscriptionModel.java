@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RenewSubscriptionModel {
-     String package_gateway;
-     String   call_bundle;
-     String package_contract;
+    String package_gateway;
+    String call_bundle;
+    String package_contract;
     String package_pay729_number;
-   public  ArrayList<Charge> charge;
+    public ArrayList<Charge> charge;
     String due_sub_date;
     String total_sub_date;
     String total_monthly_cost;

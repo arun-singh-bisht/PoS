@@ -43,22 +43,22 @@ import okhttp3.Call;
 
 public class SummeryActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private HashMap<String,String> packageModel;
+    private HashMap<String, String> packageModel;
     private PaymentsClient mPaymentsClient;
     private View mGooglePayButton;
     private String redirect_from;
     private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 42;
-    private String package_name="";
-    private String total="";
-    private String package_id="";
-    private String txn_id="";
+    private String package_name = "";
+    private String total = "";
+    private String package_id = "";
+    private String txn_id = "";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summery);
-        redirect_from=getIntent().getStringExtra("redirect_from");
+        redirect_from = getIntent().getStringExtra("redirect_from");
         initViews();
 
         // initialize a Google Pay API client for an environment suitable for testing
@@ -73,12 +73,11 @@ public class SummeryActivity extends AppCompatActivity implements View.OnClickLi
         //isReadyToPay();
     }
 
-    private void initViews()
-    {
+    private void initViews() {
 
         Bundle bundle = this.getIntent().getExtras();
 
-        if(bundle != null) {
+        if (bundle != null) {
             packageModel = (HashMap<String, String>) bundle.getSerializable("SelectedPackage");
         }
 
@@ -92,38 +91,36 @@ public class SummeryActivity extends AppCompatActivity implements View.OnClickLi
         loadPackagePricingDetails();
     }
 
-    private void loadPackagePricingDetails()
-    {
+    private void loadPackagePricingDetails() {
         LinearLayout linearLayout = findViewById(R.id.packageDetailslayout);
         //Utils.getCurrencySymbol("INR");
 
         String key_order = packageModel.get("key_order");
         String[] key_order_array = key_order.split("\\*");
-        for(int i =0;i<key_order_array.length;i++)
-        {
+        for (int i = 0; i < key_order_array.length; i++) {
             key_order = key_order_array[i];
 
-            View view = getLayoutInflater().inflate(R.layout.package_fee_item_row,null);
-            TextView txt_item_name =  view.findViewById(R.id.txt_item_name);
-            TextView txt_item_value =  view.findViewById(R.id.txt_item_value);
+            View view = getLayoutInflater().inflate(R.layout.package_fee_item_row, null);
+            TextView txt_item_name = view.findViewById(R.id.txt_item_name);
+            TextView txt_item_value = view.findViewById(R.id.txt_item_value);
 
             txt_item_name.setText(key_order);
             String value = packageModel.get(key_order);
-            if("Package Name".equals(key_order)){
-                package_name=value;
-                package_id=packageModel.get("packageId");
-                txn_id="12345";
+            if ("Package Name".equals(key_order)) {
+                package_name = value;
+                package_id = packageModel.get("packageId");
+                txn_id = "12345";
             }
-            if("Grand Total".equals(key_order)){
-                total=value;
+            if ("Grand Total".equals(key_order)) {
+                total = value;
             }
-            System.out.println("order is     "+package_name+" - "+total);
+            System.out.println("order is     " + package_name + " - " + total);
 
-            if(value.isEmpty() || value.equalsIgnoreCase("null"))
+            if (value.isEmpty() || value.equalsIgnoreCase("null"))
                 value = "\u00a3";
-            if(i>0)
-            txt_item_value.setText("\u00a3"+value);
-             else
+            if (i > 0)
+                txt_item_value.setText("\u00a3" + value);
+            else
                 txt_item_value.setText(value);
             linearLayout.addView(view);
         }
@@ -133,34 +130,33 @@ public class SummeryActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
 
-        switch (v.getId())
-        {
-            case R.id.img_left:{
+        switch (v.getId()) {
+            case R.id.img_left: {
                 finish();
             }
             break;
-            case R.id.btn_pay:{
+            case R.id.btn_pay: {
                 //Show Confirmation Dialog Box before confirming order
-                        System.out.println(package_id+"  ---  "+package_name);
-                        if("Stripe Trail".equals(package_name)){
-                            Intent intent=new Intent(getApplicationContext(),ManageNumberActivity.class);
-                            intent.putExtra("redirect_from", redirect_from);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                            purchaseTrialPakage();
-                            finish();
-                        }
-                        else {
-                            Intent intent = new Intent(getApplicationContext(), StripeBaseActivity.class);
-                            intent.putExtra("redirect_from", redirect_from);
-                            intent.putExtra("txn_id", txn_id);
-                            intent.putExtra("package_id", package_id);
-                            intent.putExtra("package_name", package_name);
-                            intent.putExtra("total", total);
-                            startActivity(intent);
+                System.out.println(package_id + "  ---  " + package_name);
+                if ("Stripe Trail".equals(package_name)) {
+                    Intent intent = new Intent(getApplicationContext(), ManageNumberActivity.class);
+                    intent.putExtra("redirect_from", redirect_from);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    purchaseTrialPakage();
+                    finish();
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), StripeBaseActivity.class);
+                    //intent.putExtra("redirect_from", redirect_from);
+                    intent.putExtra("redirect_from", redirect_from);
+                    intent.putExtra("txn_id", txn_id);
+                    intent.putExtra("package_id", package_id);
+                    intent.putExtra("package_name", package_name);
+                    intent.putExtra("total", total);
+                    startActivity(intent);
 
-                        }
-                    }
+                }
+            }
             break;
 
 
@@ -171,22 +167,22 @@ public class SummeryActivity extends AppCompatActivity implements View.OnClickLi
     private void purchaseTrialPakage() {
 
         //Show loading dialog
-        GeneralUtil.showProgressDialog(this,null);
+        GeneralUtil.showProgressDialog(this, null);
 
         SharedPreferenceHandler preferenceHandler = new SharedPreferenceHandler(this);
         String userID = preferenceHandler.getStringValue(SharedPreferenceHandler.SP_KEY_USER_ID);
 
         //Header
-        HashMap<String,String> header = new HashMap<>();
+        HashMap<String, String> header = new HashMap<>();
         header.put("x-api-key", ApiClient.X_API_KEY);
         header.put("userid", userID);
-        Log.i("userid",userID);
+        Log.i("userid", userID);
         //RequestBody
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("package_id",packageModel.get("packageId"));
+        jsonObject.addProperty("package_id", packageModel.get("packageId"));
         //System.out.println("package id--------------- "+packageModel.get("packageId"));
-        jsonObject.addProperty("txn_id","00");
-        String body = "json="+jsonObject.toString();
+        jsonObject.addProperty("txn_id", "00");
+        String body = "json=" + jsonObject.toString();
 
         Call call = RESTClient.call_POST(RESTClient.TWILIO_NUMBER_PURCHASE, header, body, new okhttp3.Callback() {
             @Override
@@ -203,7 +199,7 @@ public class SummeryActivity extends AppCompatActivity implements View.OnClickLi
                     try {
 
                         String res = response.body().string();
-                        Log.i("onResponse",res);
+                        Log.i("onResponse", res);
                         JSONObject jsonObject = new JSONObject(res);
 
                         if (jsonObject.has("status") && jsonObject.getString("status").equalsIgnoreCase("1")) {
@@ -212,17 +208,17 @@ public class SummeryActivity extends AppCompatActivity implements View.OnClickLi
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                                Intent intent = new Intent(SummeryActivity.this,ManageNumberActivity.class);
-                                                 // System.out.println(redirect_from);
-                                                if("profile_screen_positive_click".equals(redirect_from)){
-                                                    Intent myintent = new Intent(SummeryActivity.this,SignInActivity.class);
-                                                    startActivity(myintent);
-                                                    finish();
-                                                }else if("profile_screen".equals(redirect_from)){
-                                                    intent.putExtra("redirect_from","profile_screen");
-                                                    startActivity(intent);}
-                                                    else
-                                                    startActivity(intent);
+                                    Intent intent = new Intent(SummeryActivity.this, ManageNumberActivity.class);
+                                    // System.out.println(redirect_from);
+                                    if ("profile_screen_positive_click".equals(redirect_from)) {
+                                        Intent myintent = new Intent(SummeryActivity.this, SignInActivity.class);
+                                        startActivity(myintent);
+                                        finish();
+                                    } else if ("profile_screen".equals(redirect_from)) {
+                                        intent.putExtra("redirect_from", "profile_screen");
+                                        startActivity(intent);
+                                    } else
+                                        startActivity(intent);
 
                                 }
                             });
@@ -244,13 +240,12 @@ public class SummeryActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
-
     /**
      * Determine the viewer's ability to pay with a payment method supported by your app and display a
      * Google Pay payment button
      *
      * @see <a
-     *     href="https://developers.google.com/android/reference/com/google/android/gms/wallet/PaymentsClient.html#isReadyToPay(com.google.android.gms.wallet.IsReadyToPayRequest)">PaymentsClient#IsReadyToPay</a>
+     * href="https://developers.google.com/android/reference/com/google/android/gms/wallet/PaymentsClient.html#isReadyToPay(com.google.android.gms.wallet.IsReadyToPayRequest)">PaymentsClient#IsReadyToPay</a>
      */
     private void possiblyShowGooglePayButton() {
         final JSONObject isReadyToPayJson = GooglePay.getIsReadyToPayRequest();
@@ -301,7 +296,7 @@ public class SummeryActivity extends AppCompatActivity implements View.OnClickLi
                         try {
                             boolean result =
                                     task.getResult(ApiException.class);
-                            if(result == true) {
+                            if (result == true) {
                                 //show Google as payment option
                                 // show Google as a payment option
                                 mGooglePayButton = findViewById(R.id.googlepay);
@@ -325,7 +320,8 @@ public class SummeryActivity extends AppCompatActivity implements View.OnClickLi
                             } else {
                                 //hide Google as payment option
                             }
-                        } catch (ApiException exception) { }
+                        } catch (ApiException exception) {
+                        }
                     }
                 });
     }
@@ -353,11 +349,11 @@ public class SummeryActivity extends AppCompatActivity implements View.OnClickLi
      * Handle a resolved activity from the Google Pay payment sheet
      *
      * @param requestCode the request code originally supplied to AutoResolveHelper in
-     *     requestPayment()
-     * @param resultCode the result code returned by the Google Pay API
-     * @param data an Intent from the Google Pay API containing payment or error data
+     *                    requestPayment()
+     * @param resultCode  the result code returned by the Google Pay API
+     * @param data        an Intent from the Google Pay API containing payment or error data
      * @see <a href="https://developer.android.com/training/basics/intents/result">Getting a result
-     *     from an Activity</a>
+     * from an Activity</a>
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -378,9 +374,9 @@ public class SummeryActivity extends AppCompatActivity implements View.OnClickLi
                         // Now that you have a Stripe token object, charge that by using the id
                         //Token stripeToken = Token.fromString(rawToken);
                         //if (stripeToken != null) {
-                            // This chargeToken function is a call to your own server, which should then connect
-                            // to Stripe's API to finish the charge.
-                            //chargeToken(stripeToken.getId());
+                        // This chargeToken function is a call to your own server, which should then connect
+                        // to Stripe's API to finish the charge.
+                        //chargeToken(stripeToken.getId());
                         //}
                         break;
                     case Activity.RESULT_CANCELED:

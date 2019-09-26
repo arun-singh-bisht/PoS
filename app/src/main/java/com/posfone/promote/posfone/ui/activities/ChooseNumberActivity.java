@@ -439,7 +439,13 @@ public class ChooseNumberActivity extends AppCompatActivity {
         numberFragment_type_elite.setData(twilioNumbers_elite);
     }
 
-
+    public String getPackageID()
+    {
+        if(packageModel!=null)
+            return packageModel.get("packageId");
+        else
+            return "";
+    }
     private void getPackages()
     {
         //Show loading dialog

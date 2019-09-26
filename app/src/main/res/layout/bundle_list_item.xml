@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="10"
+        android:paddingBottom="13dp"
+        android:paddingTop="13dp"
+        >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3.5"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BUNDLE NAME"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:id="@+id/text_bundle_name_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Andre Doe"
+                android:layout_marginTop="2dp"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PRICE"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:id="@+id/text_price_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1.00"
+                android:layout_marginTop="2dp"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TIME (Sec | Min)"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:id="@+id/text_time_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="60000 | 10"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/view_buy_btn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="visible"
+            >
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BUY"
+                android:textSize="12sp"
+                android:visibility="gone"
+                android:textStyle="bold" />
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:id="@+id/text_buy_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:textColor="#ffffff"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                android:text="Buy"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/view_purchase_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone"
+            >
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebBoldTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PURCHASE DATE"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:id="@+id/text_purchase_date_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="60000 | 10"
+                android:layout_marginTop="2dp"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <VideoView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#C4B9B9"
+        />
+</LinearLayout>

@@ -75,7 +75,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
                 <data
-                    android:host="accounts.pay729.guru"
+                    android:host="accounts.protechgenie.in"
                     android:pathPrefix="/reset_password"
                     android:scheme="https" />
                 <!-- note that the leading "/" is required for pathPrefix -->
@@ -209,7 +209,7 @@
                 <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
                 <data
 
-                    android:host="accounts.pay729.guru"
+                    android:host="accounts.protechgenie.in"
                     android:pathPrefix="/activate"
                     android:scheme="https" />
                 <!-- note that the leading "/" is required for pathPrefix -->
@@ -263,6 +263,12 @@
         <activity android:name=".ui.activities.RenewSubscription">
 
         </activity>
+
+        <activity
+            android:name=".ui.activities.BundlesListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>

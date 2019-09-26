@@ -251,8 +251,16 @@ public class NumberFragment extends BaseFragment {
         if(selectedCountry!=null) {
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("country", selectedCountry.getIso());
-            jsonObject.addProperty("area_code",code.getText().toString() );
-            jsonObject.addProperty("filter",filter);
+            //area code
+            jsonObject.addProperty("with_country_code",code.getText().toString() );
+            //filter
+            jsonObject.addProperty("area_code",filter);
+            if(twilioNumberList.size()>0)
+                jsonObject.addProperty("sample_number",twilioNumberList.get(0).phone_number);
+            //Number digit search -> align : left | anywhere | right
+            jsonObject.addProperty("align","anywhere");
+            jsonObject.addProperty("package_id",activity.getPackageID());
+
             body = "json=" + jsonObject.toString();
         }
         Log.i("getTwilioNumber",userID+" "+body);

@@ -16,7 +16,7 @@ import okio.Buffer;
 public class RESTClient {
 
     /** TEST SERVER URL **/
-   // public static final String HOST_IP = "http://accounts.protechgenie.in/";
+    //public static final String HOST_IP = "http://accounts.protechgenie.in/";
     /** LIVE SERVER URL **/
     public static final String HOST_IP = "https://accounts.pay729.guru/";
 
@@ -33,7 +33,9 @@ public class RESTClient {
     public static final String TWILIO_NUMBER = "app/twillio";
     public static final String TWILIO_NUMBER_SELECT = "app/twillio_save";
     public static final String TWILIO_NUMBER_PURCHASE = "app/payment_reponse";
+    public static final String UPDATE_CARD = "app/updateToken";
     public static final String GET_PRIVATE_PAYMENT_KEY = "app/stripeauth";
+    public static final String GET_CARD_DETAILS = "app/getcard";
     public static final String MANAGE_NUMBER = "app/manage_number";
     public static final String MANAGE_NUMBERS = "app/manage_numbers";
     public static final String PROFILE = "app/profile";
@@ -51,6 +53,9 @@ public class RESTClient {
     public static final String CHANGE_PASSWORD = "app/change_password";
     public static final String UPDATE_PHOTO = "app/update_photo";
     public static final String MANAGE_GATEWAY = "app/manage_gateway";
+    public static final String USER_BUNDLES = "app/topupbundle";
+
+
 
     public static final String TWILIO_ACCESS_TOKEN_SERVER_URL = "http://protechgenie.in/demo/accessToken.php";
 

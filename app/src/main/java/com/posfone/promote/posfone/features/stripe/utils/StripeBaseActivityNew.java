@@ -1,4 +1,4 @@
-package com.posfone.promote.posfone.features.stripe;
+package com.posfone.promote.posfone.features.stripe.utils;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -20,12 +20,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.daimajia.numberprogressbar.NumberProgressBar;
-import com.daimajia.numberprogressbar.OnProgressBarListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.posfone.promote.posfone.R;
-import com.posfone.promote.posfone.Utils.CustomAlertDialog;
 import com.posfone.promote.posfone.Utils.GeneralUtil;
 import com.posfone.promote.posfone.data.local.sp.SharedPreferenceHandler;
 import com.posfone.promote.posfone.data.remote.rest.ApiClient;
@@ -48,7 +45,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,7 +54,7 @@ import okhttp3.Call;
 /**
  * Created by alan Lam on 31/7/16.
  */
-public class StripeBaseActivity extends AppCompatActivity {
+public class StripeBaseActivityNew extends AppCompatActivity {
 
     // Animation
     Animation slide_down;
@@ -71,12 +67,12 @@ public class StripeBaseActivity extends AppCompatActivity {
     //private NumberProgressBar bnp;
 
     private String redirect_from;
-    String name = "";
+    private String name = "";
     private String package_name = "";
     private String total = "";
     private String package_id = "";
     private String txn_id = "";
-    String userid;
+    private String userid;
     // VARIABLE
     private String mLastInput;
     private String mShopName = "PosFone";
@@ -163,7 +159,6 @@ public class StripeBaseActivity extends AppCompatActivity {
         //bnp.setOnProgressBarListener(this);
         // Getting package Details
         redirect_from = getIntent().getStringExtra("redirect_from");
-
         package_id = getIntent().getStringExtra("package_id");
         package_name = getIntent().getStringExtra("package_name");
         txn_id = getIntent().getStringExtra("txn_id");
@@ -330,7 +325,6 @@ public class StripeBaseActivity extends AppCompatActivity {
                 }
             }
         });
-
 
     }
 
@@ -587,10 +581,10 @@ public class StripeBaseActivity extends AppCompatActivity {
                                 @Override
                                 public void run() {
 
-                                    Intent intent = new Intent(StripeBaseActivity.this, ManageNumberActivity.class);
+                                    Intent intent = new Intent(StripeBaseActivityNew.this, ManageNumberActivity.class);
                                     // System.out.println(redirect_from);
                                     if ("profile_screen_positive_click".equals(redirect_from)) {
-                                        Intent myintent = new Intent(StripeBaseActivity.this, SignInActivity.class);
+                                        Intent myintent = new Intent(StripeBaseActivityNew.this, SignInActivity.class);
                                         startActivity(myintent);
                                         finish();
                                     } else if ("profile_screen".equals(redirect_from)) {

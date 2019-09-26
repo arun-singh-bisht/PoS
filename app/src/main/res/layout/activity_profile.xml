@@ -4,399 +4,444 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#ffffff"
-    >
+    android:orientation="vertical">
 
 
-    <include android:id="@+id/app_bar" layout="@layout/app_bar_custom"></include>
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar_custom"></include>
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:layout_below="@+id/app_bar"
-        >
+        android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:background="@color/colorPrimary"
-            >
-        </RelativeLayout>
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/profile_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/blank_profile_image"
-            app:civ_border_width="2dp"
-            android:layout_centerInParent="true"
-            app:civ_border_color="#ffffff"/>
-
-        <ProgressBar
-            android:id="@+id/indeterminateBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="gone"
-            />
-
-    </RelativeLayout>
-
-    <com.posfone.promote.posfone.Utils.TitilliumWebTextView
-        android:id="@+id/txt_user_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Jane Carter"
-        android:textSize="20sp"
-        android:textColor="@color/colorPrimary"
-        android:layout_gravity="center_horizontal"
-        />
-    <com.posfone.promote.posfone.Utils.TitilliumWebTextView
-        android:id="@+id/txt_user_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Southampton,UK"
-        android:textSize="14sp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="2dp"
-        />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/round_bg_border_white_solid_white"
-        android:padding="15dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="15dp"
-        >
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/plan_detail">
-      <TextView
-          android:id="@+id/txt_plan_type"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="Free Trial"
-          android:textStyle="bold"
-          android:textColor="@color/color_phone_number"
-          />
-
-        <TextView
-            android:id="@+id/txt_plan_exire_date"
-            android:layout_below="@+id/txt_plan_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Expire - 20/12/2018"
-            android:textSize="11sp"
-            android:layout_marginTop="4dp"
-            android:textColor="@color/color_phone_number"
-            />
-
-        <TextView
-            android:id="@+id/btn_upgrade_plan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Upgrade"
-            android:textColor="#ffffff"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/round_bg_textview"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:textSize="12sp"
-            />
-</RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_70dp"
-            android:layout_below="@+id/plan_detail"
-            android:layout_marginTop="@dimen/dimen_5dp"
-            android:orientation="horizontal">
-            <android.support.v7.widget.CardView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="@dimen/dimen_70dp"
-                app:cardBackgroundColor="@color/colorPrimary">
- <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textStyle="bold"
-     android:layout_marginTop="@dimen/dimen_5dp"
-    android:textColor="#ffff"
-     android:textSize="12sp"
-    android:layout_gravity="center_horizontal"
-    android:text="Bundle Minutes"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:layout_below="@+id/app_bar">
+
                 <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:background="@color/colorPrimary"></RelativeLayout>
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/profile_image"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/blank_profile_image"
+                    app:civ_border_color="#ffffff"
+                    app:civ_border_width="2dp" />
+
+                <ProgressBar
+                    android:id="@+id/indeterminateBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dimen_20dp"
-                    android:layout_gravity="bottom|center">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/lable_hh_mm_ss_bundle"
-                        android:text="HH : MM : SS"
-                        android:textSize="10sp"
-                        android:textColor="#82F299"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/lable_hh_mm_ss_bundle_min"
-                        android:text="01  :  50  :  00"
-                        android:textSize="10sp"
-                        android:layout_below="@+id/lable_hh_mm_ss_bundle"
-                        android:textColor="#ffff"/>
+                    android:layout_centerInParent="true"
+                    android:visibility="gone" />
 
+            </RelativeLayout>
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:id="@+id/txt_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Jane Carter"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp" />
+
+            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                android:id="@+id/txt_user_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="2dp"
+                android:text="Southampton,UK"
+                android:textSize="14sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/round_bg_border_white_solid_white"
+                android:padding="15dp">
+
+                <RelativeLayout
+                    android:id="@+id/plan_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/txt_plan_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Free Trial"
+                        android:textColor="@color/color_phone_number"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txt_plan_exire_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txt_plan_type"
+                        android:layout_marginTop="4dp"
+                        android:text="Expire - 20/12/2018"
+                        android:textColor="@color/color_phone_number"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:id="@+id/btn_upgrade_plan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/txt_current_bundle"
+                        android:layout_alignParentRight="true"
+                        android:text="UPGRADE"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="11sp"
+
+                        />
                 </RelativeLayout>
-            </android.support.v7.widget.CardView>
-            <android.support.v7.widget.CardView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginStart="@dimen/dimen_8dp"
-                android:layout_height="@dimen/dimen_70dp"
-                app:cardBackgroundColor="@color/colorPrimary">
+
                 <TextView
+                    android:id="@+id/txt_current_bundle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="@dimen/dimen_5dp"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="#ffff"
-                    android:text="Minutes Used"/>
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dimen_20dp"
-                    android:layout_gravity="bottom|center">
+                    android:layout_below="@+id/plan_detail"
+                    android:layout_marginTop="15dp"
+                    android:text="Current Bundle"
+                    android:textColor="@color/color_phone_number"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/lable_hh_mm_ss_used"
-                        android:text="HH : MM : SS"
-                        android:textSize="10sp"
-                        android:textColor="#82F299"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/lable_hh_mm_ss_call_min"
-                        android:text="01  :  50  :  00"
-                        android:textSize="10sp"
-                        android:layout_below="@+id/lable_hh_mm_ss_used"
-                        android:textColor="#ffff"/>
-
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
-            <android.support.v7.widget.CardView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginStart="@dimen/dimen_8dp"
-                android:layout_height="@dimen/dimen_70dp"
-                app:cardBackgroundColor="@color/colorPrimary">
                 <TextView
+                    android:id="@+id/txt_see_other_bundles"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:layout_marginTop="@dimen/dimen_5dp"
-                    android:textStyle="bold"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="#ffff"
-                    android:text="Minutes Remaining"/>
+                    android:layout_alignTop="@+id/txt_current_bundle"
+                    android:layout_alignParentRight="true"
+                    android:text="SEE OTHER BUNDLES"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="11sp" />
 
-                <RelativeLayout
+                <TextView
+                    android:id="@+id/txt_current_bundle_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dimen_20dp"
-                    android:layout_gravity="bottom|center">
-                    <TextView
-                        android:layout_width="wrap_content"
+                    android:layout_below="@+id/txt_current_bundle"
+                    android:layout_marginTop="4dp"
+                    android:text="Current Bundle"
+                    android:textColor="@color/color_phone_number"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/txt_bundle_min"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_current_bundle_value"
+                    android:layout_marginTop="15dp"
+                    android:text="Bundle Minutes"
+                    android:textColor="@color/color_phone_number"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_70dp"
+                    android:layout_below="@+id/txt_bundle_min"
+                    android:layout_marginTop="@dimen/dimen_8dp"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dimen_70dp"
+                        android:layout_weight="1"
+                        app:cardBackgroundColor="@color/colorPrimary">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dimen_5dp"
+                            android:text="Total"
+                            android:textColor="#ffff"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|center"
+                            android:layout_marginBottom="@dimen/dimen_20dp"
+                            android:gravity="center_horizontal">
+
+                            <TextView
+                                android:id="@+id/lable_hh_mm_ss_bundle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="HH : MM : SS"
+                                android:textColor="#82F299"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:id="@+id/lable_hh_mm_ss_bundle_min"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/lable_hh_mm_ss_bundle"
+                                android:gravity="center_horizontal"
+                                android:text="01  :  50  :  00"
+                                android:textColor="#ffff"
+                                android:textSize="10sp" />
+
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dimen_70dp"
+                        android:layout_marginStart="@dimen/dimen_8dp"
+                        android:layout_weight="1"
+                        app:cardBackgroundColor="@color/colorPrimary">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dimen_5dp"
+                            android:text="Used"
+                            android:textColor="#ffff"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|center"
+                            android:layout_marginBottom="@dimen/dimen_20dp"
+                            android:gravity="center_horizontal">
+
+                            <TextView
+                                android:id="@+id/lable_hh_mm_ss_used"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="HH : MM : SS"
+                                android:textColor="#82F299"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:id="@+id/lable_hh_mm_ss_call_min"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/lable_hh_mm_ss_used"
+                                android:gravity="center_horizontal"
+                                android:text="01  :  50  :  00"
+                                android:textColor="#ffff"
+                                android:textSize="10sp" />
+
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dimen_70dp"
+                        android:layout_marginStart="@dimen/dimen_8dp"
+                        android:layout_weight="1"
+                        app:cardBackgroundColor="@color/colorPrimary">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dimen_5dp"
+                            android:text="Remaining"
+                            android:textColor="#ffff"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|center"
+                            android:layout_marginBottom="@dimen/dimen_20dp"
+                            android:gravity="center_horizontal">
+
+                            <TextView
+                                android:id="@+id/lable_hh_mm_ss_remaining"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="HH : MM : SS"
+                                android:textColor="#82F299"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:id="@+id/lable_hh_mm_ss_remaining_time"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/lable_hh_mm_ss_remaining"
+                                android:gravity="center_horizontal"
+                                android:text="01  :  50  :  00"
+                                android:textColor="#ffff"
+                                android:textSize="10sp" />
+
+                        </RelativeLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/color_profile_divider"></View>
+
+            <LinearLayout
+                style="@style/profile_layout_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/call_icon_size"
+                    android:layout_height="@dimen/call_icon_size"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/profile_phone" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:orientation="vertical">
+
+                    <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/lable_hh_mm_ss_remaining"
-                        android:textSize="10sp"
-                        android:text="HH : MM : SS"
-                        android:textColor="#82F299"/>
-                    <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="POSfone Number"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/phone_text_size" />
+
+                    <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                        android:id="@+id/txt_pay_number"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/lable_hh_mm_ss_remaining_time"
-                        android:text="01  :  50  :  00"
-                        android:textSize="10sp"
-                        android:layout_below="@+id/lable_hh_mm_ss_remaining"
-                        android:textColor="#ffff"/>
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:text="+44-2356-21"
+                        android:textSize="@dimen/phone_number_text_size" />
 
-                </RelativeLayout>
 
-            </android.support.v7.widget.CardView>
+                </LinearLayout>
 
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_profile_divider"></View>
+
+            <LinearLayout
+                style="@style/profile_layout_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/call_icon_size"
+                    android:layout_height="@dimen/call_icon_size"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/profile_phone" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:orientation="vertical">
+
+                    <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="Phone"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/phone_text_size" />
+
+                    <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                        android:id="@+id/txt_user_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:text="+44-2356-21"
+                        android:textSize="@dimen/phone_number_text_size" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_profile_divider"></View>
+
+            <LinearLayout
+                style="@style/profile_layout_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/call_icon_size"
+                    android:layout_height="@dimen/call_icon_size"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/profile_email" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:orientation="vertical">
+
+                    <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="Email Address"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/phone_text_size" />
+
+                    <com.posfone.promote.posfone.Utils.TitilliumWebTextView
+                        android:id="@+id/txt_email_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:text="jane.carter@gmail.com"
+                        android:textSize="@dimen/phone_number_text_size" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_profile_divider"></View>
         </LinearLayout>
-
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/color_profile_divider"
-        android:layout_marginTop="10dp"
-        ></View>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        style="@style/profile_layout_margin"
-        >
-
-        <ImageView
-            android:layout_width="@dimen/call_icon_size"
-            android:layout_height="@dimen/call_icon_size"
-            android:src="@drawable/profile_phone"
-            android:layout_marginTop="5dp"
-            />
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="20dp"
-            >
-
-            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="POSfone Number"
-                android:textSize="@dimen/phone_text_size"
-                android:layout_gravity="center_horizontal"
-                android:textColor="#000000"
-                />
-
-            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
-                android:id="@+id/txt_pay_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="+44-2356-21"
-                android:textSize="@dimen/phone_number_text_size"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                />
-
-
-        </LinearLayout>
-
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/color_profile_divider"
-        ></View>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        style="@style/profile_layout_margin"
-        >
-
-        <ImageView
-            android:layout_width="@dimen/call_icon_size"
-            android:layout_height="@dimen/call_icon_size"
-            android:src="@drawable/profile_phone"
-            android:layout_marginTop="5dp"
-            />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="20dp"
-            >
-
-            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Phone"
-                android:textSize="@dimen/phone_text_size"
-                android:layout_gravity="center_horizontal"
-                android:textColor="#000000"
-                />
-
-            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
-                android:id="@+id/txt_user_phone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="+44-2356-21"
-                android:textSize="@dimen/phone_number_text_size"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                />
-
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/color_profile_divider"
-        ></View>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        style="@style/profile_layout_margin"
-        >
-
-        <ImageView
-            android:layout_width="@dimen/call_icon_size"
-            android:layout_height="@dimen/call_icon_size"
-            android:src="@drawable/profile_email"
-            android:layout_marginTop="5dp"
-            />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="20dp"
-            >
-
-            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Email Address"
-                android:textSize="@dimen/phone_text_size"
-                android:layout_gravity="center_horizontal"
-                android:textColor="#000000"
-                />
-
-            <com.posfone.promote.posfone.Utils.TitilliumWebTextView
-                android:id="@+id/txt_email_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="jane.carter@gmail.com"
-                android:textSize="@dimen/phone_number_text_size"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                />
-
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/color_profile_divider"
-        ></View>
-
+    </ScrollView>
 </LinearLayout>
