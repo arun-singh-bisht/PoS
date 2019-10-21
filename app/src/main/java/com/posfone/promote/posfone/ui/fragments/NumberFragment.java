@@ -51,6 +51,7 @@ public class NumberFragment extends BaseFragment {
     public NumberFragment numberFragment_type_premium;
     public NumberFragment numberFragment_type_elite;
     private final int ACTION_FOR_COUNTRY = 1001;
+    private String package_id;
     private List<TwilioNumber> twilioNumberList;
     private GenericListAdapter genericListAdapter = null;
     ImageButton filter_button;
@@ -167,8 +168,9 @@ public class NumberFragment extends BaseFragment {
         });
     }
 
-    public void setData(List<TwilioNumber> twilioNumberList)
+    public void setData(List<TwilioNumber> twilioNumberList,String package_id)
     {
+        this.package_id = package_id;
         this.twilioNumberList = twilioNumberList;
         loadTwilioNumberList(twilioNumberList);
     }
@@ -244,8 +246,9 @@ public class NumberFragment extends BaseFragment {
         //Header
         HashMap<String,String> header = new HashMap<>();
         header.put("x-api-key", ApiClient.X_API_KEY);
-        if(selectedCountry==null)
-            header.put("userid", userID);
+        header.put("userid", userID);
+
+
         //RequestBody
         String body = "";
         if(selectedCountry!=null) {
@@ -253,6 +256,13 @@ public class NumberFragment extends BaseFragment {
             jsonObject.addProperty("country", selectedCountry.getIso());
             jsonObject.addProperty("area_code",code.getText().toString() );
             jsonObject.addProperty("filter",filter);
+
+            if(twilioNumberList!=null && twilioNumberList.size()>0)
+            {
+
+                jsonObject.addProperty("sample_number", twilioNumberList.get(0).phone_number);
+            }
+            jsonObject.addProperty("package_id",package_id);
             body = "json=" + jsonObject.toString();
         }
         Log.i("getTwilioNumber",userID+" "+body);

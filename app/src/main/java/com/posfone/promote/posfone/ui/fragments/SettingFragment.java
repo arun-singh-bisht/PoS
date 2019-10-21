@@ -381,9 +381,9 @@ public class SettingFragment extends BaseFragment implements AdapterView.OnItemC
         header.put("userid", userID);
         //RequestBody
         final JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("in1c", Uri.encode( numberForReceivingCall_code));
+        jsonObject.addProperty("in1c", Uri.encode( "+"+ numberForReceivingCall_code));
         jsonObject.addProperty("in1",Uri.encode( numberForReceivingCall_number));
-        jsonObject.addProperty("out1c",Uri.encode( numberFoMakingCall_code));
+        jsonObject.addProperty("out1c",Uri.encode( "+"+numberFoMakingCall_code));
         jsonObject.addProperty("out1",Uri.encode( numberFoMakingCall_number));
         jsonObject.addProperty("voice_preference",voicePeference.toLowerCase());
         jsonObject.addProperty("caller_id_preference",callerIdPreference);

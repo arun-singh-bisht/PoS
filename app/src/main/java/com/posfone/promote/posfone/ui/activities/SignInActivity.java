@@ -45,7 +45,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         email=findViewById(R.id.input_name);
         pass=findViewById(R.id.input_password);
 
-        email.setText("moe@mailinator.com");
+        email.setText("gif@mailinator.com");
         pass.setText("Test@123");
 
         String username = getIntent().getStringExtra("username");

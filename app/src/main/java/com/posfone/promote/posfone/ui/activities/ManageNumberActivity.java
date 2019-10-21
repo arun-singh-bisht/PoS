@@ -187,9 +187,9 @@ public class ManageNumberActivity extends AppCompatActivity implements View.OnCl
         header.put("userid", userID);
         //RequestBody
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("in1c", Uri.encode( inCominNumberCountryCode));
+        jsonObject.addProperty("in1c", "+"+Uri.encode( inCominNumberCountryCode));
         jsonObject.addProperty("in1",Uri.encode( inCominNumber));
-        jsonObject.addProperty("out1c",Uri.encode( ountGoingNumberCountryCode));
+        jsonObject.addProperty("out1c","+"+Uri.encode( ountGoingNumberCountryCode));
         jsonObject.addProperty("out1",Uri.encode( outGoingNumber));
         if (get_security_pin_visibility())
         jsonObject.addProperty("security_pin",security_code.getText().toString());

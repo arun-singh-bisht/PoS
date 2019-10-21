@@ -16,9 +16,9 @@ import okio.Buffer;
 public class RESTClient {
 
     /** TEST SERVER URL **/
-   // public static final String HOST_IP = "http://accounts.protechgenie.in/";
+    public static final String HOST_IP = "http://accounts.protechgenie.in/";
     /** LIVE SERVER URL **/
-    public static final String HOST_IP = "https://accounts.pay729.guru/";
+//    public static final String HOST_IP = "https://accounts.pay729.guru/";
 
     public static final String COUNTRY = "app/country";
     public static final String STATE = "app/state";

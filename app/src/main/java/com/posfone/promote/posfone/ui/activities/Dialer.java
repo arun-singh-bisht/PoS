@@ -215,8 +215,8 @@ public class Dialer extends AppCompatActivity {
             //-----------------
             //Dial callee number through default dialer app
             Intent intent = new Intent(Intent.ACTION_CALL);
-            //String merchantTwilioNumber = "0008000401810";
-            String merchantTwilioNumber = savedCallerNumber;
+            String merchantTwilioNumber = "0008000401810";
+            //String merchantTwilioNumber = savedCallerNumber;
             intent.setData(Uri.parse("tel:" + merchantTwilioNumber));
             startActivityForResult(intent,11);
             finish();
